@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+:root {
+  /* Primary Colors */
+  --color-primary: #FF6B00;
+  --color-primary-hover: #E65C00;
+  --color-primary-light: #FFF4ED;
+  
+  /* Neutral Colors */
+  --color-white: #FFFFFF;
+  --color-background: #FAFAFA;
+  --color-text-primary: #0A0A0A;
+  --color-text-secondary: #374151;
+  --color-text-muted: #6B7280;
+  --color-border: #E5E7EB;
+  
+  /* Dark UI Elements */
+  --color-card-dark: #1A1A1A;
+  --color-card-dark-hover: #2A2A2A;
+  
+  /* Grid */
+  --color-grid: rgba(255, 107, 0, 0.08);
+  
+  /* Fonts */
+  --font-headline: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  
+  /* Spacing */
+  --section-padding-y: 120px;
+  --section-padding-y-mobile: 80px;
+  --container-max-width: 1200px;
+  --container-padding-x: 24px;
+}
+
+@theme inline {
+  --color-background: var(--color-background);
+  --color-foreground: var(--color-text-primary);
+  --color-primary: var(--color-primary);
+  --font-sans: var(--font-body);
+  --font-serif: var(--font-headline);
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-text-secondary);
+  font-family: var(--font-body);
+}
+
+/* Typography */
+.font-headline {
+  font-family: var(--font-headline);
+  font-style: italic;
+}
+
+/* Grid Background */
+.grid-background {
+  background-image: 
+    linear-gradient(var(--color-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-grid) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
+/* Text Reveal Animation */
+@keyframes textReveal {
+  0% {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+.text-reveal {
+  animation: textReveal 0.8s ease-out forwards;
+}
+
+/* Fade Up Animation */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-up {
+  animation: fadeUp 0.6s ease-out forwards;
+}
+
+/* Selection */
+::selection {
+  background-color: var(--color-primary);
+  color: white;
+}
