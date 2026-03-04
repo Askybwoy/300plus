@@ -2,127 +2,227 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { SectionLabel } from "../ui/SectionLabel";
 import { AnimatedText } from "../ui/AnimatedText";
-import { Button } from "../ui/Button";
 import { Modal } from "../ui/Modal";
-import {
-  PaintBrush,
-  Globe,
-  ChartLineUp,
-  Clock,
-  Target,
-  Handshake,
-} from "@phosphor-icons/react";
+import Image from "next/image";
 
-const benefits = [
+const serviceCards = [
   {
-    icon: PaintBrush,
     title: "Фирменный стиль",
-    description: "Логотип, цвета, шрифты и визуальная система",
+    description: "Логотип, цвета, шрифты и\nвизуальная система",
+    icon: "/icons/service-branding-icon.svg",
+    variant: "white" as const,
   },
   {
-    icon: Globe,
     title: "Лендинг",
-    description: "Конверсионная посадочная страница",
+    description: "Конверсионная посадочная\nстраница",
+    icon: "/icons/service-landing-icon.svg",
+    variant: "white" as const,
   },
   {
-    icon: ChartLineUp,
-    title: "Рекламная кампания",
-    description: "Настройка и запуск таргетированной рекламы",
-  },
-  {
-    icon: Clock,
-    title: "Быстрый запуск",
-    description: "Всего 7 дней от идеи до первых заявок",
-  },
-  {
-    icon: Target,
     title: "Тестирование гипотез",
     description: "Проверка идеи на реальной аудитории",
+    icon: "/icons/service-testing-icon.svg",
+    variant: "white-wide" as const,
   },
   {
-    icon: Handshake,
     title: "Поддержка",
     description: "Консультации и доработки после запуска",
+    icon: "/icons/service-support-icon.svg",
+    variant: "dark-wide" as const,
   },
+];
+
+const statCards = [
+  { value: "10", label: "дней от идеи\nдо первых заявок" },
+  { value: "40%", label: "выше конверсия\nс таргетированной рекламой" },
 ];
 
 export function WhatYouGet() {
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
-    <section className="py-24 md:py-32 px-6 grid-background">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <SectionLabel className="mb-6">Что вы получаете</SectionLabel>
-          <h2 className="font-[family-name:var(--font-playfair)] italic text-3xl md:text-5xl text-[#0A0A0A] tracking-tight">
+    <>
+      {/* Dark header area */}
+      <section id="what-you-get" className="bg-[#0A0A0A] py-24 md:py-32 px-6">
+        <div className="max-w-6xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="inline-flex mb-6"
+          >
+            <span className="bg-gradient-to-b from-[#434343] to-[#000000] text-white text-sm font-medium px-4 py-2 rounded-full">
+              Что вы получаете
+            </span>
+          </motion.div>
+          <h2 className="font-[family-name:var(--font-playfair)] text-3xl md:text-[4.35rem] text-white tracking-[-0.05em] leading-[0.9] mb-6">
             <AnimatedText text="Всё для быстрого старта" />
           </h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+            className="text-lg md:text-xl text-white/70 max-w-[610px] mx-auto leading-relaxed"
+          >
+            Комплексное решение для запуска бизнеса: от фирменного стиля до первых заявок с рекламы
+          </motion.p>
         </div>
+      </section>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {benefits.map((benefit, index) => (
+      {/* Pricing & Benefits Grid */}
+      <section className="bg-[#0A0A0A] pb-24 px-6">
+        <div className="max-w-[1200px] mx-auto">
+          <div className="flex flex-col lg:flex-row gap-2">
+            {/* Left: Price Card */}
             <motion.div
-              key={benefit.title}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ delay: index * 0.08, duration: 0.5 }}
-              className="bg-white border border-[#E5E7EB] rounded-2xl p-6 transition-all duration-300 hover:shadow-lg hover:shadow-[#FF6B00]/5 hover:border-[#FF6B00]/20"
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="flex-1 relative bg-[#1A1A1A] rounded-[20px] overflow-hidden p-8 flex flex-col justify-between min-h-[480px]"
             >
-              <benefit.icon
-                weight="duotone"
-                className="w-10 h-10 text-[#FF6B00] mb-4"
-              />
-              <h3 className="font-medium text-[#0A0A0A] text-lg mb-2">
-                {benefit.title}
-              </h3>
-              <p className="text-[#6B7280] text-sm leading-relaxed">
-                {benefit.description}
-              </p>
+              {/* Gradient background */}
+              <div className="absolute inset-0 -z-0 overflow-hidden">
+                <Image
+                  src="/images/price-gradient-bg.png"
+                  alt=""
+                  fill
+                  className="object-cover opacity-90"
+                />
+              </div>
+              <div className="relative z-10">
+                <p className="text-[13px] text-white font-medium tracking-[0.07em] uppercase mb-6">
+                  Стоимость пакета
+                </p>
+              </div>
+              <div className="relative z-10 space-y-5">
+                <div className="flex items-end gap-3">
+                  <Image
+                    src="/icons/logo-header.svg"
+                    alt="300.plus"
+                    width={204}
+                    height={42}
+                    className="h-[42px] w-auto brightness-0 invert"
+                  />
+                  <span className="font-[family-name:var(--font-playfair)] text-[53px] text-white leading-none tracking-[-0.03em]">
+                    ₽
+                  </span>
+                </div>
+                <p className="text-[13px] text-white/55">
+                  Фиксированная цена. Без скрытых доплат.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-1 pt-2">
+                  <motion.button
+                    onClick={() => setModalOpen(true)}
+                    className="bg-[#FF6B00] text-white font-cta px-8 py-4 rounded-full flex-1 text-center cursor-pointer"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    Обсудить проект
+                  </motion.button>
+                  <motion.button
+                    onClick={() => document.getElementById("audit")?.scrollIntoView({ behavior: "smooth" })}
+                    className="bg-black/70 text-white font-cta px-8 py-4 rounded-full border border-white/20 flex-1 text-center cursor-pointer"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    Бесплатный аудит
+                  </motion.button>
+                </div>
+              </div>
             </motion.div>
-          ))}
-        </div>
 
-        {/* Pricing Card */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="bg-[#FF6B00] rounded-3xl p-8 md:p-12 text-center"
-        >
-          <p className="text-white/80 mb-2">Полный пакет услуг</p>
-          <div className="font-[family-name:var(--font-playfair)] italic text-5xl md:text-7xl text-white mb-4">
-            300 000
-            <span className="text-2xl md:text-3xl ml-2">рублей</span>
+            {/* Right: Service & Stat Cards */}
+            <div className="flex-1 flex flex-col gap-2">
+              {/* Top row: 2x2 */}
+              <div className="grid grid-cols-2 gap-2 flex-1">
+                {/* White card 1 */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.1, duration: 0.5 }}
+                  className="bg-white rounded-2xl p-6 md:p-7 flex flex-col justify-between"
+                >
+                  <Image src={serviceCards[0].icon} alt="" width={28} height={28} className="w-7 h-7 mb-4" />
+                  <div>
+                    <h4 className="font-semibold text-[#1A1A1A] text-base mb-1">{serviceCards[0].title}</h4>
+                    <p className="text-[13px] text-black/45 leading-snug whitespace-pre-line">{serviceCards[0].description}</p>
+                  </div>
+                </motion.div>
+
+                {/* Orange stat card 1 */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.2, duration: 0.5 }}
+                  className="bg-[#FF6B00] rounded-2xl p-6 md:p-7 flex flex-col items-center justify-center text-center"
+                >
+                  <span className="font-[family-name:var(--font-playfair)] font-medium text-[56px] text-white leading-none">{statCards[0].value}</span>
+                  <p className="text-sm text-white/85 mt-2 whitespace-pre-line">{statCards[0].label}</p>
+                </motion.div>
+
+                {/* Orange stat card 2 */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.3, duration: 0.5 }}
+                  className="bg-[#FF6B00] rounded-2xl p-6 md:p-7 flex flex-col items-center justify-center text-center"
+                >
+                  <span className="font-[family-name:var(--font-playfair)] font-medium text-[56px] text-white leading-none">{statCards[1].value}</span>
+                  <p className="text-sm text-white/85 mt-2 whitespace-pre-line">{statCards[1].label}</p>
+                </motion.div>
+
+                {/* White card 2 */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.4, duration: 0.5 }}
+                  className="bg-white rounded-2xl p-6 md:p-7 flex flex-col justify-between"
+                >
+                  <Image src={serviceCards[1].icon} alt="" width={28} height={28} className="w-7 h-7 mb-4" />
+                  <div>
+                    <h4 className="font-semibold text-[#1A1A1A] text-base mb-1">{serviceCards[1].title}</h4>
+                    <p className="text-[13px] text-black/45 leading-snug whitespace-pre-line">{serviceCards[1].description}</p>
+                  </div>
+                </motion.div>
+              </div>
+
+              {/* Bottom row: 2 wide cards */}
+              <div className="grid grid-cols-2 gap-2">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.5, duration: 0.5 }}
+                  className="bg-white rounded-[20px] p-6 md:p-7"
+                >
+                  <Image src={serviceCards[2].icon} alt="" width={28} height={28} className="w-7 h-7 mb-5" />
+                  <h4 className="font-semibold text-[#1A1A1A] text-base mb-1">{serviceCards[2].title}</h4>
+                  <p className="text-[13px] text-black/45 leading-snug">{serviceCards[2].description}</p>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.6, duration: 0.5 }}
+                  className="bg-[#1A1A1A] rounded-[20px] p-6 md:p-7"
+                >
+                  <Image src={serviceCards[3].icon} alt="" width={28} height={28} className="w-7 h-7 mb-5 brightness-0 invert" />
+                  <h4 className="font-semibold text-white text-base mb-1">{serviceCards[3].title}</h4>
+                  <p className="text-[13px] text-white/40 leading-snug">{serviceCards[3].description}</p>
+                </motion.div>
+              </div>
+            </div>
           </div>
-          <p className="text-white/80 max-w-md mx-auto mb-8">
-            Бренд, лендинг, запуск рекламы и первые заявки за 7 дней
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              variant="secondary"
-              size="lg"
-              icon
-              onClick={() => setModalOpen(true)}
-            >
-              Обсудить проект
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="bg-white/10 border-white/30 text-white hover:bg-white/20"
-              onClick={() => {
-                document.getElementById("audit")?.scrollIntoView({ behavior: "smooth" });
-              }}
-            >
-              Бесплатный аудит
-            </Button>
-          </div>
-        </motion.div>
-      </div>
+        </div>
+      </section>
 
       <Modal
         isOpen={modalOpen}
@@ -130,6 +230,6 @@ export function WhatYouGet() {
         title="Обсудить проект"
         subtitle="Расскажите о вашей идее, и мы свяжемся с вами"
       />
-    </section>
+    </>
   );
 }

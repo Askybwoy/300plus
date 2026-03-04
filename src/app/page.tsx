@@ -1,4 +1,5 @@
 import { Hero } from "@/components/sections/Hero";
+import { EntryCards } from "@/components/sections/EntryCards";
 import { HowItWorks } from "@/components/sections/HowItWorks";
 import { WhatYouGet } from "@/components/sections/WhatYouGet";
 import { Moodboard } from "@/components/sections/Moodboard";
@@ -8,11 +9,18 @@ import { Footer } from "@/components/sections/Footer";
 
 export default function Home() {
   return (
-    <main className="overflow-hidden">
+    <main className="overflow-hidden bg-black">
       <Hero />
-      <HowItWorks />
-      <WhatYouGet />
-      <Moodboard />
+      <EntryCards />
+      {/* White background zone */}
+      <div className="bg-white">
+        <HowItWorks />
+        <WhatYouGet />
+      </div>
+      {/* Back to white for approach */}
+      <div className="bg-white">
+        <Moodboard />
+      </div>
       <Audit />
       <FAQ />
       <Footer />

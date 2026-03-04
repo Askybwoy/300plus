@@ -2,202 +2,166 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { SectionLabel } from "../ui/SectionLabel";
-import { AnimatedText } from "../ui/AnimatedText";
-import { Button } from "../ui/Button";
-import {
-  Link as LinkIcon,
-  EnvelopeSimple,
-  MagnifyingGlass,
-  VideoCamera,
-  FileText,
-  CircleNotch,
-  CheckCircle,
-} from "@phosphor-icons/react";
+import { Modal } from "../ui/Modal";
 
-type FormState = "idle" | "loading" | "success";
-
-const steps = [
-  {
-    number: "01",
-    icon: LinkIcon,
-    title: "Отправьте ссылку",
-    description: "Укажите URL сайта конкурента для анализа",
-  },
-  {
-    number: "02",
-    icon: MagnifyingGlass,
-    title: "Мы анализируем",
-    description: "Проводим детальный разбор в течение 24 часов",
-  },
-  {
-    number: "03",
-    icon: VideoCamera,
-    title: "Получите видео",
-    description: "Отправляем видео-разбор с рекомендациями",
-  },
+const floatingTags = [
+  { label: "Бесплатно", color: "#FFF0E6", x: 141, y: 92 },
+  { label: "Отправьте ссылку", color: "#EFF6FF", x: 934, y: 26 },
+  { label: "Конкретные рекомендации", color: "#F3F4F6", x: 0, y: 324 },
+  { label: "Детальный анализ", color: "#ECFDF5", x: 1051, y: 256 },
+  { label: "Улучшение конверсии", color: "#FFF0E6", x: 143, y: 539 },
+  { label: "PDF-разбор", color: "#FDF2F8", x: 970, y: 481 },
+  { label: "24 часа", color: "#FF6B00", x: 642, y: 602 },
 ];
 
-export function Audit() {
-  const [formState, setFormState] = useState<FormState>("idle");
-  const [formData, setFormData] = useState({
-    url: "",
-    email: "",
-  });
+// Normalize positions to percentages based on the Figma group dimensions
+const groupWidth = 1236;
+const groupHeight = 638;
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setFormState("loading");
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setFormState("success");
-  };
+export function Audit() {
+  const [modalOpen, setModalOpen] = useState(false);
 
   return (
-    <section id="audit" className="py-24 md:py-32 px-6">
-      <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Left: Content */}
-          <div>
-            <SectionLabel className="mb-6">Бесплатно</SectionLabel>
-            <h2 className="font-[family-name:var(--font-playfair)] italic text-3xl md:text-5xl text-[#0A0A0A] tracking-tight mb-6">
-              <AnimatedText text="Аудит сайта конкурента" />
-            </h2>
-            <p className="text-[#6B7280] text-lg mb-8 max-w-md">
-              Пришлите ссылку на любой сайт, и мы запишем видео-разбор с
-              конкретными рекомендациями по улучшению.
-            </p>
-
-            {/* Steps */}
-            <div className="space-y-4">
-              {steps.map((step, index) => (
-                <motion.div
-                  key={step.number}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1, duration: 0.5 }}
-                  className="flex items-start gap-4"
-                >
-                  <div className="flex-shrink-0 w-12 h-12 bg-[#FFF4ED] rounded-xl flex items-center justify-center">
-                    <step.icon weight="duotone" className="w-6 h-6 text-[#FF6B00]" />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="font-[family-name:var(--font-playfair)] italic text-[#FF6B00] text-sm">
-                        ({step.number})
-                      </span>
-                      <h3 className="font-medium text-[#0A0A0A]">{step.title}</h3>
-                    </div>
-                    <p className="text-[#6B7280] text-sm">{step.description}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+    <section id="audit" className="py-24 md:py-32 px-6 bg-white relative overflow-hidden">
+      <div className="max-w-[1200px] mx-auto">
+        {/* Radial layout */}
+        <div className="relative min-h-[500px] md:min-h-[620px] flex items-center justify-center">
+          {/* Background circle decoration */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <motion.div
+              initial={{ scale: 0, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="w-[500px] h-[500px] md:w-[620px] md:h-[620px] rounded-full border border-black/5"
+            />
+          </div>
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <motion.div
+              initial={{ scale: 0, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 0.5 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
+              className="w-[350px] h-[350px] md:w-[440px] md:h-[440px] rounded-full border border-black/5"
+            />
           </div>
 
-          {/* Right: Form */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="bg-white border border-[#E5E7EB] rounded-3xl p-8"
-          >
-            {formState === "success" ? (
-              <div className="text-center py-8">
+          {/* Floating tags */}
+          <div className="absolute inset-0 hidden md:block">
+            {floatingTags.map((tag, index) => {
+              const xPercent = (tag.x / groupWidth) * 100;
+              const yPercent = (tag.y / groupHeight) * 100;
+              const isOrange = tag.color === "#FF6B00";
+              const floatDuration = 3 + (index * 0.5);
+
+              return (
                 <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: "spring", damping: 15 }}
+                  key={tag.label}
+                  initial={{ scale: 0, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.3 + index * 0.1, type: "spring", damping: 12 }}
+                  style={{ left: `${xPercent}%`, top: `${yPercent}%` }}
+                  className="absolute"
                 >
-                  <CheckCircle
-                    weight="fill"
-                    className="w-16 h-16 text-[#FF6B00] mx-auto mb-4"
-                  />
-                </motion.div>
-                <h3 className="font-[family-name:var(--font-playfair)] italic text-2xl text-[#0A0A0A] mb-2">
-                  Заявка отправлена
-                </h3>
-                <p className="text-[#6B7280]">
-                  Мы пришлём видео-разбор в течение 24 часов
-                </p>
-              </div>
-            ) : (
-              <>
-                <div className="flex items-center gap-3 mb-6">
-                  <FileText weight="duotone" className="w-8 h-8 text-[#FF6B00]" />
-                  <h3 className="font-[family-name:var(--font-playfair)] italic text-2xl text-[#0A0A0A]">
-                    Получить аудит
-                  </h3>
-                </div>
-
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-[#374151] mb-1">
-                      URL сайта *
-                    </label>
-                    <div className="relative">
-                      <LinkIcon
-                        weight="bold"
-                        className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#9CA3AF]"
-                      />
-                      <input
-                        type="url"
-                        required
-                        value={formData.url}
-                        onChange={(e) =>
-                          setFormData({ ...formData, url: e.target.value })
-                        }
-                        className="w-full pl-12 pr-4 py-3 border border-[#E5E7EB] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FF6B00]/20 focus:border-[#FF6B00] transition-all"
-                        placeholder="https://example.com"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-[#374151] mb-1">
-                      Email *
-                    </label>
-                    <div className="relative">
-                      <EnvelopeSimple
-                        weight="bold"
-                        className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#9CA3AF]"
-                      />
-                      <input
-                        type="email"
-                        required
-                        value={formData.email}
-                        onChange={(e) =>
-                          setFormData({ ...formData, email: e.target.value })
-                        }
-                        className="w-full pl-12 pr-4 py-3 border border-[#E5E7EB] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FF6B00]/20 focus:border-[#FF6B00] transition-all"
-                        placeholder="email@example.com"
-                      />
-                    </div>
-                  </div>
-
-                  <Button
-                    type="submit"
-                    variant="primary"
-                    className="w-full"
-                    size="lg"
+                  <motion.div
+                    animate={{ y: [0, -8, 0] }}
+                    transition={{ duration: floatDuration, repeat: Infinity, ease: "easeInOut" }}
+                    className="flex items-center gap-2.5"
                   >
-                    {formState === "loading" ? (
-                      <CircleNotch className="w-5 h-5 animate-spin" />
-                    ) : (
-                      "Получить бесплатный аудит"
-                    )}
-                  </Button>
-                </form>
+                    <div
+                      className="w-9 h-9 rounded-[10px] shadow-[0_2px_8px_rgba(0,0,0,0.06)] flex items-center justify-center"
+                      style={{ backgroundColor: isOrange ? "#FF6B00" : tag.color }}
+                    >
+                      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                        <path d="M9 6V12M6 9H12" stroke={isOrange ? "white" : "#374151"} strokeWidth="2" strokeLinecap="round"/>
+                      </svg>
+                    </div>
+                    <span className="text-[15px] font-medium text-[#0A0A0A]">{tag.label}</span>
+                  </motion.div>
+                </motion.div>
+              );
+            })}
+          </div>
 
-                <p className="text-xs text-[#9CA3AF] text-center mt-4">
-                  Отправляя форму, вы соглашаетесь на обработку данных
-                </p>
-              </>
-            )}
+          {/* Center content */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            className="relative z-10 text-center max-w-[400px] mx-auto"
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.5 }}
+              className="inline-flex mb-4"
+            >
+              <span className="bg-gradient-to-r from-white to-[#F3F4F6] border border-black/6 text-[#374151] text-sm font-medium px-5 py-2 rounded-full">
+                Бесплатно
+              </span>
+            </motion.div>
+
+            <h2 className="font-[family-name:var(--font-playfair)] text-3xl md:text-[4.35rem] text-[#2D2D2D] tracking-[-0.05em] leading-[0.9] mb-4">
+              Аудит сайта
+            </h2>
+
+            <p className="text-[15px] text-[#6B7280]/70 leading-relaxed mb-6 max-w-[310px] mx-auto">
+              Пришлите ссылку на&nbsp;Ваш текущий сайт, и&nbsp;мы&nbsp;пришлем разбор с&nbsp;конкретными рекомендациями по&nbsp;улучшению
+            </p>
+
+            <motion.button
+              onClick={() => setModalOpen(true)}
+              className="inline-flex items-center gap-4 bg-[#131313] text-white font-cta pl-7 pr-2 py-2 rounded-full cursor-pointer"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <span>Оставить заявку</span>
+              <div className="w-[50px] h-[50px] rounded-full bg-[#FF6B00] flex items-center justify-center">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path d="M4 10L10 4M10 4H4M10 4V10" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+            </motion.button>
           </motion.div>
         </div>
+
+        {/* Mobile tags */}
+        <div className="flex flex-wrap justify-center gap-3 mt-8 md:hidden">
+          {floatingTags.map((tag, index) => {
+            const isOrange = tag.color === "#FF6B00";
+            return (
+              <motion.div
+                key={tag.label}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.05 }}
+                className="flex items-center gap-2 px-3 py-2 rounded-xl border border-black/6"
+              >
+                <div
+                  className="w-6 h-6 rounded-md flex items-center justify-center"
+                  style={{ backgroundColor: isOrange ? "#FF6B00" : tag.color }}
+                >
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                    <path d="M6 3V9M3 6H9" stroke={isOrange ? "white" : "#374151"} strokeWidth="1.5" strokeLinecap="round"/>
+                  </svg>
+                </div>
+                <span className="text-sm text-[#0A0A0A]">{tag.label}</span>
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
+
+      <Modal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        title="Бесплатный аудит"
+        subtitle="Пришлите ссылку на сайт для разбора"
+      />
     </section>
   );
 }

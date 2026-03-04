@@ -8,7 +8,8 @@
   
   /* Neutral Colors */
   --color-white: #FFFFFF;
-  --color-background: #FAFAFA;
+  --color-background: #000000;
+  --color-surface: #FAFAFA;
   --color-text-primary: #0A0A0A;
   --color-text-secondary: #374151;
   --color-text-muted: #6B7280;
@@ -41,7 +42,7 @@
 }
 
 body {
-  background: var(--color-background);
+  background: #000000;
   color: var(--color-text-secondary);
   font-family: var(--font-body);
 }
@@ -49,7 +50,21 @@ body {
 /* Typography */
 .font-headline {
   font-family: var(--font-headline);
+}
+
+.font-headline-italic {
+  font-family: var(--font-headline);
   font-style: italic;
+}
+
+/* CTA Font - Druk Text Wide Cyr approximation */
+.font-cta {
+  font-family: var(--font-body);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 13px;
+  line-height: 1.3;
 }
 
 /* Grid Background */
@@ -92,6 +107,18 @@ body {
 
 .fade-up {
   animation: fadeUp 0.6s ease-out forwards;
+}
+
+/* Floating animation for audit tags */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+/* Pulse animation */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.3); }
 }
 
 /* Selection */
