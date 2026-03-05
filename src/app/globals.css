@@ -121,6 +121,13 @@ body {
   50% { opacity: 0.6; transform: scale(1.3); }
 }
 
+/* Speaking ring animation for video call */
+@keyframes speak {
+  0%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+  30% { opacity: 0.5; transform: translate(-50%, -50%) scale(1.15); }
+  60% { opacity: 0; transform: translate(-50%, -50%) scale(1.3); }
+}
+
 /* Selection */
 ::selection {
   background-color: var(--color-primary);

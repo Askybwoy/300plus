@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attention Psychology Illustration</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #FFFFFF;
+      color: #1A1A1A;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .illustration-container {
+      width: 100%;
+      max-width: 380px;
+    }
+
+    /* Landing page mockup card */
+    .page-card {
+      background: #FFFFFF;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 2px 24px rgba(0, 0, 0, 0.07);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      position: relative;
+    }
+
+    /* Browser chrome */
+    .browser-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .browser-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.1);
+    }
+
+    .browser-url {
+      flex: 1;
+      margin-left: 8px;
+      height: 24px;
+      background: rgba(0, 0, 0, 0.04);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+    }
+
+    .browser-url span {
+      font-size: 11px;
+      color: rgba(0, 0, 0, 0.35);
+    }
+
+    /* Page content mockup */
+    .page-content {
+      padding: 20px;
+      position: relative;
+    }
+
+    /* Attention hotspot */
+    .hotspot {
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      z-index: 10;
+      color: white;
+    }
+
+    .hotspot::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 2px solid;
+      opacity: 0.3;
+    }
+
+    .hotspot-1 {
+      background: #FF6B00;
+      top: 48px;
+      left: 20px;
+    }
+
+    .hotspot-1::after {
+      border-color: #FF6B00;
+      animation: pulse-ring 2s ease-out infinite;
+    }
+
+    .hotspot-2 {
+      background: #FF6B00;
+      opacity: 0.7;
+      top: 120px;
+      right: 24px;
+    }
+
+    .hotspot-2::after {
+      border-color: #FF6B00;
+      animation: pulse-ring 2s ease-out 0.4s infinite;
+    }
+
+    .hotspot-3 {
+      background: #FF6B00;
+      opacity: 0.5;
+      bottom: 56px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .hotspot-3::after {
+      border-color: #FF6B00;
+      animation: pulse-ring 2s ease-out 0.8s infinite;
+    }
+
+    @keyframes pulse-ring {
+      0% { transform: scale(1); opacity: 0.3; }
+      70% { transform: scale(1.6); opacity: 0; }
+      100% { transform: scale(1.6); opacity: 0; }
+    }
+
+    /* Gaze path (dashed line connecting hotspots) */
+    .gaze-path {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .gaze-path svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Mockup headline */
+    .mock-headline {
+      width: 70%;
+      height: 14px;
+      background: #1A1A1A;
+      border-radius: 3px;
+      margin-bottom: 8px;
+    }
+
+    .mock-headline-2 {
+      width: 50%;
+      height: 14px;
+      background: #1A1A1A;
+      border-radius: 3px;
+      margin-bottom: 20px;
+    }
+
+    /* Mockup subtext */
+    .mock-text {
+      width: 90%;
+      height: 8px;
+      background: rgba(0, 0, 0, 0.08);
+      border-radius: 2px;
+      margin-bottom: 6px;
+    }
+
+    .mock-text.short {
+      width: 60%;
+    }
+
+    /* Mockup image block */
+    .mock-image {
+      width: 100%;
+      height: 80px;
+      background: linear-gradient(135deg, rgba(255, 107, 0, 0.08) 0%, rgba(255, 107, 0, 0.03) 100%);
+      border-radius: 12px;
+      margin: 20px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mock-image svg {
+      width: 28px;
+      height: 28px;
+      color: rgba(255, 107, 0, 0.25);
+    }
+
+    /* Mockup CTA button */
+    .mock-cta {
+      width: 140px;
+      height: 40px;
+      background: #FF6B00;
+      border-radius: 10px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mock-cta-text {
+      width: 60px;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 2px;
+    }
+
+    /* Conversion funnel card */
+    .funnel-card {
+      background: #1A1A1A;
+      border-radius: 16px;
+      padding: 16px 20px;
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .funnel-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 4px;
+      height: 40px;
+    }
+
+    .funnel-bar {
+      width: 12px;
+      border-radius: 3px;
+      transition: height 0.6s ease;
+    }
+
+    .funnel-bar:nth-child(1) {
+      height: 40px;
+      background: rgba(255, 255, 255, 0.15);
+      animation: bar-grow 2s ease infinite;
+    }
+
+    .funnel-bar:nth-child(2) {
+      height: 30px;
+      background: rgba(255, 255, 255, 0.25);
+      animation: bar-grow 2s ease 0.15s infinite;
+    }
+
+    .funnel-bar:nth-child(3) {
+      height: 22px;
+      background: rgba(255, 107, 0, 0.6);
+      animation: bar-grow 2s ease 0.3s infinite;
+    }
+
+    .funnel-bar:nth-child(4) {
+      height: 34px;
+      background: #FF6B00;
+      animation: bar-grow 2s ease 0.45s infinite;
+    }
+
+    @keyframes bar-grow {
+      0%, 100% { transform: scaleY(1); }
+      50% { transform: scaleY(0.85); }
+    }
+
+    .funnel-info {
+      flex: 1;
+    }
+
+    .funnel-label {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .funnel-value {
+      font-size: 24px;
+      font-weight: 600;
+      color: #FF6B00;
+      line-height: 1;
+    }
+
+    .funnel-value span {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.5);
+      font-weight: 400;
+      margin-left: 4px;
+    }
+
+    .funnel-delta {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 6px;
+    }
+
+    .funnel-delta svg {
+      width: 12px;
+      height: 12px;
+      color: #22C55E;
+    }
+
+    .funnel-delta span {
+      font-size: 12px;
+      color: #22C55E;
+    }
+
+    /* Title section */
+    .title-section {
+      margin-top: 48px;
+    }
+
+    .title-section h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 500;
+      line-height: 1.15;
+      color: #1A1A1A;
+      margin-bottom: 16px;
+    }
+
+    .title-section p {
+      font-size: 15px;
+      line-height: 1.55;
+      color: rgba(0, 0, 0, 0.6);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="illustration-container">
+    <!-- Landing page mockup with attention heatmap -->
+    <div class="page-card">
+      <div class="browser-bar">
+        <div class="browser-dot"></div>
+        <div class="browser-dot"></div>
+        <div class="browser-dot"></div>
+        <div class="browser-url">
+          <span>yourproject.com</span>
+        </div>
+      </div>
+
+      <div class="page-content">
+        <!-- Gaze path SVG -->
+        <svg class="gaze-path" viewBox="0 0 340 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 36 44 Q 170 80 306 116 Q 200 160 170 220" stroke="#FF6B00" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.2" fill="none"/>
+        </svg>
+
+        <!-- Hotspot 1: Headline -->
+        <div class="hotspot hotspot-1">1</div>
+
+        <!-- Mock headline area -->
+        <div class="mock-headline"></div>
+        <div class="mock-headline-2"></div>
+
+        <!-- Mock body text -->
+        <div class="mock-text"></div>
+        <div class="mock-text short"></div>
+
+        <!-- Hotspot 2: Image/Visual -->
+        <div class="hotspot hotspot-2">2</div>
+
+        <!-- Mock image block -->
+        <div class="mock-image">
+          <i data-lucide="image" stroke-width="1.5"></i>
+        </div>
+
+        <!-- Mock text below image -->
+        <div class="mock-text"></div>
+        <div class="mock-text short"></div>
+
+        <!-- Hotspot 3: CTA -->
+        <div class="hotspot hotspot-3">3</div>
+
+        <!-- Mock CTA -->
+        <div style="padding-top: 8px;">
+          <div class="mock-cta">
+            <div class="mock-cta-text"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Conversion metrics card -->
+    <div class="funnel-card">
+      <div class="funnel-bars">
+        <div class="funnel-bar"></div>
+        <div class="funnel-bar"></div>
+        <div class="funnel-bar"></div>
+        <div class="funnel-bar"></div>
+      </div>
+      <div class="funnel-info">
+        <div class="funnel-label">Конверсия</div>
+        <div class="funnel-value">+34%<span>vs контроль</span></div>
+        <div class="funnel-delta">
+          <i data-lucide="trending-up" stroke-width="2"></i>
+          <span>Визуальная иерархия</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Title section -->
+    <div class="title-section">
+      <h1>Психология<br>внимания</h1>
+      <p>Используем принципы когнитивной психологии для создания интерфейсов, которые захватывают внимание и ведут к конверсии</p>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+
+</body>
+</html>

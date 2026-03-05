@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Technology Stack Illustration</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #FFFFFF;
+      color: #1A1A1A;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .illustration-container {
+      width: 100%;
+      max-width: 380px;
+    }
+
+    /* Code editor card */
+    .editor-card {
+      background: #1A1A1A;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
+      position: relative;
+    }
+
+    /* Window chrome */
+    .editor-chrome {
+      display: flex;
+      align-items: center;
+      padding: 14px 18px;
+      gap: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .chrome-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .chrome-dot.red { background: #FF5F57; }
+    .chrome-dot.yellow { background: #FFBD2E; }
+    .chrome-dot.green { background: #28C840; }
+
+    .chrome-tab {
+      margin-left: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.4);
+      background: rgba(255, 255, 255, 0.06);
+      padding: 4px 12px;
+      border-radius: 6px;
+    }
+
+    /* Code area */
+    .code-area {
+      padding: 18px 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    .code-line {
+      display: flex;
+      gap: 0;
+    }
+
+    .line-num {
+      width: 28px;
+      flex-shrink: 0;
+      color: rgba(255, 255, 255, 0.15);
+      text-align: right;
+      padding-right: 12px;
+      user-select: none;
+    }
+
+    .line-content {
+      white-space: nowrap;
+    }
+
+    .kw { color: #C678DD; }
+    .str { color: #98C379; }
+    .fn { color: #61AFEF; }
+    .tag { color: #E06C75; }
+    .attr { color: #D19A66; }
+    .cm { color: rgba(255, 255, 255, 0.25); }
+    .pl { color: rgba(255, 255, 255, 0.6); }
+
+    /* Cursor blink */
+    .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 14px;
+      background: #FF6B00;
+      margin-left: 2px;
+      vertical-align: middle;
+      animation: cursor-blink 1s step-end infinite;
+    }
+
+    @keyframes cursor-blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* Tech stack badges */
+    .tech-badges {
+      display: flex;
+      gap: 8px;
+      padding: 0 20px 18px;
+      flex-wrap: wrap;
+    }
+
+    .tech-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .tech-badge.nextjs {
+      background: rgba(255, 255, 255, 0.08);
+      color: #FFFFFF;
+    }
+
+    .tech-badge.typescript {
+      background: rgba(49, 120, 198, 0.15);
+      color: #61AFEF;
+    }
+
+    .tech-badge.tailwind {
+      background: rgba(56, 189, 248, 0.12);
+      color: #38BDF8;
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .badge-dot.nextjs { background: #FFFFFF; }
+    .badge-dot.typescript { background: #3178C6; }
+    .badge-dot.tailwind { background: #38BDF8; }
+
+    /* Metrics row */
+    .metrics-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .metric-card {
+      flex: 1;
+      background: #FFFFFF;
+      border-radius: 14px;
+      padding: 14px 12px;
+      box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Speed gauge */
+    .gauge-wrap {
+      width: 52px;
+      height: 30px;
+      position: relative;
+    }
+
+    .gauge-wrap svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* SEO score */
+    .seo-score {
+      position: relative;
+      width: 44px;
+      height: 44px;
+    }
+
+    .seo-ring {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .seo-ring-bg {
+      fill: none;
+      stroke: rgba(0, 0, 0, 0.06);
+      stroke-width: 3;
+    }
+
+    .seo-ring-fill {
+      fill: none;
+      stroke: #22C55E;
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-dasharray: 113;
+      stroke-dashoffset: 113;
+      animation: seo-fill 2s ease-out forwards;
+    }
+
+    @keyframes seo-fill {
+      to { stroke-dashoffset: 5; }
+    }
+
+    .seo-value {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #22C55E;
+    }
+
+    /* Devices preview */
+    .devices-preview {
+      display: flex;
+      align-items: flex-end;
+      gap: 4px;
+      height: 36px;
+    }
+
+    .device-bar {
+      border-radius: 3px;
+      background: rgba(0, 0, 0, 0.06);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .device-bar::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #FF6B00;
+      border-radius: 3px;
+      animation: device-fill 1.5s ease-out forwards;
+    }
+
+    .device-phone {
+      width: 10px;
+      height: 24px;
+    }
+
+    .device-phone::after {
+      height: 0;
+      animation-delay: 0.2s;
+    }
+
+    .device-tablet {
+      width: 14px;
+      height: 30px;
+    }
+
+    .device-tablet::after {
+      height: 0;
+      animation-delay: 0.4s;
+    }
+
+    .device-desktop {
+      width: 20px;
+      height: 36px;
+    }
+
+    .device-desktop::after {
+      height: 0;
+      animation-delay: 0.6s;
+    }
+
+    @keyframes device-fill {
+      to { height: 100%; }
+    }
+
+    .metric-label {
+      font-size: 11px;
+      color: rgba(0, 0, 0, 0.4);
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    /* Title section */
+    .title-section {
+      margin-top: 36px;
+    }
+
+    .title-section h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 500;
+      line-height: 1.15;
+      color: #1A1A1A;
+      margin-bottom: 12px;
+    }
+
+    .title-section p {
+      font-size: 15px;
+      line-height: 1.55;
+      color: rgba(0, 0, 0, 0.6);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="illustration-container">
+    <!-- Code editor card -->
+    <div class="editor-card">
+      <div class="editor-chrome">
+        <div class="chrome-dot red"></div>
+        <div class="chrome-dot yellow"></div>
+        <div class="chrome-dot green"></div>
+        <span class="chrome-tab">page.tsx</span>
+      </div>
+
+      <div class="code-area">
+        <div class="code-line">
+          <span class="line-num">1</span>
+          <span class="line-content"><span class="kw">import</span> <span class="pl">{</span> <span class="fn">Metadata</span> <span class="pl">}</span> <span class="kw">from</span> <span class="str">'next'</span></span>
+        </div>
+        <div class="code-line">
+          <span class="line-num">2</span>
+          <span class="line-content"></span>
+        </div>
+        <div class="code-line">
+          <span class="line-num">3</span>
+          <span class="line-content"><span class="kw">export const</span> <span class="attr">metadata</span><span class="pl">:</span> <span class="fn">Metadata</span> <span class="pl">= {</span></span>
+        </div>
+        <div class="code-line">
+          <span class="line-num">4</span>
+          <span class="line-content"><span class="pl">  </span><span class="attr">title</span><span class="pl">:</span> <span class="str">'Your Brand'</span><span class="pl">,</span></span>
+        </div>
+        <div class="code-line">
+          <span class="line-num">5</span>
+          <span class="line-content"><span class="pl">}</span></span>
+        </div>
+        <div class="code-line">
+          <span class="line-num">6</span>
+          <span class="line-content"></span>
+        </div>
+        <div class="code-line">
+          <span class="line-num">7</span>
+          <span class="line-content"><span class="kw">export default</span> <span class="kw">function</span> <span class="fn">Page</span><span class="pl">() {</span></span>
+        </div>
+        <div class="code-line">
+          <span class="line-num">8</span>
+          <span class="line-content"><span class="pl">  </span><span class="kw">return</span> <span class="tag">&lt;Hero</span> <span class="tag">/&gt;</span><span class="cursor"></span></span>
+        </div>
+        <div class="code-line">
+          <span class="line-num">9</span>
+          <span class="line-content"><span class="pl">}</span></span>
+        </div>
+      </div>
+
+      <div class="tech-badges">
+        <div class="tech-badge nextjs">
+          <span class="badge-dot nextjs"></span>
+          Next.js
+        </div>
+        <div class="tech-badge typescript">
+          <span class="badge-dot typescript"></span>
+          TypeScript
+        </div>
+        <div class="tech-badge tailwind">
+          <span class="badge-dot tailwind"></span>
+          Tailwind CSS
+        </div>
+      </div>
+    </div>
+
+    <!-- Metrics row -->
+    <div class="metrics-row">
+      <!-- Speed -->
+      <div class="metric-card">
+        <div class="gauge-wrap">
+          <svg viewBox="0 0 52 30" fill="none">
+            <path d="M 6 28 A 20 20 0 0 1 46 28" stroke="rgba(0,0,0,0.06)" stroke-width="3" stroke-linecap="round" fill="none"/>
+            <path d="M 6 28 A 20 20 0 0 1 46 28" stroke="#22C55E" stroke-width="3" stroke-linecap="round" fill="none" stroke-dasharray="63" stroke-dashoffset="63">
+              <animate attributeName="stroke-dashoffset" from="63" to="3" dur="1.5s" fill="freeze"/>
+            </path>
+            <line x1="26" y1="28" x2="26" y2="12" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" transform-origin="26 28">
+              <animateTransform attributeName="transform" type="rotate" from="-80 26 28" to="70 26 28" dur="1.5s" fill="freeze"/>
+            </line>
+            <circle cx="26" cy="28" r="3" fill="#1A1A1A"/>
+          </svg>
+        </div>
+        <span class="metric-label">Загрузка<br>&lt; 1 сек</span>
+      </div>
+
+      <!-- SEO -->
+      <div class="metric-card">
+        <div class="seo-score">
+          <svg class="seo-ring" viewBox="0 0 44 44">
+            <circle class="seo-ring-bg" cx="22" cy="22" r="18"/>
+            <circle class="seo-ring-fill" cx="22" cy="22" r="18"/>
+          </svg>
+          <span class="seo-value">96</span>
+        </div>
+        <span class="metric-label">SEO<br>оценка</span>
+      </div>
+
+      <!-- Responsiveness -->
+      <div class="metric-card">
+        <div class="devices-preview">
+          <div class="device-bar device-phone"></div>
+          <div class="device-bar device-tablet"></div>
+          <div class="device-bar device-desktop"></div>
+        </div>
+        <span class="metric-label">Любые<br>экраны</span>
+      </div>
+    </div>
+
+    <!-- Title section -->
+    <div class="title-section">
+      <h1>Современные<br>технологии</h1>
+      <p>Next.js, TypeScript, Tailwind CSS. Быстрая загрузка, SEO-оптимизация и адаптивность на всех устройствах</p>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ads Launch Illustration</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #FFFFFF;
+      color: #1A1A1A;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .illustration-container {
+      width: 100%;
+      max-width: 380px;
+    }
+
+    /* Chat messages area */
+    .chat-area {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    /* Outgoing message (right aligned, gray) */
+    .message {
+      max-width: 260px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .message.outgoing {
+      align-self: flex-end;
+      align-items: flex-end;
+    }
+
+    .message.incoming {
+      align-self: flex-start;
+      align-items: flex-start;
+    }
+
+    .message-bubble {
+      padding: 12px 16px;
+      border-radius: 18px;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .message.outgoing .message-bubble {
+      background: #F5F5F5;
+      color: #1A1A1A;
+      border-bottom-right-radius: 6px;
+    }
+
+    .message.incoming .message-bubble {
+      background: #FF6B00;
+      color: white;
+      border-bottom-left-radius: 6px;
+    }
+
+    .message-time {
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.4);
+      padding: 0 4px;
+    }
+
+    /* Message with avatar */
+    .message-with-avatar {
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #FFE4D4 0%, #FFCDB2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .avatar svg {
+      width: 18px;
+      height: 18px;
+      color: #FF6B00;
+    }
+
+    /* Task notification card */
+    .task-card {
+      background: #FFFFFF;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      max-width: 280px;
+      margin-left: auto;
+      margin-top: 8px;
+    }
+
+    .task-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .status-check {
+      width: 18px;
+      height: 18px;
+      background: #22C55E;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .status-check svg {
+      width: 10px;
+      height: 10px;
+      color: white;
+    }
+
+    .status-text {
+      font-size: 13px;
+      color: rgba(0, 0, 0, 0.5);
+    }
+
+    .task-card-time {
+      font-size: 11px;
+      color: rgba(0, 0, 0, 0.35);
+      margin-left: auto;
+    }
+
+    .task-title {
+      font-size: 15px;
+      font-weight: 500;
+      color: #1A1A1A;
+      margin-bottom: 4px;
+    }
+
+    .task-project {
+      font-size: 13px;
+      color: rgba(0, 0, 0, 0.45);
+    }
+
+    /* Title section */
+    .title-section {
+      margin-top: 48px;
+    }
+
+    .title-section h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 500;
+      line-height: 1.15;
+      color: #1A1A1A;
+      margin-bottom: 16px;
+    }
+
+    .title-section p {
+      font-size: 15px;
+      line-height: 1.55;
+      color: rgba(0, 0, 0, 0.6);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="illustration-container">
+    <!-- Chat messages -->
+    <div class="chat-area">
+      <!-- Outgoing message -->
+      <div class="message outgoing">
+        <div class="message-bubble">
+          Кампания запущена. Ждите первых лидов в течение дня!
+        </div>
+        <span class="message-time">14:32</span>
+      </div>
+
+      <!-- Incoming message with avatar -->
+      <div class="message-with-avatar">
+        <div class="avatar">
+          <i data-lucide="user" stroke-width="2"></i>
+        </div>
+        <div class="message incoming">
+          <div class="message-bubble">
+            Отлично! Уже пришла первая заявка, спасибо!
+          </div>
+          <span class="message-time">14:45</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Task completion card -->
+    <div class="task-card">
+      <div class="task-status">
+        <div class="status-check">
+          <i data-lucide="check" stroke-width="3"></i>
+        </div>
+        <span class="status-text">Реклама запущена</span>
+        <span class="task-card-time">14:30</span>
+      </div>
+      <div class="task-title">Настройка таргета VK</div>
+      <div class="task-project">Привлечение клиентов</div>
+    </div>
+
+    <!-- Title section -->
+    <div class="title-section">
+      <h1>Запуск рекламы</h1>
+      <p>Настраиваем таргетированную рекламу и получаем первые заказы</p>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+
+</body>
+</html>

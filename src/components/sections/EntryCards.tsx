@@ -37,7 +37,7 @@ export function EntryCards() {
   const [activeModal, setActiveModal] = useState<string | null>(null);
 
   return (
-    <section className="px-6 pt-[20vh] pb-[40vh] relative z-10">
+    <section id="entry-cards" className="px-6 pt-[20vh] pb-[40vh] relative z-10">
       <div className="max-w-[1100px] mx-auto flex flex-col">
         {cards.map((card, index) => (
           <motion.div

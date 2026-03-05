@@ -41,7 +41,7 @@ export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section id="faq" className="py-24 md:py-32 px-6 bg-[#0A0A0A]">
+    <section id="faq" className="py-24 md:py-32 px-6 bg-white">
       <div className="max-w-[768px] mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
@@ -51,11 +51,11 @@ export function FAQ() {
             viewport={{ once: true }}
             className="inline-flex mb-6"
           >
-            <span className="bg-gradient-to-b from-white/20 to-[#999999]/20 text-[#374151] text-sm font-medium px-5 py-2 rounded-full">
+            <span className="bg-gradient-to-b from-black/10 to-black/5 text-[#374151] text-sm font-medium px-5 py-2 rounded-full">
               FAQ
             </span>
           </motion.div>
-          <h2 className="font-[family-name:var(--font-playfair)] text-3xl md:text-5xl text-white tracking-[-0.025em] leading-none">
+          <h2 className="font-[family-name:var(--font-playfair)] text-3xl md:text-5xl text-[#2D2D2D] tracking-[-0.025em] leading-none">
             <AnimatedText text="Частые" />
             {" "}
             <AnimatedText text="вопросы" />
@@ -71,13 +71,15 @@ export function FAQ() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.05, duration: 0.4 }}
-              className="border-b border-[#E5E7EB]/20 py-6"
+              className="py-6"
             >
+              {/* Gradient divider line */}
+              <div className="w-full h-px bg-gradient-to-r from-[#E5E5E5] to-transparent mb-6" />
               <button
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
                 className="w-full flex items-start justify-between gap-4 text-left cursor-pointer"
               >
-                <h3 className="font-[family-name:var(--font-playfair)] text-lg md:text-xl text-white pr-4 leading-snug">
+                <h3 className="font-[family-name:var(--font-playfair)] text-lg md:text-xl text-[#2D2D2D] pr-4 leading-snug">
                   {faq.question}
                 </h3>
                 <motion.div
@@ -100,7 +102,7 @@ export function FAQ() {
                     transition={{ duration: 0.3 }}
                     className="overflow-hidden"
                   >
-                    <p className="text-white/60 leading-relaxed mt-4 pr-12">
+                    <p className="text-black/60 leading-relaxed mt-4 pr-12">
                       {faq.answer}
                     </p>
                   </motion.div>
@@ -123,7 +125,7 @@ export function FAQ() {
             href="https://t.me/threeplus"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2.5 px-6 py-3.5 bg-[#1A1A1A] text-white rounded-full font-medium transition-all hover:bg-[#2A2A2A] hover:scale-[1.02] active:scale-[0.98]"
+            className="inline-flex items-center gap-2.5 px-6 py-3.5 bg-[#FF6B00] text-white rounded-full font-medium transition-all hover:bg-[#e65c00] hover:scale-[1.02] active:scale-[0.98]"
           >
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
               <path d="M18.5 1.5L9 11M18.5 1.5L12.5 18.5L9 11M18.5 1.5L1.5 8L9 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>

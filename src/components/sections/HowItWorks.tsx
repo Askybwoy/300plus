@@ -57,49 +57,80 @@ function VideoCallCard() {
       whileInView={{ opacity: 1, y: 0, rotate: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.7, ease: "easeOut" }}
-      className="relative w-full max-w-[380px]"
+      className="relative w-full min-w-[400px] max-w-[400px]"
     >
       <div className="bg-white rounded-[20px] shadow-[0_2px_24px_rgba(0,0,0,0.07)] border border-black/6 overflow-hidden">
+        {/* Header */}
         <div className="px-5 py-3 border-b border-black/6 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-red-500" />
+            <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
             <span className="text-sm font-medium text-[#0A0A0A]">47:{seconds.toString().padStart(2, "0")}</span>
           </div>
           <div className="bg-black/4 rounded-[20px] px-3 py-1">
             <span className="text-xs text-black/40">1&nbsp;час</span>
           </div>
         </div>
-        <div className="px-5 py-4 flex gap-1">
-          <div className="flex-1 bg-gradient-to-b from-[#F7F7F7] to-[#EDEDED] rounded-md flex flex-col items-center justify-center py-6 relative">
-            <div className="w-12 h-12 rounded-full bg-[#FF6B00] flex items-center justify-center mb-2">
+
+        {/* Video Grid */}
+        <div className="grid grid-cols-2 gap-0.5 bg-black/4">
+          {/* Agency (You) - with speaking ring */}
+          <div className="relative min-h-[140px] bg-gradient-to-b from-[#F7F7F7] to-[#EDEDED] flex flex-col items-center justify-center py-8">
+            {/* Speaking ring animation - centered on icon */}
+            <div className="absolute w-14 h-14 rounded-full border-2 border-[#FF6B00] animate-[speak_2s_ease-in-out_infinite]" style={{ top: 'calc(50% - 12px)', left: '50%', transform: 'translate(-50%, -50%)' }} />
+            <div className="w-12 h-12 rounded-full bg-[#FF6B00] flex items-center justify-center mb-2 relative z-10">
               <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M5 17V15C5 13.3431 6.34315 12 8 12H14C15.6569 12 17 13.3431 17 15V17" stroke="white" strokeWidth="1.8" strokeLinecap="round"/><circle cx="11" cy="7" r="3" stroke="white" strokeWidth="1.8"/></svg>
             </div>
-            <span className="text-xs font-medium text-black/60">300plus</span>
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="w-14 h-14 rounded-full border-2 border-[#FF6B00]" />
-            </div>
+            <span className="text-xs font-medium text-black/60 relative z-10">Вы</span>
           </div>
-          <div className="flex-1 bg-gradient-to-br from-[#E8E8E8] to-[#D0D0D0] rounded-md flex flex-col items-center justify-center py-6">
+          {/* Client - same background as "Вы" */}
+          <div className="relative min-h-[140px] bg-gradient-to-b from-[#F7F7F7] to-[#EDEDED] flex flex-col items-center justify-center py-8">
             <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#E8E8E8] to-[#D0D0D0] border border-black/10 flex items-center justify-center mb-2">
               <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M5 17V15C5 13.3431 6.34315 12 8 12H14C15.6569 12 17 13.3431 17 15V17" stroke="rgba(0,0,0,0.35)" strokeWidth="1.8" strokeLinecap="round"/><circle cx="11" cy="7" r="3" stroke="rgba(0,0,0,0.35)" strokeWidth="1.8"/></svg>
             </div>
             <span className="text-xs font-medium text-black/60">Клиент</span>
           </div>
         </div>
+
+        {/* Call Controls */}
         <div className="px-5 py-3 border-t border-black/6 flex items-center justify-center gap-3">
-          {[0,1,2,3,4].map((i) => (
-            <div key={i} className="w-8 h-8 rounded-full bg-black/4 flex items-center justify-center">
-              <div className="w-3 h-3 rounded-full bg-black/20" />
-            </div>
-          ))}
+          {/* Mic */}
+          <div className="w-10 h-10 rounded-xl bg-black/4 flex items-center justify-center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.5)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+              <line x1="12" x2="12" y1="19" y2="22"/>
+            </svg>
+          </div>
+          {/* Video */}
+          <div className="w-10 h-10 rounded-xl bg-black/4 flex items-center justify-center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.5)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="m22 8-6 4 6 4V8Z"/>
+              <rect width="14" height="12" x="2" y="6" rx="2" ry="2"/>
+            </svg>
+          </div>
+          {/* End Call */}
+          <div className="w-12 h-10 rounded-[14px] bg-red-500 flex items-center justify-center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+          </div>
+          {/* Screen Share */}
+          <div className="w-10 h-10 rounded-xl bg-black/4 flex items-center justify-center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.5)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <rect width="20" height="14" x="2" y="3" rx="2" ry="2"/>
+              <line x1="8" x2="16" y1="21" y2="21"/>
+              <line x1="12" x2="12" y1="17" y2="21"/>
+            </svg>
+          </div>
         </div>
       </div>
+      {/* Task card - positioned below the call card */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ delay: 0.5, duration: 0.5 }}
-        className="absolute -bottom-8 right-4 bg-white rounded-2xl shadow-[0_2px_16px_rgba(0,0,0,0.06)] border border-black/6 p-4 w-[260px]"
+        className="mt-4 ml-auto mr-0 bg-white rounded-2xl shadow-[0_2px_16px_rgba(0,0,0,0.06)] border border-black/6 p-4 w-[260px]"
       >
         <div className="flex items-start gap-3">
           <div className="w-[18px] h-[18px] rounded-[9px] bg-[#22C55E] flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -138,7 +169,7 @@ function ListCard() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.7 }}
-      className="bg-white rounded-[20px] shadow-[0_2px_24px_rgba(0,0,0,0.07)] border border-black/6 w-full max-w-[380px] overflow-hidden"
+      className="bg-white rounded-[20px] shadow-[0_2px_24px_rgba(0,0,0,0.07)] border border-black/6 w-full min-w-[400px] max-w-[400px] overflow-hidden"
     >
       {items.map((item, index) => (
         <motion.div
@@ -196,7 +227,7 @@ function ProjectCard() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.7 }}
-      className="bg-[#1A1A1A] rounded-3xl shadow-[0_24px_48px_rgba(0,0,0,0.15)] w-full max-w-[340px] overflow-hidden"
+      className="bg-[#1A1A1A] rounded-3xl shadow-[0_24px_48px_rgba(0,0,0,0.15)] w-full min-w-[400px] max-w-[400px] overflow-hidden"
     >
       <div className="px-6 py-5 border-b border-white/8 grid grid-cols-3 gap-4">
         {[
@@ -247,9 +278,9 @@ function ChatCard() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.7 }}
-      className="relative w-full max-w-[380px]"
+      className="relative w-full min-w-[400px] max-w-[400px]"
     >
-      <div className="bg-gradient-to-t from-[#F9F9F9] to-white rounded-[20px] p-6 shadow-sm border border-black/4">
+      <div className="bg-gradient-to-t from-[#F9F9F9] to-white rounded-[20px] p-6">
         <div className="space-y-4 mb-6">
           {/* Outgoing message */}
           <motion.div
@@ -345,8 +376,8 @@ const steps = [
     title: "Запуск рекламы",
     description: "Настраиваем таргетированную рекламу\nи\u00A0получаем первые заказы",
     metricLabel: "заявок за\u00A0день",
-    metricValue: "18",
-    metricHasArrow: true,
+    metricValue: "18+",
+    metricHasArrow: false,
     card: ChatCard,
     cardPosition: "left" as const,
   },
@@ -355,15 +386,17 @@ const steps = [
 /* ─────────── Metric Component ─────────── */
 function Metric({ label, value, hasArrow, inView }: { label: string; value: string; hasArrow: boolean; inView: boolean }) {
   return (
-    <div className="border-t border-gradient-to-r from-[#F8F5F5] to-white pt-6">
-      <p className="text-[15px] text-black/60 mb-2">{label}</p>
+    <div className="pt-8 mt-8">
+      {/* Divider line */}
+      <div className="w-full h-px bg-gradient-to-r from-[#E5E5E5] to-transparent mb-6" />
+      <p className="text-[14px] text-black/50 mb-3">{label}</p>
       <div className="flex items-center gap-3">
-        <span className="font-[family-name:var(--font-playfair)] text-[80px] md:text-[120px] leading-none tracking-[-0.06em] text-[#FF6B00]">
+        <span className="font-[family-name:var(--font-playfair)] text-[72px] md:text-[100px] leading-none tracking-[-0.04em] text-[#FF6B00]">
           <CountUp value={value} inView={inView} />
         </span>
         {hasArrow && (
-          <svg width="29" height="29" viewBox="0 0 29 29" fill="none" className="mt-4">
-            <path d="M7 22L22 7M22 7H7M22 7V22" stroke="#FF6B00" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" className="mt-4">
+            <path d="M18 6L6 18M6 6L18 18" stroke="#FF6B00" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         )}
       </div>
@@ -383,18 +416,18 @@ function StepRow({ step }: { step: typeof steps[number] }) {
       ref={ref}
       className={`flex flex-col ${isCardLeft ? "lg:flex-row-reverse" : "lg:flex-row"} items-center gap-12 lg:gap-16`}
     >
-      {/* Text side */}
-      <div className="flex-1 flex gap-6">
-        <div className="flex flex-col justify-between py-8 flex-1">
+      {/* Text side - Second on mobile */}
+      <div className="flex-1 min-w-[400px] flex gap-6 order-2 lg:order-none">
+        <div className="flex flex-col justify-between py-6 flex-1">
           <div>
-            <span className="font-[family-name:var(--font-playfair)] font-medium text-[25px] text-[#FF6B00] tracking-[-0.03em]">
+            <span className="font-[family-name:var(--font-playfair)] font-medium text-[22px] text-[#FF6B00] tracking-[-0.02em]">
               {step.number}
             </span>
-            <div className="mt-6 space-y-3">
-              <h3 className="font-[family-name:var(--font-playfair)] font-medium text-[28px] md:text-[32px] text-[#2D2D2D] leading-[1.1] tracking-[-0.025em] whitespace-pre-line">
+            <div className="mt-4 space-y-2">
+              <h3 className="font-[family-name:var(--font-playfair)] font-medium text-[26px] md:text-[30px] text-[#2D2D2D] leading-[1.15] tracking-[-0.02em] whitespace-pre-line">
                 {step.title}
               </h3>
-              <p className="text-[15px] text-black/60 leading-relaxed max-w-[360px]">
+              <p className="text-[15px] text-black/60 leading-[1.6] max-w-[340px]">
                 {step.description}
               </p>
             </div>
@@ -402,8 +435,8 @@ function StepRow({ step }: { step: typeof steps[number] }) {
           <Metric label={step.metricLabel} value={step.metricValue} hasArrow={step.metricHasArrow} inView={inView} />
         </div>
       </div>
-      {/* Card side */}
-      <div className="flex-1 flex justify-center">
+      {/* Card side - First on mobile */}
+      <div className="flex-1 flex justify-center order-1 lg:order-none">
         <div className="bg-gradient-to-t from-[#F9F9F9] to-white rounded-[20px] p-8 md:p-10">
           <StepCard />
         </div>
@@ -415,7 +448,7 @@ function StepRow({ step }: { step: typeof steps[number] }) {
 /* ─────────── Main Section ─────────── */
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="py-24 md:py-32 px-6 overflow-hidden">
+    <section id="how-it-works" className="py-24 md:py-32 px-6 overflow-hidden bg-white">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-20">

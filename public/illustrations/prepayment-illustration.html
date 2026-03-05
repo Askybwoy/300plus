@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prepayment Step Illustration</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #FFFFFF;
+      color: #1A1A1A;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .illustration-container {
+      width: 100%;
+      max-width: 380px;
+    }
+
+    /* List card */
+    .list-card {
+      background: #FFFFFF;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 2px 24px rgba(0, 0, 0, 0.07);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      padding: 8px 0;
+    }
+
+    /* List item */
+    .list-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 20px;
+    }
+
+    .item-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #1A1A1A;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .item-icon svg {
+      width: 20px;
+      height: 20px;
+      color: white;
+    }
+
+    .item-content {
+      flex: 1;
+    }
+
+    .item-title {
+      font-size: 15px;
+      font-weight: 500;
+      color: #1A1A1A;
+      line-height: 1.3;
+    }
+
+    .item-time {
+      font-size: 13px;
+      color: rgba(0, 0, 0, 0.4);
+      flex-shrink: 0;
+    }
+
+    /* Confirm button */
+    .confirm-section {
+      display: flex;
+      justify-content: flex-end;
+      padding: 16px 20px 12px;
+    }
+
+    .confirm-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #1A1A1A;
+      color: white;
+      padding: 12px 14px 12px 24px;
+      border-radius: 30px;
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .confirm-check {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #FF6B00;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .confirm-check svg {
+      width: 16px;
+      height: 16px;
+      color: white;
+    }
+
+    /* Title section */
+    .title-section {
+      margin-top: 48px;
+    }
+
+    .title-section h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 500;
+      line-height: 1.15;
+      color: #1A1A1A;
+      margin-bottom: 16px;
+    }
+
+    .title-section p {
+      font-size: 15px;
+      line-height: 1.55;
+      color: rgba(0, 0, 0, 0.6);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="illustration-container">
+    <!-- List card -->
+    <div class="list-card">
+      <!-- Item 1: Invoice sent -->
+      <div class="list-item">
+        <div class="item-icon">
+          <i data-lucide="file-text"></i>
+        </div>
+        <div class="item-content">
+          <div class="item-title">Счёт отправлен</div>
+        </div>
+        <div class="item-time">2ч назад</div>
+      </div>
+
+      <!-- Item 2: Payment received -->
+      <div class="list-item">
+        <div class="item-icon">
+          <i data-lucide="russian-ruble"></i>
+        </div>
+        <div class="item-content">
+          <div class="item-title">Оплата 50% получена</div>
+        </div>
+        <div class="item-time">1ч назад</div>
+      </div>
+
+      <!-- Item 3: Contract signed -->
+      <div class="list-item">
+        <div class="item-icon">
+          <i data-lucide="file-check"></i>
+        </div>
+        <div class="item-content">
+          <div class="item-title">Договор подписан</div>
+        </div>
+        <div class="item-time">30м назад</div>
+      </div>
+
+      <!-- Item 4: Work started -->
+      <div class="list-item">
+        <div class="item-icon">
+          <i data-lucide="play"></i>
+        </div>
+        <div class="item-content">
+          <div class="item-title">Работа над проектом начата</div>
+        </div>
+        <div class="item-time">Сейчас</div>
+      </div>
+
+      <!-- Confirm button -->
+      <div class="confirm-section">
+        <div class="confirm-btn">
+          Подтвердить этап
+          <div class="confirm-check">
+            <i data-lucide="check"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Title section -->
+    <div class="title-section">
+      <h1>Старт без<br>лишних слов</h1>
+      <p>Получаем предоплату 50% и сразу приступаем к работе над вашим проектом</p>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+
+</body>
+</html>
