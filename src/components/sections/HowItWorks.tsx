@@ -280,7 +280,7 @@ function ChatCard() {
       transition={{ duration: 0.7 }}
       className="relative w-full min-w-[400px] max-w-[400px]"
     >
-      <div className="bg-gradient-to-t from-[#F9F9F9] to-white rounded-[20px] p-6">
+      <div className="bg-gradient-to-t rounded-[20px] p-6">
         <div className="space-y-4 mb-6">
           {/* Outgoing message */}
           <motion.div
@@ -418,7 +418,7 @@ function StepRow({ step }: { step: typeof steps[number] }) {
     >
       {/* Text side - Second on mobile */}
       <div className="flex-1 min-w-[400px] flex gap-6 order-2 lg:order-none">
-        <div className="flex flex-col justify-between py-6 flex-1">
+        <div className="flex flex-col justify-between py-6 flex-1 pl-[70px] pr-[70px]">
           <div>
             <span className="font-[family-name:var(--font-playfair)] font-medium text-[22px] text-[#FF6B00] tracking-[-0.02em]">
               {step.number}

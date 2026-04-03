@@ -65,13 +65,15 @@ export function Header() {
       <div className="max-w-[1572px] mx-auto flex items-center justify-between">
         {/* Logo */}
         <div className="flex-shrink-0">
-          <Image
-            src="/icons/logo-header.svg"
-            alt="300.plus"
-            width={140}
-            height={44}
-            className={`h-8 md:h-11 w-auto transition-all duration-300 ${isInverted ? 'invert' : ''}`}
-          />
+          <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
+            <Image
+              src="/icons/logo-header.svg"
+              alt="300.plus"
+              width={140}
+              height={44}
+              className={`h-8 md:h-11 w-auto transition-all duration-300 ${isInverted ? 'invert' : ''}`}
+            />
+          </a>
         </div>
 
         {/* Nav Links - Desktop */}
@@ -102,9 +104,26 @@ export function Header() {
           <span className={`font-cta hidden md:block transition-colors duration-300 ${isInverted ? 'text-black' : 'text-white'}`}>
             Обсудить<br />проект
           </span>
-          <div className={`w-[60px] h-[60px] rounded-full border flex items-center justify-center transition-all duration-300 group-hover:bg-white/10 ${isInverted ? 'border-black' : 'border-white'}`}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M7 17L17 7M17 7H7M17 7V17" stroke={isInverted ? 'black' : 'white'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <div className="relative w-[60px] h-[60px] rounded-full bg-[#FF6B00] flex items-center justify-center overflow-hidden">
+            {/* Original icon - flies up-right on hover */}
+            <svg 
+              width="24" 
+              height="24" 
+              viewBox="0 0 24 24" 
+              fill="none"
+              className="absolute transition-transform duration-300 ease-out group-hover:translate-x-5 group-hover:-translate-y-5 group-hover:opacity-0"
+            >
+              <path d="M7 17L17 7M17 7H7M17 7V17" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            {/* New icon - appears from bottom-left on hover */}
+            <svg 
+              width="24" 
+              height="24" 
+              viewBox="0 0 24 24" 
+              fill="none"
+              className="absolute translate-x-[-24px] translate-y-[24px] opacity-0 transition-all duration-300 ease-out group-hover:translate-x-0 group-hover:translate-y-0 group-hover:opacity-100"
+            >
+              <path d="M7 17L17 7M17 7H7M17 7V17" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
         </button>

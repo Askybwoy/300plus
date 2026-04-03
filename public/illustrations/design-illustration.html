@@ -17,13 +17,13 @@
 
     body {
       font-family: 'Inter', sans-serif;
-      background: #FFFFFF;
+      background: transparent;
       color: #1A1A1A;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 40px 20px;
+      padding: 0;
     }
 
     .illustration-container {
@@ -156,111 +156,37 @@
       border: 2px solid #1A1A1A;
     }
 
-    /* Component preview cards below the dark card */
-    .components-row {
-      display: flex;
-      gap: 10px;
+    /* Component preview card */
+    .components-single {
       margin-top: 12px;
     }
 
-    .comp-card {
-      flex: 1;
+    .comp-card-large {
       background: #FFFFFF;
-      border-radius: 14px;
-      padding: 12px;
+      border-radius: 20px;
+      padding: 16px;
       box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
       border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .comp-content {
       display: flex;
-      flex-direction: column;
-      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    /* Left: 2x2 grid section */
+    .comp-grid-section {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 8px;
     }
 
-    /* Button component preview */
-    .comp-btn-preview {
-      width: 100%;
-      height: 32px;
-      background: #FF6B00;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .comp-btn-preview::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 60%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      animation: shimmer 3s ease infinite;
-    }
-
-    @keyframes shimmer {
-      0% { left: -100%; }
-      50% { left: 100%; }
-      100% { left: 100%; }
-    }
-
-    .comp-btn-text {
-      width: 48px;
-      height: 6px;
-      background: rgba(255, 255, 255, 0.6);
-      border-radius: 2px;
-    }
-
-    /* Card component preview */
-    .comp-card-preview {
-      width: 100%;
-      background: rgba(0, 0, 0, 0.03);
-      border-radius: 8px;
-      padding: 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .comp-card-line {
-      height: 5px;
-      border-radius: 2px;
-      background: rgba(0, 0, 0, 0.08);
-    }
-
-    .comp-card-line:first-child {
-      width: 60%;
-      height: 6px;
-      background: #1A1A1A;
-    }
-
-    .comp-card-line:nth-child(2) {
-      width: 90%;
-    }
-
-    .comp-card-line:nth-child(3) {
-      width: 40%;
-    }
-
-    .comp-label {
-      font-size: 11px;
-      color: rgba(0, 0, 0, 0.4);
-    }
-
-    /* Spacing / grid preview */
-    .comp-grid-preview {
-      width: 100%;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3px;
-    }
-
     .grid-cell {
-      aspect-ratio: 1.2;
-      background: rgba(0, 0, 0, 0.04);
-      border-radius: 5px;
+      aspect-ratio: 1;
+      background: #F5F5F5;
+      border-radius: 8px;
       position: relative;
     }
 
@@ -279,58 +205,60 @@
       height: 6px;
       background: #FF6B00;
       border-radius: 2px;
-      opacity: 0.4;
+      opacity: 0.6;
     }
 
-    /* Animation preview — easing curve */
-    .anim-preview {
-      width: 100%;
-      height: 40px;
-      position: relative;
+    /* Right: preview section */
+    .comp-preview-section {
+      flex: 1.2;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .comp-card-mockup {
+      background: #F5F5F5;
+      border-radius: 8px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .mockup-line {
+      height: 4px;
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 2px;
+    }
+
+    .mockup-line.thick {
+      height: 6px;
+      background: #1A1A1A;
+      width: 70%;
+    }
+
+    .mockup-line.short {
+      width: 50%;
+    }
+
+    .mockup-image {
+      background: #F5F5F5;
+      border-radius: 8px;
+      padding: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
+      flex: 1;
     }
 
-    .easing-curve {
-      width: 100%;
-      height: 36px;
+    .comp-label-large {
+      display: block;
+      text-align: center;
+      font-size: 13px;
+      color: rgba(0, 0, 0, 0.5);
     }
 
-    .easing-curve svg {
-      width: 100%;
-      height: 100%;
-    }
 
-    .easing-dot {
-      animation: move-along 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-    }
-
-    @keyframes move-along {
-      0% { cx: 8; cy: 32; }
-      50% { cx: 60; cy: 6; }
-      100% { cx: 112; cy: 32; }
-    }
-
-    /* Title section */
-    .title-section {
-      margin-top: 36px;
-    }
-
-    .title-section h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 32px;
-      font-weight: 500;
-      line-height: 1.15;
-      color: #1A1A1A;
-      margin-bottom: 12px;
-    }
-
-    .title-section p {
-      font-size: 15px;
-      line-height: 1.55;
-      color: rgba(0, 0, 0, 0.6);
-    }
   </style>
 </head>
 <body>
@@ -341,7 +269,7 @@
       <!-- Typography showcase -->
       <div class="typo-showcase">
         <div class="typo-large">Aa<span class="accent">.</span></div>
-        <div class="typo-sub">Clean typography</div>
+        <div class="typo-sub">Чистая типографика</div>
       </div>
 
       <!-- Font specimens -->
@@ -368,54 +296,38 @@
       </div>
     </div>
 
-    <!-- Component previews row -->
-    <div class="components-row">
-      <!-- Button + animation -->
-      <div class="comp-card">
-        <div class="comp-btn-preview">
-          <div class="comp-btn-text"></div>
-        </div>
-        <div class="anim-preview">
-          <div class="easing-curve">
-            <svg viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M 8 32 C 30 32, 28 6, 60 6 C 92 6, 90 32, 112 32" stroke="rgba(0,0,0,0.1)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-              <path d="M 8 32 C 30 32, 28 6, 60 6 C 92 6, 90 32, 112 32" stroke="#FF6B00" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-dasharray="160" stroke-dashoffset="160">
-                <animate attributeName="stroke-dashoffset" from="160" to="0" dur="2.4s" repeatCount="indefinite"/>
-              </path>
-              <circle r="3" fill="#FF6B00" class="easing-dot">
-                <animateMotion dur="2.4s" repeatCount="indefinite" keyTimes="0;1" keySplines="0.4 0 0.2 1" calcMode="spline">
-                  <mpath href="#curve-path"/>
-                </animateMotion>
-              </circle>
-              <path id="curve-path" d="M 8 32 C 30 32, 28 6, 60 6 C 92 6, 90 32, 112 32" fill="none"/>
-            </svg>
+    <!-- Component preview card -->
+    <div class="components-single">
+      <div class="comp-card-large">
+        <div class="comp-content">
+          <!-- Left: 2x2 grid -->
+          <div class="comp-grid-section">
+            <div class="grid-cell highlighted"></div>
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+            <div class="grid-cell highlighted"></div>
+          </div>
+          <!-- Right: card preview -->
+          <div class="comp-preview-section">
+            <div class="comp-card-mockup">
+              <div class="mockup-line thick"></div>
+              <div class="mockup-line"></div>
+              <div class="mockup-line short"></div>
+            </div>
+            <div class="mockup-image">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="3" width="18" height="18" rx="4" stroke="#FF6B00" stroke-width="1.5" fill="none"/>
+                <circle cx="8.5" cy="8.5" r="2" stroke="#FF6B00" stroke-width="1.5" fill="none"/>
+                <path d="M3 15L8 10L13 15L21 7" stroke="#FF6B00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
           </div>
         </div>
-        <span class="comp-label">Анимация</span>
-      </div>
-
-      <!-- Layout grid -->
-      <div class="comp-card">
-        <div class="comp-grid-preview">
-          <div class="grid-cell highlighted"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell highlighted"></div>
-        </div>
-        <div class="comp-card-preview">
-          <div class="comp-card-line"></div>
-          <div class="comp-card-line"></div>
-          <div class="comp-card-line"></div>
-        </div>
-        <span class="comp-label">Акценты</span>
+        <span class="comp-label-large">Акценты</span>
       </div>
     </div>
 
-    <!-- Title section -->
-    <div class="title-section">
-      <h1>Современный<br>дизайн</h1>
-      <p>Следим за трендами и применяем актуальные визуальные решения: чистую типографику, грамотные акценты и продуманную анимацию</p>
-    </div>
+
   </div>
 
   <script>

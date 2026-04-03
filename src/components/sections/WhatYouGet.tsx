@@ -75,14 +75,14 @@ export function WhatYouGet() {
       {/* Pricing & Benefits Grid */}
       <section className="bg-[#0A0A0A] pb-24 px-6">
         <div className="max-w-[1200px] mx-auto">
-          <div className="flex flex-col lg:flex-row items-center gap-2">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
             {/* Left: Price Card */}
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="flex-1 relative bg-[#1A1A1A] rounded-[20px] overflow-hidden p-8 flex flex-col justify-between min-h-[480px]"
+              className="relative bg-[#1A1A1A] rounded-[20px] overflow-hidden p-8 flex flex-col justify-between min-h-[480px]"
             >
               {/* Gradient background */}
               <div className="absolute inset-0 -z-0 overflow-hidden">
@@ -99,34 +99,28 @@ export function WhatYouGet() {
                 </p>
               </div>
               <div className="relative z-10 space-y-5">
-                <div className="flex items-end gap-3">
-                  <Image
-                    src="/icons/logo-header.svg"
-                    alt="300.plus"
-                    width={204}
-                    height={42}
-                    className="h-[42px] w-auto brightness-0 invert"
-                  />
-                  <span className="font-[family-name:var(--font-playfair)] text-[53px] text-white leading-none tracking-[-0.03em]">
-                    ₽
+                <div className="flex items-baseline gap-3">
+                  <span className="font-[family-name:var(--font-playfair)] text-[64px] md:text-[80px] text-white leading-none tracking-[-0.03em]">
+                    300 000
+                  </span>
+                  <span className="font-[family-name:var(--font-playfair)] text-[32px] md:text-[40px] text-white leading-none tracking-[-0.03em]">
+                    руб.
                   </span>
                 </div>
                 <p className="text-[13px] text-white/55">
                   Фиксированная цена. Без скрытых доплат.
                 </p>
-                <div className="flex flex-col sm:flex-row gap-1 pt-2">
+                <div className="flex flex-col sm:flex-row gap-2 pt-2">
                   <motion.button
                     onClick={() => setModalOpen(true)}
-                    className="bg-[#FF6B00] text-white font-cta px-8 py-4 rounded-full flex-1 text-center cursor-pointer"
-                    whileHover={{ scale: 1.02 }}
+                    className="bg-[#FF6B00] text-white font-cta px-8 py-4 rounded-full flex-1 text-center cursor-pointer uppercase text-sm tracking-wide hover:bg-[#E65C00] transition-all duration-200"
                     whileTap={{ scale: 0.98 }}
                   >
                     Обсудить проект
                   </motion.button>
                   <motion.button
                     onClick={() => document.getElementById("audit")?.scrollIntoView({ behavior: "smooth" })}
-                    className="bg-black/70 text-white font-cta px-8 py-4 rounded-full border border-white/20 flex-1 text-center cursor-pointer"
-                    whileHover={{ scale: 1.02 }}
+                    className="bg-transparent text-white font-cta px-8 py-4 rounded-full border border-white/30 flex-1 text-center cursor-pointer uppercase text-sm tracking-wide hover:bg-white/10 hover:border-white/50 transition-all duration-200"
                     whileTap={{ scale: 0.98 }}
                   >
                     Бесплатный аудит
@@ -135,90 +129,87 @@ export function WhatYouGet() {
               </div>
             </motion.div>
 
-            {/* Right: Service & Stat Cards */}
-            <div className="flex-1 flex flex-col gap-2">
-              {/* Top row: 2x2 */}
-              <div className="grid grid-cols-2 gap-2 flex-1">
-                {/* White card 1 */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.1, duration: 0.5 }}
-                  className="bg-white rounded-2xl p-6 md:p-7 flex flex-col justify-between"
-                >
-                  <Image src={serviceCards[0].icon} alt="" width={28} height={28} className="w-7 h-7 mb-4" />
-                  <div>
-                    <h4 className="font-semibold text-[#1A1A1A] text-base mb-1">{serviceCards[0].title}</h4>
-                    <p className="text-[13px] text-black/45 leading-snug whitespace-pre-line">{serviceCards[0].description}</p>
-                  </div>
-                </motion.div>
+            {/* Right: Top 2x2 Grid - matches left card height */}
+            <div className="grid grid-cols-2 grid-rows-2 gap-2 h-[480px]">
+              {/* White card 1 - Branding */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1, duration: 0.5 }}
+                className="bg-white rounded-2xl p-6 md:p-7 flex flex-col justify-between"
+              >
+                <Image src={serviceCards[0].icon} alt="" width={28} height={28} className="w-7 h-7 mb-4" />
+                <div>
+                  <h4 className="font-semibold text-[#1A1A1A] text-base mb-1">{serviceCards[0].title}</h4>
+                  <p className="text-[13px] text-black/45 leading-snug whitespace-pre-line">{serviceCards[0].description}</p>
+                </div>
+              </motion.div>
 
-                {/* Orange stat card 1 */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.2, duration: 0.5 }}
-                  className="bg-[#FF6B00] rounded-2xl p-6 md:p-7 flex flex-col items-center justify-center text-center"
-                >
-                  <span className="font-[family-name:var(--font-playfair)] font-medium text-[56px] text-white leading-none">{statCards[0].value}</span>
-                  <p className="text-sm text-white/85 mt-2 whitespace-pre-line">{statCards[0].label}</p>
-                </motion.div>
+              {/* Orange stat card 1 - 10 days */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2, duration: 0.5 }}
+                className="bg-[#FF6B00] rounded-2xl p-6 md:p-7 flex flex-col items-center justify-center text-center"
+              >
+                <span className="font-[family-name:var(--font-playfair)] font-medium text-[56px] text-white leading-none">{statCards[0].value}</span>
+                <p className="text-sm text-white/85 mt-2 whitespace-pre-line">{statCards[0].label}</p>
+              </motion.div>
 
-                {/* Orange stat card 2 */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.3, duration: 0.5 }}
-                  className="bg-[#FF6B00] rounded-2xl p-6 md:p-7 flex flex-col items-center justify-center text-center"
-                >
-                  <span className="font-[family-name:var(--font-playfair)] font-medium text-[56px] text-white leading-none">{statCards[1].value}</span>
-                  <p className="text-sm text-white/85 mt-2 whitespace-pre-line">{statCards[1].label}</p>
-                </motion.div>
+              {/* Orange stat card 2 - 40% */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+                className="bg-[#FF6B00] rounded-2xl p-6 md:p-7 flex flex-col items-center justify-center text-center"
+              >
+                <span className="font-[family-name:var(--font-playfair)] font-medium text-[56px] text-white leading-none">{statCards[1].value}</span>
+                <p className="text-sm text-white/85 mt-2 whitespace-pre-line">{statCards[1].label}</p>
+              </motion.div>
 
-                {/* White card 2 */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.4, duration: 0.5 }}
-                  className="bg-white rounded-2xl p-6 md:p-7 flex flex-col justify-between"
-                >
-                  <Image src={serviceCards[1].icon} alt="" width={28} height={28} className="w-7 h-7 mb-4" />
-                  <div>
-                    <h4 className="font-semibold text-[#1A1A1A] text-base mb-1">{serviceCards[1].title}</h4>
-                    <p className="text-[13px] text-black/45 leading-snug whitespace-pre-line">{serviceCards[1].description}</p>
-                  </div>
-                </motion.div>
-              </div>
+              {/* White card 2 - Landing */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.4, duration: 0.5 }}
+                className="bg-white rounded-2xl p-6 md:p-7 flex flex-col justify-between"
+              >
+                <Image src={serviceCards[1].icon} alt="" width={28} height={28} className="w-7 h-7 mb-4" />
+                <div>
+                  <h4 className="font-semibold text-[#1A1A1A] text-base mb-1">{serviceCards[1].title}</h4>
+                  <p className="text-[13px] text-black/45 leading-snug whitespace-pre-line">{serviceCards[1].description}</p>
+                </div>
+              </motion.div>
+            </div>
 
-              {/* Bottom row: 2 wide cards */}
-              <div className="grid grid-cols-2 gap-2">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.5, duration: 0.5 }}
-                  className="bg-white rounded-[20px] p-6 md:p-7"
-                >
-                  <Image src={serviceCards[2].icon} alt="" width={28} height={28} className="w-7 h-7 mb-5" />
-                  <h4 className="font-semibold text-[#1A1A1A] text-base mb-1">{serviceCards[2].title}</h4>
-                  <p className="text-[13px] text-black/45 leading-snug">{serviceCards[2].description}</p>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.6, duration: 0.5 }}
-                  className="bg-[#1A1A1A] rounded-[20px] p-6 md:p-7"
-                >
-                  <Image src={serviceCards[3].icon} alt="" width={28} height={28} className="w-7 h-7 mb-5 brightness-0 invert" />
-                  <h4 className="font-semibold text-white text-base mb-1">{serviceCards[3].title}</h4>
-                  <p className="text-[13px] text-white/40 leading-snug">{serviceCards[3].description}</p>
-                </motion.div>
-              </div>
+            {/* Bottom row: 2 wide cards - spans full width */}
+            <div className="grid grid-cols-2 gap-2 lg:col-span-2">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.5, duration: 0.5 }}
+                className="bg-white rounded-[20px] p-6 md:p-7"
+              >
+                <Image src={serviceCards[2].icon} alt="" width={28} height={28} className="w-7 h-7 mb-5" />
+                <h4 className="font-semibold text-[#1A1A1A] text-base mb-1">{serviceCards[2].title}</h4>
+                <p className="text-[13px] text-black/45 leading-snug">{serviceCards[2].description}</p>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.6, duration: 0.5 }}
+                className="bg-[#1A1A1A] rounded-[20px] p-6 md:p-7"
+              >
+                <Image src={serviceCards[3].icon} alt="" width={28} height={28} className="w-7 h-7 mb-5 brightness-0 invert" />
+                <h4 className="font-semibold text-white text-base mb-1">{serviceCards[3].title}</h4>
+                <p className="text-[13px] text-white/40 leading-snug">{serviceCards[3].description}</p>
+              </motion.div>
             </div>
           </div>
         </div>

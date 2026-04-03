@@ -26,8 +26,20 @@ export function Modal({ isOpen, onClose, title, subtitle }: ModalProps) {
     e.preventDefault();
     setFormState("loading");
     
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    try {
+      await fetch("https://askydesign.app.n8n.cloud/webhook-test/5be4d31a-89a2-4f3c-a07f-bd32a526c59b", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          contact: formData.contact,
+          description: formData.description,
+          form: title,
+        }),
+      });
+    } catch {
+      // Send even if webhook fails
+    }
     setFormState("success");
     
     setTimeout(() => {
@@ -164,7 +176,7 @@ export function Modal({ isOpen, onClose, title, subtitle }: ModalProps) {
                       ) : (
                         <>
                           Отправить заявку
-                          <PaperPlaneTilt weight="fill" className="w-4 h-4" />
+                          
                         </>
                       )}
                     </Button>

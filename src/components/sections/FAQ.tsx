@@ -122,10 +122,10 @@ export function FAQ() {
         >
           <p className="text-[#6B7280] mb-4">Остались вопросы?</p>
           <a
-            href="https://t.me/threeplus"
+            href="https://t.me/its300plus_bot"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2.5 px-6 py-3.5 bg-[#FF6B00] text-white rounded-full font-medium transition-all hover:bg-[#e65c00] hover:scale-[1.02] active:scale-[0.98]"
+            className="inline-flex items-center gap-2.5 px-6 py-3.5 bg-[#FF6B00] text-white rounded-full font-medium transition-all hover:bg-[#e65c00] active:scale-[0.98]"
           >
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
               <path d="M18.5 1.5L9 11M18.5 1.5L12.5 18.5L9 11M18.5 1.5L1.5 8L9 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>

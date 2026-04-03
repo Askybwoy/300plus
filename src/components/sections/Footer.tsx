@@ -22,8 +22,7 @@ export function Footer() {
             </p>
             <motion.button
               onClick={() => setModalOpen(true)}
-              className="inline-flex items-center gap-4 bg-white text-[#2A2A2A] font-cta pl-7 pr-2 py-2 rounded-full cursor-pointer"
-              whileHover={{ scale: 1.03 }}
+              className="inline-flex items-center gap-4 bg-white text-[#2A2A2A] font-cta pl-7 pr-2 py-2 rounded-full cursor-pointer hover:bg-[#F5F5F5] transition-all duration-200"
               whileTap={{ scale: 0.98 }}
             >
               <span>Оставить заявку</span>
@@ -40,7 +39,7 @@ export function Footer() {
             <h4 className="text-white font-medium text-base mb-4">Контакты</h4>
             <div className="space-y-3">
               <a
-                href="https://t.me/threeplus"
+                href="https://t.me/its300plus_bot"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 text-[#9CA3AF] hover:text-white transition-colors"
@@ -48,7 +47,7 @@ export function Footer() {
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                   <path d="M18.5 1.5L9 11M18.5 1.5L12.5 18.5L9 11M18.5 1.5L1.5 8L9 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
-                @300plus
+                @its300plus_bot
               </a>
               <a
                 href="mailto:hello@300.plus"
@@ -71,7 +70,7 @@ export function Footer() {
             alt="300.plus"
             width={1129}
             height={295}
-            className="w-full h-auto opacity-20"
+            className="w-full h-auto opacity-100"
             style={{
               maskImage: "linear-gradient(180deg, #373737 0%, #0A0A0A 77%)",
               WebkitMaskImage: "linear-gradient(180deg, #373737 0%, #0A0A0A 77%)",

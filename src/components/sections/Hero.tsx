@@ -65,23 +65,6 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Scroll Indicator - Right side */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
-        className="absolute right-12 top-1/2 -translate-y-1/2 hidden lg:flex flex-col items-center gap-[30px]"
-      >
-        {[0, 1, 2, 3].map((i) => (
-          <motion.div
-            key={i}
-            animate={{ opacity: [0.3, 1, 0.3] }}
-            transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
-            className={`rounded-full ${i === 0 ? "w-2 h-2" : "w-1.5 h-1.5"} bg-white`}
-          />
-        ))}
-      </motion.div>
-
       <Modal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}

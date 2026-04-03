@@ -1,18 +1,19 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Inter, PT_Serif } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/ui/Header";
+import { SectionNav } from "@/components/ui/SectionNav";
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin", "cyrillic"],
 });
 
-const playfair = Playfair_Display({
+const ptSerif = PT_Serif({
   variable: "--font-playfair",
   subsets: ["latin", "cyrillic"],
   style: ["normal", "italic"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "700"],
 });
 
 export const metadata: Metadata = {
@@ -34,8 +35,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru">
-      <body className={`${inter.variable} ${playfair.variable} antialiased`}>
+      <body className={`${inter.variable} ${ptSerif.variable} antialiased`}>
         <Header />
+        {/* <SectionNav /> */}
         {children}
       </body>
     </html>

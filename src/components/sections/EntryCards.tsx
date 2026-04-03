@@ -18,6 +18,7 @@ const cards = [
     layout: "text-left", // text on left, image on right
     modalTitle: "Расскажите о вашей идее",
     modalSubtitle: "Мы поможем превратить её в работающий бизнес",
+    buttonText: "получить консультацию",
   },
   {
     id: "launch",
@@ -30,6 +31,7 @@ const cards = [
     layout: "text-right", // image on left, text on right
     modalTitle: "Запустим ваш проект",
     modalSubtitle: "Лендинг и реклама за 10 дней",
+    buttonText: "запустить проект",
   },
 ];
 
@@ -80,8 +82,7 @@ export function EntryCards() {
                   alt=""
                   width={card.iconSize?.width || 39}
                   height={card.iconSize?.height || 39}
-                  className="w-10 h-10"
-                  style={{ filter: 'invert(1)' }}
+                  className={card.id === 'idea' ? 'w-[48px] h-[48px]' : 'w-[52px] h-[52px]'}
                 />
                 <h3 className="font-[family-name:var(--font-playfair)] text-white tracking-[-0.05em] leading-[0.9] whitespace-pre-line"
                     style={{ fontSize: 'clamp(2rem, 4vw, 4.35rem)' }}>
@@ -99,12 +100,11 @@ export function EntryCards() {
                 </motion.p>
                 <motion.button
                   onClick={() => setActiveModal(card.id)}
-                  className="bg-[#FF6B00] text-white font-cta px-12 py-4 rounded-full cursor-pointer"
+                  className="bg-[#FF6B00] text-white font-cta px-12 py-4 rounded-full cursor-pointer hover:bg-[#E65C00] transition-all duration-200"
                   style={{ height: '60px', padding: '10px 50px' }}
-                  whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  расскажите нам
+                  {card.buttonText}
                 </motion.button>
               </div>
             </div>
