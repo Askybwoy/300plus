@@ -39,3 +39,18 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# netlify
+.netlify
+
+# qoder
+.qoder
+
+# assets (source files)
+/assets
+
+# n8n skills (separate project)
+/n8n-skills
+
+# claude
+.claude
