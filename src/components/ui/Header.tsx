@@ -25,6 +25,7 @@ export function Header() {
         { id: 'entry-cards', light: false },
         { id: 'how-it-works', light: true },
         { id: 'what-you-get', light: false },
+        { id: 'pricing', light: true },
         { id: 'audit', light: true },
         { id: 'approach', light: true },
         { id: 'faq', light: true },
