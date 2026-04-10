@@ -9,10 +9,10 @@ export function Footer() {
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
-    <footer className="py-16 px-6 bg-[#0A0A0A]">
+    <footer className="py-12 sm:py-16 px-4 sm:px-6 bg-[#0A0A0A]">
       <div className="max-w-[1152px] mx-auto">
         {/* Top area */}
-        <div className="flex flex-col md:flex-row justify-between gap-12 mb-16">
+        <div className="flex flex-col md:flex-row justify-between gap-8 sm:gap-12 mb-12 sm:mb-16">
           {/* Left: Description + CTA */}
           <div className="max-w-[443px] space-y-9">
             <p className="text-[#9CA3AF] text-base leading-relaxed">

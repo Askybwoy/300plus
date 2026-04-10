@@ -29,7 +29,7 @@ const approaches = [
 /* Landing Page Mockup with animated gaze path - shown for first accordion item */
 function LandingMockup({ animateKey }: { animateKey: number }) {
   return (
-    <div key={animateKey} className="w-full min-w-[400px] max-w-[400px]">
+    <div key={animateKey} className="w-full min-w-[280px] max-w-[340px] sm:max-w-[400px]">
       {/* Main mockup card */}
       <motion.div
         initial={{ opacity: 0, y: 40 }}
@@ -124,7 +124,7 @@ function LandingMockup({ animateKey }: { animateKey: number }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6, duration: 0.4 }}
-        className="mt-4 bg-white rounded-[14px] border border-black/6 p-5 w-full"
+        className="mt-4 bg-white rounded-[14px] border border-black/6 p-4 sm:p-5 w-full"
       >
         <div className="flex items-center gap-4">
           {/* Bar chart */}
@@ -143,7 +143,7 @@ function LandingMockup({ animateKey }: { animateKey: number }) {
           <div className="flex-1">
             <p className="text-[11px] text-[#5D5D5D] uppercase tracking-wider mb-1">Конверсия</p>
             <div className="flex items-baseline gap-2">
-              <p className="text-[32px] font-semibold text-[#FF6B00] leading-none">+34%</p>
+              <p className="text-[24px] sm:text-[32px] font-semibold text-[#FF6B00] leading-none">+34%</p>
               <p className="text-sm text-[#5D5D5D]">vs контроль</p>
             </div>
           </div>
@@ -206,7 +206,7 @@ function DesignIllustration({ animateKey }: { animateKey: number }) {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="w-full min-w-[400px] max-w-[400px]"
+      className="w-full min-w-[280px] max-w-[400px]"
     >
       <div className="space-y-3">
         {/* Dark design showcase card */}
@@ -384,7 +384,7 @@ function TechIllustration({ animateKey }: { animateKey: number }) {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="w-full min-w-[400px] max-w-[400px]"
+      className="w-full min-w-[280px] max-w-[400px]"
     >
       <div className="space-y-3">
         {/* Code editor card */}
@@ -538,26 +538,67 @@ function TechIllustration({ animateKey }: { animateKey: number }) {
   );
 }
 
+/* ─────────── Mobile Step Row ─────────── */
+function ApproachStep({ item, index, isReversed }: { item: typeof approaches[number]; index: number; isReversed: boolean }) {
+  const illustrations = [
+    <LandingMockup key="landing" animateKey={index} />,
+    <DesignIllustration key="design" animateKey={index} />,
+    <TechIllustration key="tech" animateKey={index} />,
+  ];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ delay: index * 0.1, duration: 0.6 }}
+      className={`flex flex-col ${isReversed ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center gap-8 lg:gap-16`}
+    >
+      {/* Illustration */}
+      <div className="flex-1 flex justify-center order-1 w-full max-w-[400px] mx-auto">
+        <div className="bg-gradient-to-t from-[#F9F9F9] to-white rounded-[20px] p-4 sm:p-8 flex items-center justify-center w-full overflow-hidden">
+          {illustrations[index]}
+        </div>
+      </div>
+
+      {/* Text Content */}
+      <div className="flex-1 min-w-0 order-2 w-full">
+        <div className="flex flex-col justify-center py-4 px-2 sm:px-4">
+          <span className="font-headline font-medium text-[22px] text-[#FF6B00] tracking-[-0.02em] mb-4">
+            {item.number}
+          </span>
+          <h3 className="font-headline font-medium text-[24px] sm:text-[32px] text-[#2D2D2D] leading-[1.15] tracking-[-0.02em] whitespace-pre-line mb-4">
+            {item.title}
+          </h3>
+          <p className="text-[15px] text-black/60 leading-[1.6]">
+            {item.description}
+          </p>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 export function Moodboard() {
   const [openIndex, setOpenIndex] = useState<number>(0);
   const [animateKey, setAnimateKey] = useState<number>(0);
 
   return (
-    <section id="approach" className="py-24 md:py-32 px-6 overflow-hidden bg-white">
+    <section id="approach" className="py-16 sm:py-24 md:py-32 px-4 sm:px-6 overflow-hidden bg-white">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-20">
+        <div className="text-center mb-12 lg:mb-20">
           <SectionLabel className="mb-6">Наш подход</SectionLabel>
           <h2 className="font-headline text-3xl md:text-[4.35rem] text-[#2D2D2D] tracking-[-0.05em] leading-[0.9]">
             <AnimatedText text="Не просто красиво, а эффективно" />
           </h2>
         </div>
 
-        {/* Content: Mockup + Accordion - HowItWorks style layout */}
-        <div className="flex flex-col lg:flex-row items-start lg:items-center gap-12 lg:gap-16">
+        {/* Desktop: Accordion + Single Illustration */}
+        <div className="hidden lg:flex flex-row items-start items-center gap-12 lg:gap-16">
           {/* Left: Dynamic illustration based on selected accordion item */}
-          <div className="flex-1 flex justify-center order-1 lg:order-none">
-            <div className="bg-gradient-to-t from-[#F9F9F9] to-white rounded-[20px] p-8 md:p-10 h-[580px] flex items-center justify-center">
+          <div className="flex-1 flex justify-center w-full">
+            <div className="bg-gradient-to-t from-[#F9F9F9] to-white rounded-[20px] p-8 md:p-10 h-[580px] flex items-center justify-center w-full">
               <AnimatePresence mode="wait">
                 {openIndex === 0 && (
                   <motion.div
@@ -596,8 +637,8 @@ export function Moodboard() {
             </div>
           </div>
 
-          {/* Right: Accordion with HowItWorks-style text blocks */}
-          <div className="flex-1 min-w-[400px] order-2 lg:order-none flex flex-col justify-center">
+          {/* Right: Accordion */}
+          <div className="flex-1 min-w-0 flex flex-col justify-center w-full">
             {approaches.map((item, index) => (
               <motion.div
                 key={item.number}
@@ -620,7 +661,7 @@ export function Moodboard() {
                     {item.number}
                   </span>
                   <div className="flex-1 text-left">
-                    <h3 className="font-headline font-medium text-[32px] md:text-[32px] text-[#2D2D2D] leading-[1.15] tracking-[-0.02em] whitespace-pre-line">
+                    <h3 className="font-headline font-medium text-[32px] text-[#2D2D2D] leading-[1.15] tracking-[-0.02em] whitespace-pre-line">
                       {item.title}
                     </h3>
                   </div>
@@ -653,6 +694,18 @@ export function Moodboard() {
               </motion.div>
             ))}
           </div>
+        </div>
+
+        {/* Mobile: Steps in sequence like HowItWorks */}
+        <div className="lg:hidden space-y-16">
+          {approaches.map((item, index) => (
+            <ApproachStep
+              key={item.number}
+              item={item}
+              index={index}
+              isReversed={index % 2 === 1}
+            />
+          ))}
         </div>
       </div>
     </section>

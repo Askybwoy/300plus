@@ -19,7 +19,7 @@ export function Hero() {
           muted
           playsInline
           preload="auto"
-          className="w-full object-cover object-bottom"
+          className="w-full h-full object-cover object-bottom"
           poster="/images/hero-bg.png"
         >
           <source src="/bg.mp4" type="video/mp4" />
@@ -27,8 +27,8 @@ export function Hero() {
       </div>
 
       {/* Hero Content */}
-      <div className="flex-1 px-6 py-12 relative z-10 pt-[210px]">
-        <div className="max-w-[610px] mx-auto text-center">
+      <div className="flex-1 px-4 sm:px-6 py-12 relative z-10 pt-[140px] sm:pt-[180px] md:pt-[210px]">
+        <div className="max-w-[610px] mx-auto text-center px-2 sm:px-0">
           {/* Small logo icon */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
@@ -47,7 +47,7 @@ export function Hero() {
             </div>
           </motion.div>
 
-          <h1 className="font-headline text-[clamp(2.5rem,5vw,4.35rem)] text-white tracking-[-0.05em] leading-[0.9] mb-6 text-center">
+          <h1 className="font-headline text-[clamp(2rem,8vw,4.35rem)] text-white tracking-[-0.05em] leading-[0.9] mb-6 text-center">
             <AnimatedText text="Ваш спринт-отдел" />
             <br />
             <AnimatedText text="в любой кризис" />
@@ -57,7 +57,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.6 }}
-            className="text-lg md:text-xl text-white/70 max-w-[610px] mx-auto leading-relaxed"
+            className="text-base sm:text-lg md:text-xl text-white/70 max-w-[610px] mx-auto leading-relaxed px-2 sm:px-0"
           >
             Проверим вашу идею за&nbsp;10&nbsp;дней. Создание бренда, лендинга
             и&nbsp;запуск рекламы без&nbsp;найма и&nbsp;лишних согласований

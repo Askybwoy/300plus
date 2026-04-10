@@ -39,7 +39,7 @@ export function EntryCards() {
   const [activeModal, setActiveModal] = useState<string | null>(null);
 
   return (
-    <section id="entry-cards" className="px-6 pt-[20vh] pb-[40vh] relative z-10">
+    <section id="entry-cards" className="px-4 sm:px-6 pt-[10vh] sm:pt-[15vh] pb-[20vh] sm:pb-[30vh] relative z-10">
       <div className="max-w-[1100px] mx-auto flex flex-col">
         {cards.map((card, index) => (
           <motion.div
@@ -48,12 +48,12 @@ export function EntryCards() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: index * 0.15, duration: 0.6 }}
-            className="relative w-full h-[50vh] overflow-hidden sticky top-[20vh]"
+            className="relative w-full min-h-[auto] sm:min-h-[50vh] overflow-visible sm:overflow-hidden sm:sticky sm:top-[20vh] mb-16 sm:mb-0 last:mb-0"
             style={{ zIndex: index + 1 }}
           >
-            <div className={`relative z-10 w-full h-full flex flex-col md:flex-row items-center justify-center gap-8 p-8 md:p-10 ${card.layout === 'text-right' ? 'md:flex-row-reverse' : ''}`}>
+            <div className={`relative z-10 w-full h-full flex flex-col md:flex-row items-center justify-center gap-4 sm:gap-8 p-4 sm:p-8 md:p-10 ${card.layout === 'text-right' ? 'md:flex-row-reverse' : ''}`}>
               {/* Video - First on mobile, 50% on desktop */}
-              <div className="flex-shrink-0 flex items-center justify-center order-1 md:order-none md:w-1/2">
+              <div className="flex-shrink-0 flex items-center justify-center order-1 md:order-none md:w-1/2 w-full">
                 {card.id === 'idea' ? (
                   <video
                     src="/bulb.mp4"
@@ -61,7 +61,7 @@ export function EntryCards() {
                     muted
                     loop
                     playsInline
-                    className="object-contain w-auto h-[300px] md:h-[720px]"
+                    className="object-contain w-auto h-[200px] sm:h-[300px] md:h-[720px] max-w-full"
                   />
                 ) : (
                   <video
@@ -70,27 +70,25 @@ export function EntryCards() {
                     muted
                     loop
                     playsInline
-                    className="object-contain w-auto h-[300px] md:h-[720px]"
+                    className="object-contain w-auto h-[200px] sm:h-[300px] md:h-[720px] max-w-full"
                   />
                 )}
               </div>
 
               {/* Text Content - Second on mobile, 50% on desktop */}
-              <div className="flex flex-col items-center text-center gap-[31px] order-2 md:order-none md:w-1/2">
+              <div className="flex flex-col items-center text-center gap-4 sm:gap-[31px] order-2 md:order-none md:w-1/2 w-full">
                 <Image
                   src={card.icon}
                   alt=""
                   width={card.iconSize?.width || 39}
                   height={card.iconSize?.height || 39}
-                  className={card.id === 'idea' ? 'w-[48px] h-[48px]' : 'w-[52px] h-[52px]'}
+                  className={card.id === 'idea' ? 'w-[40px] h-[40px] sm:w-[48px] sm:h-[48px]' : 'w-[44px] h-[44px] sm:w-[52px] sm:h-[52px]'}
                 />
-                <h3 className="font-headline text-white tracking-[-0.05em] leading-[0.9] whitespace-pre-line"
-                    style={{ fontSize: 'clamp(2rem, 4vw, 4.35rem)' }}>
+                <h3 className="font-headline text-white tracking-[-0.05em] leading-[0.9] whitespace-pre-line text-[clamp(1.75rem,7vw,4.35rem)]">
                   <AnimatedText text={card.title.replace(/\n/g, ' ')} delay={index * 0.15} />
                 </h3>
                 <motion.p
-                  className="text-white text-base leading-relaxed whitespace-pre-line"
-                  style={{ maxWidth: card.id === 'idea' ? '564px' : '326px' }}
+                  className="text-white text-sm sm:text-base leading-relaxed whitespace-pre-line max-w-[90%] sm:max-w-[564px]"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -100,8 +98,7 @@ export function EntryCards() {
                 </motion.p>
                 <motion.button
                   onClick={() => setActiveModal(card.id)}
-                  className="bg-[#FF6B00] text-white font-cta px-12 py-4 rounded-full cursor-pointer hover:bg-[#E65C00] transition-all duration-200"
-                  style={{ height: '60px', padding: '10px 50px' }}
+                  className="bg-[#FF6B00] text-white font-cta px-6 sm:px-12 py-3 sm:py-4 rounded-full cursor-pointer hover:bg-[#E65C00] transition-all duration-200 text-sm sm:text-base"
                   whileTap={{ scale: 0.98 }}
                 >
                   {card.buttonText}

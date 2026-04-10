@@ -57,7 +57,7 @@ function VideoCallCard() {
       whileInView={{ opacity: 1, y: 0, rotate: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.7, ease: "easeOut" }}
-      className="relative w-full min-w-[400px] max-w-[400px]"
+      className="relative w-full min-w-[280px] max-w-[400px]"
     >
       <div className="bg-white rounded-[20px] shadow-[0_2px_24px_rgba(0,0,0,0.07)] border border-black/6 overflow-hidden">
         {/* Header */}
@@ -169,7 +169,7 @@ function ListCard() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.7 }}
-      className="bg-white rounded-[20px] shadow-[0_2px_24px_rgba(0,0,0,0.07)] border border-black/6 w-full min-w-[400px] max-w-[400px] overflow-hidden"
+      className="bg-white rounded-[20px] shadow-[0_2px_24px_rgba(0,0,0,0.07)] border border-black/6 w-full min-w-[280px] max-w-[400px] overflow-hidden"
     >
       {items.map((item, index) => (
         <motion.div
@@ -227,7 +227,7 @@ function ProjectCard() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.7 }}
-      className="bg-[#1A1A1A] rounded-3xl shadow-[0_24px_48px_rgba(0,0,0,0.15)] w-full min-w-[400px] max-w-[400px] overflow-hidden"
+      className="bg-[#1A1A1A] rounded-3xl shadow-[0_24px_48px_rgba(0,0,0,0.15)] w-full min-w-[280px] max-w-[400px] overflow-hidden"
     >
       <div className="px-6 py-5 border-b border-white/8 grid grid-cols-3 gap-4">
         {[
@@ -278,7 +278,7 @@ function ChatCard() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.7 }}
-      className="relative w-full min-w-[400px] max-w-[400px]"
+      className="relative w-full min-w-[280px] max-w-[400px]"
     >
       <div className="bg-gradient-to-t rounded-[20px] p-6">
         <div className="space-y-4 mb-6">
@@ -417,8 +417,8 @@ function StepRow({ step }: { step: typeof steps[number] }) {
       className={`flex flex-col ${isCardLeft ? "lg:flex-row-reverse" : "lg:flex-row"} items-center gap-12 lg:gap-16`}
     >
       {/* Text side - Second on mobile */}
-      <div className="flex-1 min-w-[400px] flex gap-6 order-2 lg:order-none">
-        <div className="flex flex-col justify-between py-6 flex-1 pl-[70px] pr-[70px]">
+      <div className="flex-1 min-w-0 sm:min-w-[320px] flex gap-6 order-2 lg:order-none">
+        <div className="flex flex-col justify-between py-6 flex-1 px-4 sm:px-8 lg:pl-[70px] lg:pr-[70px]">
           <div>
             <span className="font-headline font-medium text-[22px] text-[#FF6B00] tracking-[-0.02em]">
               {step.number}
@@ -436,8 +436,8 @@ function StepRow({ step }: { step: typeof steps[number] }) {
         </div>
       </div>
       {/* Card side - First on mobile */}
-      <div className="flex-1 flex justify-center order-1 lg:order-none">
-        <div className="bg-gradient-to-t from-[#F9F9F9] to-white rounded-[20px] p-8 md:p-10">
+      <div className="flex-1 flex justify-center order-1 lg:order-none w-full">
+        <div className="bg-gradient-to-t from-[#F9F9F9] to-white rounded-[20px] p-4 sm:p-8 md:p-10 w-full sm:w-auto flex items-center justify-center">
           <StepCard />
         </div>
       </div>
@@ -448,7 +448,7 @@ function StepRow({ step }: { step: typeof steps[number] }) {
 /* ─────────── Main Section ─────────── */
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="py-24 md:py-32 px-6 overflow-hidden bg-white">
+    <section id="how-it-works" className="py-16 sm:py-24 md:py-32 px-4 sm:px-6 overflow-hidden bg-white">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-20">

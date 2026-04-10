@@ -74,10 +74,10 @@ export function Audit() {
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
-    <section id="audit" className="py-24 md:py-32 px-6 bg-white relative overflow-hidden">
+    <section id="audit" className="py-16 sm:py-24 md:py-32 px-4 sm:px-6 bg-white relative overflow-hidden">
       <div className="max-w-[1200px] mx-auto">
         {/* Radial layout */}
-        <div className="relative min-h-[500px] md:min-h-[620px] flex items-center justify-center">
+        <div className="relative min-h-[400px] sm:min-h-[500px] md:min-h-[620px] flex items-center justify-center">
           {/* Background circle decoration */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <motion.div
@@ -85,7 +85,7 @@ export function Audit() {
               whileInView={{ scale: 1, opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="w-[500px] h-[500px] md:w-[620px] md:h-[620px] rounded-full border border-black/5"
+              className="w-[320px] h-[320px] sm:w-[500px] sm:h-[500px] md:w-[620px] md:h-[620px] rounded-full border border-black/5"
             />
           </div>
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -94,7 +94,7 @@ export function Audit() {
               whileInView={{ scale: 1, opacity: 0.5 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-              className="w-[350px] h-[350px] md:w-[440px] md:h-[440px] rounded-full border border-black/5"
+              className="w-[220px] h-[220px] sm:w-[350px] sm:h-[350px] md:w-[440px] md:h-[440px] rounded-full border border-black/5"
             />
           </div>
 
@@ -154,7 +154,7 @@ export function Audit() {
               </span>
             </motion.div>
 
-            <h2 className="font-headline text-3xl md:text-[4.35rem] text-[#2D2D2D] tracking-[-0.05em] leading-[0.9] mb-4">
+            <h2 className="font-headline text-[clamp(2rem,8vw,4.35rem)] text-[#2D2D2D] tracking-[-0.05em] leading-[0.9] mb-4">
               Аудит сайта
             </h2>
 
@@ -195,7 +195,7 @@ export function Audit() {
         </div>
 
         {/* Mobile tags */}
-        <div className="flex flex-wrap justify-center gap-3 mt-8 md:hidden">
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mt-8 md:hidden">
           {floatingTags.map((tag, index) => {
             return (
               <motion.div
@@ -204,17 +204,17 @@ export function Audit() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.05 }}
-                className="flex items-center gap-2 px-3 py-2 rounded-xl border border-black/6"
+                className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-xl border border-black/6"
               >
                 <div
-                  className="w-6 h-6 rounded-md flex items-center justify-center"
+                  className="w-5 h-5 sm:w-6 sm:h-6 rounded-md flex items-center justify-center"
                   style={{ backgroundColor: tag.color }}
                 >
-                  <div className="scale-[0.67]">
+                  <div className="scale-[0.5] sm:scale-[0.67]">
                     <TagIcon type={tag.icon} color={tag.iconColor} />
                   </div>
                 </div>
-                <span className="text-sm text-[#0A0A0A]">{tag.label}</span>
+                <span className="text-xs sm:text-sm text-[#0A0A0A]">{tag.label}</span>
               </motion.div>
             );
           })}

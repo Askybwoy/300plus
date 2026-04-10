@@ -41,7 +41,7 @@ export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section id="faq" className="py-24 md:py-32 px-6 bg-white">
+    <section id="faq" className="py-16 sm:py-24 md:py-32 px-4 sm:px-6 bg-white">
       <div className="max-w-[768px] mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
@@ -55,7 +55,7 @@ export function FAQ() {
               FAQ
             </span>
           </motion.div>
-          <h2 className="font-headline text-3xl md:text-5xl text-[#2D2D2D] tracking-[-0.025em] leading-none">
+          <h2 className="font-headline text-[clamp(2rem,7vw,3rem)] md:text-5xl text-[#2D2D2D] tracking-[-0.025em] leading-none">
             <AnimatedText text="Частые" />
             {" "}
             <AnimatedText text="вопросы" />
@@ -79,7 +79,7 @@ export function FAQ() {
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
                 className="w-full flex items-start justify-between gap-4 text-left cursor-pointer"
               >
-                <h3 className="font-headline text-lg md:text-xl text-[#2D2D2D] pr-4 leading-snug">
+                <h3 className="font-headline text-base sm:text-lg md:text-xl text-[#2D2D2D] pr-2 sm:pr-4 leading-snug">
                   {faq.question}
                 </h3>
                 <motion.div
@@ -102,7 +102,7 @@ export function FAQ() {
                     transition={{ duration: 0.3 }}
                     className="overflow-hidden"
                   >
-                    <p className="text-black/60 leading-relaxed mt-4 pr-12">
+                    <p className="text-black/60 leading-relaxed mt-4 pr-4 sm:pr-12 text-sm sm:text-base">
                       {faq.answer}
                     </p>
                   </motion.div>
