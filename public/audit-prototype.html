@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>300.plus — UX Audit Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════
+   DESIGN TOKENS (from globals.css)
+   ════════════════════════════════════════ */
+:root {
+  --color-primary: #FF6B00;
+  --color-primary-hover: #E65C00;
+  --color-primary-light: #FFF4ED;
+  --color-white: #FFFFFF;
+  --color-background: #000000;
+  --color-surface: #FAFAFA;
+  --color-text-primary: #0A0A0A;
+  --color-text-secondary: #374151;
+  --color-text-muted: #6B7280;
+  --color-border: #E5E7EB;
+  --color-card-dark: #1A1A1A;
+  --color-card-dark-hover: #2A2A2A;
+  --font-headline: 'PT Serif', Georgia, serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --container-max: 1200px;
+  --px: 24px;
+}
+
+/* ════════════════════════════════════════
+   RESET & BASE
+   ════════════════════════════════════════ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  color: var(--color-text-secondary);
+  background: var(--color-background);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img { max-width: 100%; height: auto; display: block; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+a { text-decoration: none; color: inherit; }
+::selection { background: var(--color-primary); color: #fff; }
+
+/* ════════════════════════════════════════
+   TYPOGRAPHY
+   ════════════════════════════════════════ */
+.font-headline { font-family: var(--font-headline); }
+.font-cta {
+  font-family: var(--font-body);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+/* ════════════════════════════════════════
+   LAYOUT
+   ════════════════════════════════════════ */
+.container { max-width: var(--container-max); margin: 0 auto; padding: 0 var(--px); }
+.section { padding: 80px 0; position: relative; }
+@media (min-width: 768px) { .section { padding: 120px 0; } }
+
+/* ════════════════════════════════════════
+   ANIMATIONS
+   ════════════════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes textReveal {
+  0%   { opacity: 0; filter: blur(10px); transform: translateY(20px); }
+  100% { opacity: 1; filter: blur(0);    transform: translateY(0); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+@keyframes pulseRing {
+  0%, 100% { transform: scale(1); opacity: .3; }
+  50%      { transform: scale(1.15); opacity: 0; }
+}
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity .7s ease-out, transform .7s ease-out;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ════════════════════════════════════════
+   ANNOTATION BADGES
+   ════════════════════════════════════════ */
+.badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 20;
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  padding: 6px 14px;
+  border-radius: 8px;
+  white-space: nowrap;
+  pointer-events: none;
+  line-height: 1.4;
+  box-shadow: 0 2px 12px rgba(0,0,0,.12);
+}
+.badge--changed { background: var(--color-primary); color: #fff; }
+.badge--moved   { background: #3B82F6; color: #fff; }
+.badge--new     { background: #22C55E; color: #fff; }
+.badge--note    { background: #6B7280; color: #fff; }
+.badge-sub { display: block; font-weight: 400; font-size: 9px; opacity: .85; letter-spacing: .05em; margin-top: 2px; }
+
+/* ════════════════════════════════════════
+   HEADER
+   ════════════════════════════════════════ */
+.header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 12px 24px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: background .3s, color .3s;
+}
+.header--dark { background: rgba(0,0,0,.8); }
+.header--light { background: rgba(255,255,255,.85); }
+.header-inner {
+  max-width: 1572px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.header-logo { height: 32px; width: auto; transition: filter .3s; }
+.header--light .header-logo { filter: invert(1); }
+@media (min-width: 768px) { .header { padding: 24px 48px; } .header-logo { height: 44px; } }
+.header-nav { display: none; gap: 32px; align-items: center; }
+@media (min-width: 1024px) { .header-nav { display: flex; } }
+.header-nav a {
+  font-size: 14px; font-weight: 500; color: #fff; transition: color .3s;
+}
+.header--light .header-nav a { color: #000; }
+.header-nav .nav-badge {
+  background: var(--color-primary); color: #fff;
+  font-size: 9px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: .08em; padding: 2px 8px; border-radius: 999px; margin-left: 6px;
+}
+.header-cta {
+  display: none; align-items: center; gap: 16px;
+}
+@media (min-width: 1024px) { .header-cta { display: flex; } }
+.header-cta-label {
+  font-family: var(--font-body); font-weight: 500; text-transform: uppercase;
+  font-size: 13px; letter-spacing: .05em; line-height: 1.3;
+  color: #fff; text-align: right; transition: color .3s;
+}
+.header--light .header-cta-label { color: #000; }
+.cta-circle {
+  width: 50px; height: 50px; border-radius: 50%;
+  background: var(--color-primary);
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s;
+  flex-shrink: 0;
+}
+.cta-circle:hover { background: var(--color-primary-hover); }
+.cta-circle svg { width: 14px; height: 14px; }
+@media (min-width: 768px) { .cta-circle { width: 60px; height: 60px; } .cta-circle svg { width: 20px; height: 20px; } }
+
+/* Mobile CTA */
+.header-mobile-cta {
+  display: flex; align-items: center; gap: 8px;
+}
+@media (min-width: 1024px) { .header-mobile-cta { display: none; } }
+.mobile-cta-btn {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--color-primary); display: flex; align-items: center; justify-content: center;
+}
+
+/* ════════════════════════════════════════
+   SECTION: HERO
+   ════════════════════════════════════════ */
+.hero {
+  position: relative; min-height: 100dvh;
+  display: flex; flex-direction: column;
+  overflow: hidden; background: #000;
+}
+.hero-video-wrap {
+  position: absolute; inset: 0;
+  display: flex; align-items: flex-end; justify-content: center;
+  max-width: 1440px; margin: 0 auto;
+}
+.hero-video {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: bottom;
+}
+.hero-content {
+  flex: 1; position: relative; z-index: 10;
+  padding: 140px var(--px) 60px;
+  display: flex; flex-direction: column; align-items: center;
+}
+@media (min-width: 768px) { .hero-content { padding-top: 210px; } }
+.hero-icon {
+  width: 48px; height: 48px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.3);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 32px;
+  animation: fadeUp .5s ease-out;
+}
+.hero-icon img { width: 40px; height: 40px; object-fit: contain; }
+.hero h1 {
+  font-family: var(--font-headline);
+  font-size: clamp(2rem, 8vw, 4.35rem);
+  color: #fff; text-align: center;
+  letter-spacing: -.05em; line-height: .9;
+  margin-bottom: 24px;
+  animation: textReveal .8s ease-out;
+}
+.hero-sub {
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  color: rgba(255,255,255,.7);
+  text-align: center; max-width: 610px;
+  line-height: 1.6;
+  animation: fadeUp .6s ease-out .4s both;
+}
+.hero-cta-wrap {
+  margin-top: 40px;
+  animation: fadeUp .6s ease-out .8s both;
+}
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 16px;
+  background: var(--color-primary); color: #fff;
+  font-family: var(--font-body); font-weight: 500;
+  text-transform: uppercase; letter-spacing: .05em; font-size: 13px;
+  padding: 16px 36px; border-radius: 999px;
+  transition: background .2s, transform .1s;
+}
+.btn-primary:hover { background: var(--color-primary-hover); }
+.btn-primary:active { transform: scale(.98); }
+
+.btn-dark {
+  display: inline-flex; align-items: center; gap: 16px;
+  background: #131313; color: #fff;
+  font-family: var(--font-body); font-weight: 500;
+  text-transform: uppercase; letter-spacing: .05em; font-size: 13px;
+  padding: 8px 8px 8px 28px; border-radius: 999px;
+  transition: background .2s;
+}
+.btn-dark:hover { background: #2A2A2A; }
+
+.btn-outline {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: transparent; color: #fff;
+  font-family: var(--font-body); font-weight: 500;
+  text-transform: uppercase; letter-spacing: .05em; font-size: 13px;
+  padding: 16px 32px; border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.3);
+  transition: background .2s, border-color .2s;
+}
+.btn-outline:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.5); }
+
+/* ════════════════════════════════════════
+   SECTION LABELS (pill badges)
+   ════════════════════════════════════════ */
+.section-label {
+  display: inline-flex;
+  font-size: 14px; font-weight: 500;
+  padding: 8px 16px; border-radius: 999px;
+  margin-bottom: 24px;
+}
+.section-label--light {
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+}
+.section-label--dark {
+  background: linear-gradient(180deg, #434343 0%, #000 100%);
+  color: #fff;
+}
+.section-title {
+  font-family: var(--font-headline);
+  font-size: clamp(1.875rem, 6vw, 4.35rem);
+  letter-spacing: -.05em; line-height: .9;
+  margin-bottom: 24px;
+}
+.section-subtitle {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  line-height: 1.6; max-width: 610px;
+}
+
+/* ════════════════════════════════════════
+   ENTRY CARDS
+   ════════════════════════════════════════ */
+.entry-cards { background: #000; padding: 10vh var(--px) 15vh; }
+.entry-cards-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 64px; }
+.entry-card {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 24px; text-align: center;
+}
+@media (min-width: 768px) {
+  .entry-card { flex-direction: row; text-align: left; gap: 32px; }
+  .entry-card--reverse { flex-direction: row-reverse; }
+}
+.entry-card-visual {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  min-height: 200px;
+}
+.entry-card-visual img { max-height: 300px; width: auto; }
+@media (min-width: 768px) { .entry-card-visual img { max-height: 400px; } }
+.entry-card-content { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+@media (min-width: 768px) { .entry-card-content { align-items: flex-start; } }
+.entry-card-icon { width: 48px; height: 48px; }
+.entry-card h3 {
+  font-family: var(--font-headline);
+  font-size: clamp(1.75rem, 7vw, 4.35rem);
+  color: #fff; letter-spacing: -.05em; line-height: .9;
+}
+.entry-card p { color: rgba(255,255,255,.7); font-size: 15px; line-height: 1.6; max-width: 400px; }
+
+/* ════════════════════════════════════════
+   HOW IT WORKS
+   ════════════════════════════════════════ */
+.how-it-works { background: #fff; }
+.steps { display: flex; flex-direction: column; gap: 80px; }
+@media (min-width: 768px) { .steps { gap: 120px; } }
+.step {
+  display: flex; flex-direction: column; align-items: center; gap: 32px;
+}
+@media (min-width: 1024px) {
+  .step { flex-direction: row; gap: 64px; }
+  .step--reverse { flex-direction: row-reverse; }
+}
+.step-visual {
+  flex: 1; display: flex; justify-content: center; align-items: center;
+  background: linear-gradient(180deg, #fff 0%, #F9F9F9 100%);
+  border-radius: 20px; padding: 32px; min-height: 260px;
+}
+.step-visual-inner {
+  background: #fff; border-radius: 16px; padding: 24px;
+  box-shadow: 0 2px 24px rgba(0,0,0,.07);
+  border: 1px solid rgba(0,0,0,.06);
+  width: 100%; max-width: 320px; text-align: center;
+  color: var(--color-text-muted); font-size: 14px;
+}
+.step-text { flex: 1; padding: 0 16px; }
+@media (min-width: 1024px) { .step-text { padding: 24px 40px; } }
+.step-number {
+  font-family: var(--font-headline); font-weight: 500;
+  font-size: 22px; color: var(--color-primary);
+  letter-spacing: -.02em; margin-bottom: 16px;
+}
+.step-title {
+  font-family: var(--font-headline); font-weight: 500;
+  font-size: clamp(1.5rem, 3vw, 1.875rem);
+  color: #2D2D2D; line-height: 1.15;
+  letter-spacing: -.02em; margin-bottom: 8px;
+}
+.step-desc { font-size: 15px; color: rgba(0,0,0,.6); line-height: 1.6; max-width: 340px; }
+.step-metric {
+  margin-top: 32px; padding-top: 32px;
+  border-top: 1px solid #E5E5E5;
+}
+.step-metric-label { font-size: 14px; color: rgba(0,0,0,.5); margin-bottom: 12px; }
+.step-metric-value {
+  font-family: var(--font-headline);
+  font-size: clamp(48px, 10vw, 80px);
+  color: var(--color-primary); line-height: 1;
+  letter-spacing: -.04em;
+}
+
+/* ════════════════════════════════════════
+   MOODBOARD / APPROACH
+   ════════════════════════════════════════ */
+.moodboard { background: #fff; }
+.approaches { display: flex; flex-direction: column; gap: 64px; }
+@media (min-width: 768px) { .approaches { gap: 80px; } }
+.approach-item {
+  display: flex; flex-direction: column; align-items: center; gap: 32px;
+}
+@media (min-width: 1024px) {
+  .approach-item { flex-direction: row; gap: 64px; }
+  .approach-item--reverse { flex-direction: row-reverse; }
+}
+.approach-visual {
+  flex: 1; display: flex; justify-content: center;
+  background: linear-gradient(180deg, #fff 0%, #F9F9F9 100%);
+  border-radius: 20px; padding: 32px; overflow: hidden;
+}
+.approach-visual-inner {
+  background: var(--color-card-dark); border-radius: 16px; padding: 24px;
+  width: 100%; max-width: 340px;
+}
+.approach-text { flex: 1; padding: 0 16px; }
+@media (min-width: 1024px) { .approach-text { padding: 0 40px; } }
+
+/* ════════════════════════════════════════
+   WHAT YOU GET
+   ════════════════════════════════════════ */
+.what-you-get { background: var(--color-text-primary); }
+.what-you-get .section-title { color: #fff; }
+.what-you-get .section-subtitle { color: rgba(255,255,255,.7); }
+.services-grid {
+  display: grid; gap: 8px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 640px) { .services-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1024px) { .services-grid { grid-template-columns: repeat(3, 1fr); } }
+.service-card {
+  border-radius: 16px; padding: 24px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  min-height: 180px;
+}
+.service-card--white { background: #fff; }
+.service-card--dark  { background: var(--color-card-dark); }
+.service-card--orange { background: var(--color-primary); }
+.service-card-icon { width: 28px; height: 28px; margin-bottom: 16px; }
+.service-card h4 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+.service-card--white h4 { color: var(--color-card-dark); }
+.service-card--dark h4  { color: #fff; }
+.service-card p { font-size: 13px; line-height: 1.4; }
+.service-card--white p { color: rgba(0,0,0,.45); }
+.service-card--dark p  { color: rgba(255,255,255,.4); }
+.stat-card {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; text-align: center;
+  border-radius: 16px; padding: 24px;
+  background: var(--color-primary);
+}
+.stat-value {
+  font-family: var(--font-headline); font-weight: 500;
+  font-size: clamp(36px, 8vw, 56px); color: #fff; line-height: 1;
+}
+.stat-label { font-size: 14px; color: rgba(255,255,255,.85); margin-top: 8px; white-space: pre-line; text-align: center; }
+
+/* ════════════════════════════════════════
+   SOCIAL PROOF
+   ════════════════════════════════════════ */
+.social-proof { background: #fff; }
+.testimonials { display: grid; gap: 16px; grid-template-columns: 1fr; }
+@media (min-width: 768px) { .testimonials { grid-template-columns: repeat(3, 1fr); } }
+.testimonial-card {
+  border: 2px dashed var(--color-border);
+  border-radius: 20px; padding: 28px;
+  background: var(--color-surface);
+}
+.testimonial-avatar {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: #E5E7EB; margin-bottom: 16px;
+}
+.testimonial-name {
+  font-size: 15px; font-weight: 600;
+  color: var(--color-text-primary); margin-bottom: 4px;
+}
+.testimonial-company { font-size: 13px; color: var(--color-text-muted); margin-bottom: 16px; }
+.testimonial-text {
+  font-size: 14px; color: var(--color-text-secondary);
+  line-height: 1.6; margin-bottom: 16px;
+  font-style: italic;
+}
+.testimonial-metric {
+  font-family: var(--font-headline);
+  font-size: 28px; color: var(--color-primary);
+  font-weight: 700;
+}
+.testimonial-metric-label { font-size: 12px; color: var(--color-text-muted); }
+.logos-row {
+  display: flex; gap: 32px; align-items: center;
+  justify-content: center; flex-wrap: wrap;
+  margin-top: 48px; padding-top: 32px;
+  border-top: 1px solid var(--color-border);
+}
+.logo-placeholder {
+  width: 100px; height: 36px; border-radius: 8px;
+  background: #F3F4F6; border: 1px dashed #D1D5DB;
+}
+
+/* ════════════════════════════════════════
+   AUDIT (FREE)
+   ════════════════════════════════════════ */
+.audit { background: #fff; overflow: hidden; }
+.audit-layout {
+  position: relative; min-height: 400px;
+  display: flex; align-items: center; justify-content: center;
+}
+@media (min-width: 768px) { .audit-layout { min-height: 620px; } }
+.audit-ring {
+  position: absolute; border-radius: 50%;
+  border: 1px solid rgba(0,0,0,.05);
+}
+.audit-ring--lg { width: 320px; height: 320px; }
+.audit-ring--sm { width: 220px; height: 220px; opacity: .5; }
+@media (min-width: 768px) {
+  .audit-ring--lg { width: 620px; height: 620px; }
+  .audit-ring--sm { width: 440px; height: 440px; }
+}
+.audit-center { position: relative; z-index: 10; text-align: center; max-width: 400px; }
+.audit-center h2 {
+  font-family: var(--font-headline);
+  font-size: clamp(2rem, 8vw, 4.35rem);
+  color: #2D2D2D; letter-spacing: -.05em; line-height: .9;
+  margin-bottom: 16px;
+}
+.audit-center p {
+  font-size: 15px; color: rgba(107,114,128,.7);
+  line-height: 1.6; max-width: 310px; margin: 0 auto 24px;
+}
+
+.audit-tags {
+  position: absolute; inset: 0;
+  display: none;
+}
+@media (min-width: 768px) { .audit-tags { display: block; } }
+.audit-tag {
+  position: absolute;
+  display: flex; align-items: center; gap: 10px;
+  animation: float 3s ease-in-out infinite;
+}
+.audit-tag-icon {
+  width: 44px; height: 44px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  flex-shrink: 0;
+}
+.audit-tag-label { font-size: 15px; font-weight: 500; color: var(--color-text-primary); }
+
+/* Mobile tags */
+.audit-tags-mobile {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  justify-content: center; margin-top: 32px;
+}
+@media (min-width: 768px) { .audit-tags-mobile { display: none; } }
+.audit-tag-mobile {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 12px; border-radius: 12px;
+  border: 1px solid rgba(0,0,0,.06);
+  font-size: 13px; color: var(--color-text-primary);
+}
+.audit-tag-mobile-dot {
+  width: 8px; height: 8px; border-radius: 4px;
+}
+
+/* ════════════════════════════════════════
+   PRICING
+   ════════════════════════════════════════ */
+.pricing { background: #fff; }
+.pricing-grid { display: grid; gap: 24px; grid-template-columns: 1fr; }
+@media (min-width: 768px) { .pricing-grid { grid-template-columns: repeat(3, 1fr); } }
+.pricing-card {
+  border-radius: 24px; padding: 32px;
+  display: flex; flex-direction: column;
+  position: relative;
+}
+.pricing-card--white {
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+}
+.pricing-card--orange { background: var(--color-primary); color: #fff; }
+.pricing-card--dark   { background: var(--color-card-dark); color: #fff; }
+.pricing-popular {
+  position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+  background: var(--color-text-primary); color: #fff;
+  font-size: 12px; font-weight: 500;
+  padding: 4px 12px; border-radius: 999px;
+  display: flex; align-items: center; gap: 4px;
+  white-space: nowrap;
+}
+.pricing-tier {
+  font-size: 11px; font-weight: 600;
+  letter-spacing: .15em; text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.pricing-card--white .pricing-tier { color: var(--color-primary); }
+.pricing-card--orange .pricing-tier,
+.pricing-card--dark .pricing-tier   { color: rgba(255,255,255,.7); }
+.pricing-price {
+  font-family: var(--font-headline);
+  font-size: clamp(36px, 6vw, 56px);
+  line-height: 1; letter-spacing: -.03em;
+  margin-bottom: 4px;
+}
+.pricing-currency {
+  font-family: var(--font-headline);
+  font-size: 24px; margin-left: 4px;
+}
+.pricing-tagline {
+  font-size: 15px; line-height: 1.4; margin-bottom: 24px;
+}
+.pricing-card--white .pricing-tagline { color: var(--color-text-secondary); }
+.pricing-card--orange .pricing-tagline,
+.pricing-card--dark .pricing-tagline   { color: rgba(255,255,255,.8); }
+.pricing-divider { height: 1px; margin-bottom: 24px; }
+.pricing-card--white .pricing-divider { background: var(--color-border); }
+.pricing-card--orange .pricing-divider,
+.pricing-card--dark .pricing-divider   { background: rgba(255,255,255,.2); }
+.pricing-features { list-style: none; flex: 1; margin-bottom: 24px; }
+.pricing-features li {
+  display: flex; align-items: flex-start; gap: 12px;
+  font-size: 14px; line-height: 1.5; margin-bottom: 12px;
+}
+.pricing-features li::before {
+  content: '✓'; flex-shrink: 0; font-weight: 700; margin-top: 1px;
+}
+.pricing-card--white .pricing-features li::before { color: var(--color-primary); }
+.pricing-card--orange .pricing-features li,
+.pricing-card--dark .pricing-features li { color: rgba(255,255,255,.9); }
+.pricing-card--orange .pricing-features li::before,
+.pricing-card--dark .pricing-features li::before { color: #fff; }
+.pricing-meta { margin-bottom: 24px; }
+.pricing-meta-label {
+  font-size: 11px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: .1em;
+  margin-bottom: 4px;
+}
+.pricing-card--white .pricing-meta-label { color: var(--color-text-muted); }
+.pricing-card--orange .pricing-meta-label,
+.pricing-card--dark .pricing-meta-label   { color: rgba(255,255,255,.6); }
+.pricing-meta-value { font-size: 15px; font-weight: 500; }
+.pricing-card--white .pricing-meta-value { color: var(--color-text-primary); }
+.pricing-btn {
+  width: 100%; padding: 16px; border-radius: 999px;
+  font-weight: 500; font-size: 14px;
+  text-transform: uppercase; letter-spacing: .05em;
+  text-align: center; transition: background .2s, transform .1s;
+}
+.pricing-btn:active { transform: scale(.98); }
+.pricing-btn--primary { background: var(--color-primary); color: #fff; }
+.pricing-btn--primary:hover { background: var(--color-primary-hover); }
+.pricing-btn--white { background: #fff; color: var(--color-primary); }
+.pricing-btn--white:hover { background: rgba(255,255,255,.9); }
+.pricing-note {
+  text-align: center; font-size: 14px;
+  color: var(--color-text-muted); margin-top: 48px;
+}
+
+/* ════════════════════════════════════════
+   FAQ
+   ════════════════════════════════════════ */
+.faq { background: #fff; }
+.faq-list { max-width: 768px; margin: 0 auto; }
+.faq-item { padding: 24px 0; }
+.faq-divider {
+  width: 100%; height: 1px;
+  background: linear-gradient(to right, #E5E5E5, transparent);
+  margin-bottom: 24px;
+}
+.faq-question {
+  width: 100%; display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 16px; text-align: left; cursor: pointer;
+}
+.faq-question h3 {
+  font-family: var(--font-headline);
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  color: #2D2D2D; line-height: 1.4; flex: 1;
+}
+.faq-toggle {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--color-primary-light);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: transform .2s;
+}
+.faq-item.open .faq-toggle { transform: rotate(45deg); }
+.faq-answer {
+  max-height: 0; overflow: hidden;
+  transition: max-height .3s ease-out, opacity .3s;
+  opacity: 0;
+}
+.faq-item.open .faq-answer { max-height: 300px; opacity: 1; }
+.faq-answer p {
+  padding-top: 16px; padding-right: 48px;
+  font-size: 15px; color: rgba(0,0,0,.6); line-height: 1.6;
+}
+.faq-item--placeholder {
+  border: 2px dashed var(--color-border);
+  border-radius: 16px; padding: 20px 24px;
+  margin-top: 16px;
+}
+.faq-item--placeholder h3 { color: var(--color-text-muted); }
+.faq-bottom { text-align: center; margin-top: 48px; }
+.faq-bottom p { color: var(--color-text-muted); margin-bottom: 16px; }
+
+/* ════════════════════════════════════════
+   FOOTER
+   ════════════════════════════════════════ */
+.footer {
+  background: var(--color-text-primary);
+  padding: 48px var(--px) 48px;
+}
+@media (min-width: 768px) { .footer { padding: 64px var(--px); } }
+.footer-inner { max-width: 1152px; margin: 0 auto; }
+.footer-top { display: flex; flex-direction: column; gap: 48px; margin-bottom: 64px; }
+@media (min-width: 768px) { .footer-top { flex-direction: row; justify-content: space-between; } }
+.footer-desc { max-width: 443px; }
+.footer-desc p { color: #9CA3AF; font-size: 16px; line-height: 1.6; margin-bottom: 36px; }
+.footer-contacts h4 { color: #fff; font-size: 16px; font-weight: 500; margin-bottom: 16px; }
+.footer-contacts a {
+  display: flex; align-items: center; gap: 12px;
+  color: #9CA3AF; font-size: 15px;
+  margin-bottom: 12px; transition: color .2s;
+}
+.footer-contacts a:hover { color: #fff; }
+.footer-contacts svg { width: 20px; height: 20px; flex-shrink: 0; }
+.footer-logo { margin-bottom: 32px; }
+.footer-logo img {
+  width: 100%; height: auto; opacity: 1;
+  mask-image: linear-gradient(180deg, #373737 0%, #0A0A0A 77%);
+  -webkit-mask-image: linear-gradient(180deg, #373737 0%, #0A0A0A 77%);
+}
+.footer-bottom {
+  padding-top: 32px; border-top: 1px solid #1A1A1A;
+  display: flex; flex-direction: column; gap: 16px;
+  align-items: center; text-align: center;
+}
+@media (min-width: 768px) {
+  .footer-bottom { flex-direction: row; justify-content: space-between; text-align: left; }
+}
+.footer-bottom p, .footer-bottom a {
+  font-size: 14px; color: var(--color-text-muted);
+}
+.footer-bottom a:hover { color: #fff; }
+
+/* ════════════════════════════════════════
+   COMPARISON BANNER
+   ════════════════════════════════════════ */
+.compare-banner {
+  background: linear-gradient(135deg, #1a1a2e 0%, #0a0a0a 100%);
+  padding: 32px var(--px);
+  text-align: center;
+  border-bottom: 2px solid var(--color-primary);
+}
+.compare-banner h2 {
+  font-family: var(--font-headline);
+  font-size: 24px; color: #fff; margin-bottom: 8px;
+}
+.compare-banner p { color: rgba(255,255,255,.6); font-size: 14px; }
+.compare-banner .badge-legend {
+  display: flex; gap: 16px; justify-content: center; margin-top: 16px; flex-wrap: wrap;
+}
+.compare-banner .legend-item {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: #fff;
+}
+.legend-dot { width: 10px; height: 10px; border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     COMPARISON BANNER
+     ═══════════════════════════════════════ -->
+<div class="compare-banner">
+  <h2>UX Audit Prototype — 300.plus</h2>
+  <p>Рекомендуемый порядок блоков и правки для повышения конверсии</p>
+  <div class="badge-legend">
+    <span class="legend-item"><span class="legend-dot" style="background:#FF6B00"></span> Изменено</span>
+    <span class="legend-item"><span class="legend-dot" style="background:#3B82F6"></span> Перемещено</span>
+    <span class="legend-item"><span class="legend-dot" style="background:#22C55E"></span> Новый блок</span>
+    <span class="legend-item"><span class="legend-dot" style="background:#6B7280"></span> Рекомендация</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     HEADER
+     ═══════════════════════════════════════ -->
+<nav class="header header--dark" id="site-header">
+  <div class="header-inner">
+    <a href="#">
+      <img src="./icons/logo-header.svg" alt="300.plus" class="header-logo">
+    </a>
+    <div class="header-nav">
+      <a href="#how-it-works">Как это работает</a>
+      <a href="#what-you-get">Что вы получаете</a>
+      <a href="#pricing">Тарифы</a>
+      <a href="#approach">Наш подход</a>
+      <a href="#audit">Аудит сайта <span class="nav-badge">Бесплатно</span></a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="header-cta">
+      <span class="header-cta-label">Обсудить<br>проект</span>
+      <div class="cta-circle">
+        <svg viewBox="0 0 14 14" fill="none"><path d="M4 10L10 4M10 4H4M10 4V10" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+    <div class="header-mobile-cta">
+      <div class="mobile-cta-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H7M17 7V17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════
+     1. HERO [CHANGED]
+     ═══════════════════════════════════════ -->
+<section class="hero" id="hero">
+  <div class="badge badge--changed">
+    CHANGED<span class="badge-sub">Добавлена CTA-кнопка</span>
+  </div>
+  <div class="hero-video-wrap">
+    <video class="hero-video" autoplay loop muted playsinline poster="./images/hero-bg.png">
+      <source src="./bg.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="hero-content">
+    <div class="hero-icon">
+      <img src="./icons/hero-icon.svg" alt="">
+    </div>
+    <h1>Ваш спринт-отдел<br>в&nbsp;любой кризис</h1>
+    <p class="hero-sub">Проверим вашу идею за&nbsp;10&nbsp;дней. Создание бренда, лендинга и&nbsp;запуск рекламы без&nbsp;найма и&nbsp;лишних согласований</p>
+    <!-- NEW: Visible CTA button -->
+    <div class="hero-cta-wrap">
+      <button class="btn-primary">Обсудить проект</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     2. ENTRY CARDS (unchanged)
+     ═══════════════════════════════════════ -->
+<section class="entry-cards" id="entry-cards">
+  <div class="entry-cards-inner">
+    <!-- Card 1: Idea -->
+    <div class="entry-card reveal">
+      <div class="entry-card-visual">
+        <img src="./images/bulb-bg-53cf4f.png" alt="" style="max-height:300px;">
+      </div>
+      <div class="entry-card-content">
+        <img src="./icons/icon-lightbulb-group.svg" alt="" class="entry-card-icon">
+        <h3>У&nbsp;меня только идея</h3>
+        <p>Идеально для&nbsp;старта. Превратим абстрактную мысль в&nbsp;упакованный продукт.</p>
+        <button class="btn-primary">Получить консультацию</button>
+      </div>
+    </div>
+    <!-- Card 2: Launch -->
+    <div class="entry-card entry-card--reverse reveal">
+      <div class="entry-card-visual">
+        <img src="./images/cat-bg.png" alt="" style="max-height:300px;">
+      </div>
+      <div class="entry-card-content">
+        <img src="./icons/icon-loyalty.svg" alt="" class="entry-card-icon">
+        <h3>Есть&nbsp;бренд, нужен запуск</h3>
+        <p>Для&nbsp;действующего бизнеса. Быстрый тест новой гипотезы или&nbsp;продукта.</p>
+        <button class="btn-primary">Запустить проект</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     3. HOW IT WORKS (unchanged)
+     ═══════════════════════════════════════ -->
+<section class="how-it-works section" id="how-it-works">
+  <div class="container" style="text-align:center;">
+    <span class="section-label section-label--light">Как это работает</span>
+    <h2 class="section-title" style="color:#2D2D2D;">От идеи до первых заявок</h2>
+  </div>
+  <div class="container" style="margin-top:80px;">
+    <div class="steps">
+      <!-- Step 1 -->
+      <div class="step reveal">
+        <div class="step-visual">
+          <div class="step-visual-inner">
+            <div style="font-size:36px;margin-bottom:8px;">📞</div>
+            Видео-интервью с клиентом
+          </div>
+        </div>
+        <div class="step-text">
+          <div class="step-number">(01)</div>
+          <h3 class="step-title">Понимаем бизнес<br>до&nbsp;первого пикселя</h3>
+          <p class="step-desc">Глубокое интервью помогает создать лендинг, который говорит на&nbsp;языке вашей аудитории</p>
+          <div class="step-metric">
+            <p class="step-metric-label">конверсия в&nbsp;заявку</p>
+            <div class="step-metric-value">2,5&times;</div>
+          </div>
+        </div>
+      </div>
+      <!-- Step 2 -->
+      <div class="step step--reverse reveal">
+        <div class="step-visual">
+          <div class="step-visual-inner">
+            <div style="font-size:36px;margin-bottom:8px;">✅</div>
+            Счёт → Оплата → Договор → Старт
+          </div>
+        </div>
+        <div class="step-text">
+          <div class="step-number">(02)</div>
+          <h3 class="step-title">Старт без<br>лишних слов</h3>
+          <p class="step-desc">Получаем предоплату 50% и&nbsp;сразу приступаем к&nbsp;работе над&nbsp;вашим проектом</p>
+          <div class="step-metric">
+            <p class="step-metric-label">размер предоплаты</p>
+            <div class="step-metric-value">50%</div>
+          </div>
+        </div>
+      </div>
+      <!-- Step 3 -->
+      <div class="step reveal">
+        <div class="step-visual">
+          <div class="step-visual-inner">
+            <div style="font-size:36px;margin-bottom:8px;">🎨</div>
+            Айдентика + Лендинг + Креативы
+          </div>
+        </div>
+        <div class="step-text">
+          <div class="step-number">(03)</div>
+          <h3 class="step-title">Бренд +<br>Лендинг</h3>
+          <p class="step-desc">Создаём айдентику и&nbsp;посадочную страницу, готовим материалы&nbsp;&mdash; всё&nbsp;за&nbsp;две недели</p>
+          <div class="step-metric">
+            <p class="step-metric-label">готовность к&nbsp;запуску рекламы</p>
+            <div class="step-metric-value">2&times;</div>
+          </div>
+        </div>
+      </div>
+      <!-- Step 4 -->
+      <div class="step step--reverse reveal">
+        <div class="step-visual">
+          <div class="step-visual-inner">
+            <div style="font-size:36px;margin-bottom:8px;">🚀</div>
+            Настройка таргета → Первые лиды
+          </div>
+        </div>
+        <div class="step-text">
+          <div class="step-number">(04)</div>
+          <h3 class="step-title">Запуск рекламы</h3>
+          <p class="step-desc">Настраиваем таргетированную рекламу и&nbsp;получаем первые заказы</p>
+          <div class="step-metric">
+            <p class="step-metric-label">заявок за&nbsp;день</p>
+            <div class="step-metric-value">18+</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     4. MOODBOARD / APPROACH [MOVED UP]
+     ═══════════════════════════════════════ -->
+<section class="moodboard section" id="approach">
+  <div class="badge badge--moved">
+    MOVED<span class="badge-sub">Было секцией 6 &rarr; теперь до цен (формирование доверия)</span>
+  </div>
+  <div class="container" style="text-align:center;">
+    <span class="section-label section-label--light">Наш подход</span>
+    <h2 class="section-title" style="color:#2D2D2D;">Не просто красиво, а эффективно</h2>
+  </div>
+  <div class="container" style="margin-top:48px;">
+    <div class="approaches">
+      <!-- Approach 1 -->
+      <div class="approach-item reveal">
+        <div class="approach-visual">
+          <div class="approach-visual-inner">
+            <div style="color:#fff;font-family:var(--font-headline);font-size:40px;margin-bottom:8px;">Aa<span style="color:#FF6B00">.</span></div>
+            <div style="color:rgba(255,255,255,.35);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;">Чистая типографика</div>
+            <div style="display:flex;gap:8px;margin-top:12px;">
+              <div style="flex:1;height:28px;border-radius:8px;background:#1A1A1A;border:1px solid rgba(255,255,255,.1)"></div>
+              <div style="flex:1;height:28px;border-radius:8px;background:#F5F5F5"></div>
+              <div style="flex:1;height:28px;border-radius:8px;background:#FF6B00"></div>
+              <div style="flex:1;height:28px;border-radius:8px;background:#fff"></div>
+            </div>
+          </div>
+        </div>
+        <div class="approach-text">
+          <div class="step-number">(01)</div>
+          <h3 class="step-title">Психология<br>внимания</h3>
+          <p class="step-desc">Используем принципы когнитивной психологии для создания интерфейсов, которые захватывают внимание и ведут к конверсии</p>
+        </div>
+      </div>
+      <!-- Approach 2 -->
+      <div class="approach-item approach-item--reverse reveal">
+        <div class="approach-visual">
+          <div style="background:#fff;border-radius:16px;padding:24px;box-shadow:0 2px 16px rgba(0,0,0,.06);border:1px solid rgba(0,0,0,.06);width:100%;max-width:340px;">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+              <div style="aspect-ratio:1;background:var(--color-primary-light);border-radius:8px;border:1px dashed rgba(255,107,0,.3)"></div>
+              <div style="aspect-ratio:1;background:#F5F5F5;border-radius:8px"></div>
+              <div style="aspect-ratio:1;background:#F5F5F5;border-radius:8px"></div>
+              <div style="aspect-ratio:1;background:var(--color-primary-light);border-radius:8px;border:1px dashed rgba(255,107,0,.3)"></div>
+            </div>
+            <div style="text-align:center;font-size:13px;color:rgba(0,0,0,.5)">Акценты и компоненты</div>
+          </div>
+        </div>
+        <div class="approach-text">
+          <div class="step-number">(02)</div>
+          <h3 class="step-title">Трендовый<br>дизайн</h3>
+          <p class="step-desc">Следим за трендами и применяем актуальные визуальные решения: чистую типографику, грамотные акценты и продуманную анимацию.</p>
+        </div>
+      </div>
+      <!-- Approach 3 -->
+      <div class="approach-item reveal">
+        <div class="approach-visual">
+          <div class="approach-visual-inner" style="font-family:monospace;font-size:12px;line-height:2;">
+            <div style="display:flex;gap:6px;margin-bottom:12px;">
+              <div style="width:10px;height:10px;border-radius:50%;background:#FF5F57"></div>
+              <div style="width:10px;height:10px;border-radius:50%;background:#FFBD2E"></div>
+              <div style="width:10px;height:10px;border-radius:50%;background:#28C840"></div>
+              <span style="margin-left:12px;color:rgba(255,255,255,.4);font-size:11px;">page.tsx</span>
+            </div>
+            <div><span style="color:#C678DD">import</span> <span style="color:rgba(255,255,255,.6)">{</span> <span style="color:#61AFEF">Metadata</span> <span style="color:rgba(255,255,255,.6)">}</span> <span style="color:#C678DD">from</span> <span style="color:#98C379">'next'</span></div>
+            <div>&nbsp;</div>
+            <div><span style="color:#C678DD">export default</span> <span style="color:#C678DD">function</span> <span style="color:#61AFEF">Page</span><span style="color:rgba(255,255,255,.6)">() {</span></div>
+            <div>&nbsp;&nbsp;<span style="color:#C678DD">return</span> <span style="color:#E06C75">&lt;Hero /&gt;</span><span style="display:inline-block;width:2px;height:14px;background:#FF6B00;vertical-align:middle;animation:pulse-dot 1s infinite"></span></div>
+            <div><span style="color:rgba(255,255,255,.6)">}</span></div>
+            <div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;">
+              <span style="background:rgba(255,255,255,.08);color:#fff;font-size:11px;padding:4px 10px;border-radius:6px;font-family:var(--font-body)">Next.js</span>
+              <span style="background:rgba(49,120,198,.15);color:#61AFEF;font-size:11px;padding:4px 10px;border-radius:6px;font-family:var(--font-body)">TypeScript</span>
+              <span style="background:rgba(56,189,248,.12);color:#38BDF8;font-size:11px;padding:4px 10px;border-radius:6px;font-family:var(--font-body)">Tailwind</span>
+            </div>
+          </div>
+        </div>
+        <div class="approach-text">
+          <div class="step-number">(03)</div>
+          <h3 class="step-title">Современные<br>технологии</h3>
+          <p class="step-desc">Next.js, TypeScript, Tailwind CSS. Быстрая загрузка, SEO-оптимизация и адаптивность на всех устройствах.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     5. WHAT YOU GET [CHANGED]
+     ═══════════════════════════════════════ -->
+<section class="what-you-get section" id="what-you-get">
+  <div class="badge badge--changed">
+    CHANGED<span class="badge-sub">Убрана карточка 300&thinsp;000 ₽ (стикер-шок)</span>
+  </div>
+  <div class="container" style="text-align:center;">
+    <span class="section-label section-label--dark">Что вы получаете</span>
+    <h2 class="section-title" style="color:#fff;">Всё для быстрого старта</h2>
+    <p class="section-subtitle" style="color:rgba(255,255,255,.7);margin:0 auto;">Комплексное решение для запуска бизнеса: от фирменного стиля до первых заявок с рекламы</p>
+  </div>
+  <div class="container" style="margin-top:48px;">
+    <div class="services-grid">
+      <!-- Service 1 -->
+      <div class="service-card service-card--white reveal">
+        <img src="./icons/service-branding-icon.svg" alt="" class="service-card-icon">
+        <div>
+          <h4>Фирменный стиль</h4>
+          <p>Логотип, цвета, шрифты и визуальная система</p>
+        </div>
+      </div>
+      <!-- Stat 1 -->
+      <div class="stat-card reveal">
+        <div class="stat-value">10</div>
+        <div class="stat-label">дней от идеи
+до первых заявок</div>
+      </div>
+      <!-- Service 2 -->
+      <div class="service-card service-card--white reveal">
+        <img src="./icons/service-landing-icon.svg" alt="" class="service-card-icon">
+        <div>
+          <h4>Лендинг</h4>
+          <p>Конверсионная посадочная страница</p>
+        </div>
+      </div>
+      <!-- Stat 2 -->
+      <div class="stat-card reveal">
+        <div class="stat-value">40%</div>
+        <div class="stat-label">выше конверсия
+с таргетированной рекламой</div>
+      </div>
+      <!-- Service 3 -->
+      <div class="service-card service-card--white reveal">
+        <img src="./icons/service-testing-icon.svg" alt="" class="service-card-icon">
+        <div>
+          <h4>Тестирование гипотез</h4>
+          <p>Проверка идеи на реальной аудитории</p>
+        </div>
+      </div>
+      <!-- Service 4 -->
+      <div class="service-card service-card--dark reveal">
+        <img src="./icons/service-support-icon.svg" alt="" class="service-card-icon" style="filter:invert(1)">
+        <div>
+          <h4>Поддержка</h4>
+          <p>Консультации и доработки после запуска</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     6. SOCIAL PROOF [NEW]
+     ═══════════════════════════════════════ -->
+<section class="social-proof section" id="social-proof">
+  <div class="badge badge--new">
+    NEW<span class="badge-sub">Социальное доказательство перед ценами</span>
+  </div>
+  <div class="container" style="text-align:center;">
+    <span class="section-label section-label--light">Результаты</span>
+    <h2 class="section-title" style="color:#2D2D2D;">Проверено на практике</h2>
+    <p class="section-subtitle" style="color:var(--color-text-secondary);margin:0 auto 48px;">Истории клиентов, которые протестировали идеи вместе с нами</p>
+  </div>
+  <div class="container">
+    <div class="testimonials">
+      <!-- Testimonial 1 -->
+      <div class="testimonial-card reveal">
+        <div class="testimonial-avatar"></div>
+        <div class="testimonial-name">Имя клиента</div>
+        <div class="testimonial-company">Стартап / Ниша</div>
+        <p class="testimonial-text">&laquo;Отзыв о сотрудничестве: как быстро запустили, какой результат получили, рекомендации...&raquo;</p>
+        <div class="testimonial-metric">2.4&times;</div>
+        <div class="testimonial-metric-label">рост конверсии</div>
+      </div>
+      <!-- Testimonial 2 -->
+      <div class="testimonial-card reveal">
+        <div class="testimonial-avatar"></div>
+        <div class="testimonial-name">Имя клиента</div>
+        <div class="testimonial-company">E-commerce / Услуги</div>
+        <p class="testimonial-text">&laquo;Описание результата: скорость, качество, ROI от рекламы, первые заявки...&raquo;</p>
+        <div class="testimonial-metric">18+</div>
+        <div class="testimonial-metric-label">заявок в первый день</div>
+      </div>
+      <!-- Testimonial 3 -->
+      <div class="testimonial-card reveal">
+        <div class="testimonial-avatar"></div>
+        <div class="testimonial-name">Имя клиента</div>
+        <div class="testimonial-company">Образование / SaaS</div>
+        <p class="testimonial-text">&laquo;Впечатления от работы: профессионализм, скорость, рекомендации по улучшению...&raquo;</p>
+        <div class="testimonial-metric">10 дней</div>
+        <div class="testimonial-metric-label">от идеи до запуска</div>
+      </div>
+    </div>
+    <div class="logos-row reveal">
+      <div class="logo-placeholder"></div>
+      <div class="logo-placeholder"></div>
+      <div class="logo-placeholder"></div>
+      <div class="logo-placeholder"></div>
+      <div class="logo-placeholder"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     7. AUDIT — FREE LEAD MAGNET [MOVED UP]
+     ═══════════════════════════════════════ -->
+<section class="audit section" id="audit">
+  <div class="badge badge--moved">
+    MOVED<span class="badge-sub">Лид-магнит теперь ДО цен &mdash; захват нерешительных</span>
+  </div>
+  <div class="container">
+    <div class="audit-layout">
+      <!-- Rings -->
+      <div class="audit-ring audit-ring--lg" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)"></div>
+      <div class="audit-ring audit-ring--sm" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)"></div>
+
+      <!-- Floating tags (desktop) -->
+      <div class="audit-tags">
+        <div class="audit-tag" style="left:11%;top:14%;animation-duration:3s;">
+          <div class="audit-tag-icon" style="background:#FFF0E6">
+            <svg width="24" height="24" viewBox="0 0 52 52" fill="none"><path d="M26 21V24M26 27H26.0075M33.5 24C33.5 28.1421 30.1421 31.5 26 31.5C21.8579 31.5 18.5 28.1421 18.5 24C18.5 19.8579 21.8579 16.5 26 16.5C30.1421 16.5 33.5 19.8579 33.5 24Z" stroke="#FF6B00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span class="audit-tag-label">Бесплатно</span>
+        </div>
+        <div class="audit-tag" style="right:5%;top:4%;animation-duration:3.5s;">
+          <div class="audit-tag-icon" style="background:#EFF6FF">
+            <svg width="24" height="24" viewBox="0 0 52 52" fill="none"><path d="M24.5 24.75C24.8221 25.1806 25.233 25.5369 25.7049 25.7947C26.1768 26.0525 26.6987 26.2058 27.235 26.2442C27.7714 26.2826 28.3097 26.2052 28.8135 26.0173C29.3174 25.8294 29.7749 25.5353 30.155 25.155L32.405 22.905C33.0881 22.1977 33.4661 21.2505 33.4576 20.2672C33.449 19.284 33.0546 18.3434 32.3593 17.6482C31.6641 16.9529 30.7235 16.5585 29.7403 16.5499C28.757 16.5414 27.8098 16.9194 27.1025 17.6025L25.8125 18.885M27.5 23.25C27.1779 22.8194 26.767 22.4631 26.2951 22.2053C25.8232 21.9475 25.3014 21.7941 24.765 21.7557C24.2287 21.7173 23.6903 21.7947 23.1865 21.9826C22.6827 22.1706 22.2252 22.4647 21.845 22.845L19.595 25.095C18.9119 25.8022 18.534 26.7495 18.5425 27.7327C18.551 28.716 18.9454 29.6565 19.6407 30.3518C20.336 31.0471 21.2765 31.4415 22.2598 31.45C23.243 31.4585 24.1903 31.0806 24.8975 30.3975L26.18 29.115" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span class="audit-tag-label">Отправьте ссылку</span>
+        </div>
+        <div class="audit-tag" style="left:0;top:50%;animation-duration:4s;">
+          <div class="audit-tag-icon" style="background:#F3F4F6">
+            <svg width="24" height="24" viewBox="0 0 52 52" fill="none"><path d="M27.5 16.5H21.5C21.1022 16.5 20.7206 16.658 20.4393 16.9393C20.158 17.2206 20 17.6022 20 18V30C20 30.3978 20.158 30.7794 20.4393 31.0607C20.7206 31.342 21.1022 31.5 21.5 31.5H30.5C30.8978 31.5 31.2794 31.342 31.5607 31.0607C31.842 30.7794 32 30.3978 32 30V21M27.5 16.5L32 21M27.5 16.5V21H32M29 24.75H23M29 27.75H23" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span class="audit-tag-label">Конкретные рекомендации</span>
+        </div>
+        <div class="audit-tag" style="right:2%;top:40%;animation-duration:3.8s;">
+          <div class="audit-tag-icon" style="background:#ECFDF5">
+            <svg width="24" height="24" viewBox="0 0 52 52" fill="none"><path d="M32.75 30.75L29.4875 27.4875M31.25 23.25C31.25 26.5637 28.5637 29.25 25.25 29.25C21.9363 29.25 19.25 26.5637 19.25 23.25C19.25 19.9363 21.9363 17.25 25.25 17.25C28.5637 17.25 31.25 19.9363 31.25 23.25Z" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span class="audit-tag-label">Детальный анализ</span>
+        </div>
+        <div class="audit-tag" style="left:11%;bottom:10%;animation-duration:3.3s;">
+          <div class="audit-tag-icon" style="background:#FFF0E6">
+            <svg width="24" height="24" viewBox="0 0 52 52" fill="none"><path d="M33.5 24H30.5L28.25 30.75L23.75 17.25L21.5 24H18.5" stroke="#FF6B00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span class="audit-tag-label">Улучшение конверсии</span>
+        </div>
+        <div class="audit-tag" style="right:5%;bottom:15%;animation-duration:4.2s;">
+          <div class="audit-tag-icon" style="background:#FDF2F8">
+            <svg width="24" height="24" viewBox="0 0 52 52" fill="none"><path d="M34.25 20.25L29 24L34.25 27.75V20.25Z" stroke="#EC4899" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M27.5 18.75H19.25C18.4216 18.75 17.75 19.4216 17.75 20.25V27.75C17.75 28.5784 18.4216 29.25 19.25 29.25H27.5C28.3284 29.25 29 28.5784 29 27.75V20.25C29 19.4216 28.3284 18.75 27.5 18.75Z" stroke="#EC4899" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span class="audit-tag-label">PDF-разбор</span>
+        </div>
+        <div class="audit-tag" style="left:50%;bottom:3%;transform:translateX(-50%);animation-duration:3.6s;">
+          <div class="audit-tag-icon" style="background:#FF6B00">
+            <svg width="24" height="24" viewBox="0 0 52 52" fill="none"><path d="M26 19.5V24L29 25.5M33.5 24C33.5 28.1421 30.1421 31.5 26 31.5C21.8579 31.5 18.5 28.1421 18.5 24C18.5 19.8579 21.8579 16.5 26 16.5C30.1421 16.5 33.5 19.8579 33.5 24Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span class="audit-tag-label">24 часа</span>
+        </div>
+      </div>
+
+      <!-- Center -->
+      <div class="audit-center">
+        <span class="section-label" style="background:linear-gradient(to right,#fff,#F3F4F6);border:1px solid rgba(0,0,0,.06);color:var(--color-text-secondary);">Бесплатно</span>
+        <h2>Аудит сайта</h2>
+        <p>Пришлите ссылку на&nbsp;Ваш текущий сайт, и&nbsp;мы&nbsp;пришлем разбор с&nbsp;конкретными рекомендациями по&nbsp;улучшению</p>
+        <button class="btn-dark">
+          <span>Оставить заявку</span>
+          <div class="cta-circle" style="width:50px;height:50px;">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4 10L10 4M10 4H4M10 4V10" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile tags -->
+    <div class="audit-tags-mobile">
+      <div class="audit-tag-mobile"><div class="audit-tag-mobile-dot" style="background:#FF6B00"></div> Бесплатно</div>
+      <div class="audit-tag-mobile"><div class="audit-tag-mobile-dot" style="background:#3B82F6"></div> Отправьте ссылку</div>
+      <div class="audit-tag-mobile"><div class="audit-tag-mobile-dot" style="background:#6B7280"></div> Рекомендации</div>
+      <div class="audit-tag-mobile"><div class="audit-tag-mobile-dot" style="background:#10B981"></div> Детальный анализ</div>
+      <div class="audit-tag-mobile"><div class="audit-tag-mobile-dot" style="background:#FF6B00"></div> Конверсия</div>
+      <div class="audit-tag-mobile"><div class="audit-tag-mobile-dot" style="background:#EC4899"></div> PDF-разбор</div>
+      <div class="audit-tag-mobile"><div class="audit-tag-mobile-dot" style="background:#FF6B00"></div> 24 часа</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     8. PRICING [CHANGED]
+     ═══════════════════════════════════════ -->
+<section class="pricing section" id="pricing">
+  <div class="badge badge--changed">
+    CHANGED<span class="badge-sub">Единственный ценовой блок (убран из WhatYouGet)</span>
+  </div>
+  <div class="container" style="text-align:center;">
+    <span class="section-label section-label--light">Тарифы</span>
+    <h2 class="section-title" style="color:var(--color-text-primary);">Выберите подходящий пакет</h2>
+    <p class="section-subtitle" style="color:var(--color-text-secondary);margin:0 auto;">От аудита до полного запуска — выберите уровень поддержки, который нужен вашему проекту</p>
+  </div>
+  <div class="container" style="margin-top:48px;">
+    <div class="pricing-grid">
+      <!-- СТАРТ -->
+      <div class="pricing-card pricing-card--white reveal">
+        <div class="pricing-tier">Пакет 1 — СТАРТ</div>
+        <div class="pricing-price">15 000<span class="pricing-currency">₽</span></div>
+        <div class="pricing-tagline">&laquo;Проверь идею перед вложениями&raquo;</div>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li>Глубокий аудит сайта (PDF с 5 гипотезами)</li>
+          <li>UX-разбор главной страницы с макетом правок</li>
+          <li>Список из 10 конкретных действий с приоритетами</li>
+        </ul>
+        <div class="pricing-meta">
+          <div class="pricing-meta-label">Срок</div>
+          <div class="pricing-meta-value">2 дня</div>
+        </div>
+        <div class="pricing-meta">
+          <div class="pricing-meta-label">Для кого</div>
+          <div class="pricing-meta-value" style="font-weight:400;font-size:14px;color:var(--color-text-secondary)">есть сайт, не понимаешь почему нет заявок</div>
+        </div>
+        <button class="pricing-btn pricing-btn--primary">Заказать аудит</button>
+      </div>
+
+      <!-- СПРИНТ -->
+      <div class="pricing-card pricing-card--orange reveal">
+        <div class="pricing-popular">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          Популярный
+        </div>
+        <div class="pricing-tier">Пакет 2 — СПРИНТ</div>
+        <div class="pricing-price">90 000<span class="pricing-currency">₽</span></div>
+        <div class="pricing-tagline">&laquo;Новая главная страница под ключ&raquo;</div>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li>Всё из СТАРТА</li>
+          <li>Новый дизайн главной страницы (Figma → вёрстка)</li>
+          <li>Подключение аналитики (Яндекс.Метрика + цели)</li>
+          <li>A/B тест заголовков</li>
+        </ul>
+        <div class="pricing-meta">
+          <div class="pricing-meta-label">Срок</div>
+          <div class="pricing-meta-value">7 дней</div>
+        </div>
+        <div class="pricing-meta">
+          <div class="pricing-meta-label">Для кого</div>
+          <div class="pricing-meta-value" style="font-weight:400;font-size:14px;color:rgba(255,255,255,.8)">хочешь результат быстро, без найма дизайнера</div>
+        </div>
+        <button class="pricing-btn pricing-btn--white">Запустить спринт</button>
+      </div>
+
+      <!-- ПОЛНЫЙ ЗАПУСК -->
+      <div class="pricing-card pricing-card--dark reveal">
+        <div class="pricing-tier">Пакет 3 — ПОЛНЫЙ ЗАПУСК</div>
+        <div class="pricing-price">300 000<span class="pricing-currency">₽</span></div>
+        <div class="pricing-tagline">&laquo;Бренд, лендинг и первые заявки с рекламы&raquo;</div>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li>Всё из СПРИНТА</li>
+          <li>Фирменный стиль (логотип, цвета, шрифты)</li>
+          <li>Полный лендинг (все секции)</li>
+          <li>Запуск таргетированной рекламы</li>
+          <li>Поддержка 30 дней</li>
+        </ul>
+        <div class="pricing-meta">
+          <div class="pricing-meta-label">Срок</div>
+          <div class="pricing-meta-value">10 дней</div>
+        </div>
+        <div class="pricing-meta">
+          <div class="pricing-meta-label">Для кого</div>
+          <div class="pricing-meta-value" style="font-weight:400;font-size:14px;color:rgba(255,255,255,.8)">запускаешь новый продукт или перезапускаешь бизнес</div>
+        </div>
+        <button class="pricing-btn pricing-btn--primary">Обсудить проект</button>
+      </div>
+    </div>
+    <p class="pricing-note">Фиксированные цены. Без скрытых доплат. Оплата поэтапная.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     9. FAQ [NOTE]
+     ═══════════════════════════════════════ -->
+<section class="faq section" id="faq">
+  <div class="badge badge--note">
+    NOTE<span class="badge-sub">Расширить вопросами про все тарифы</span>
+  </div>
+  <div class="container" style="text-align:center;">
+    <span class="section-label" style="background:linear-gradient(180deg,rgba(0,0,0,.1),rgba(0,0,0,.05));color:var(--color-text-secondary);">FAQ</span>
+    <h2 class="section-title" style="color:#2D2D2D;">Частые вопросы</h2>
+  </div>
+  <div class="container" style="margin-top:32px;">
+    <div class="faq-list">
+      <!-- FAQ 1 -->
+      <div class="faq-item">
+        <div class="faq-divider"></div>
+        <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+          <h3>Что&nbsp;если у&nbsp;меня только идея без&nbsp;чёткого понимания продукта?</h3>
+          <div class="faq-toggle">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><line x1="7" y1="0" x2="7" y2="14" stroke="#FF6B00" stroke-width="2"/><line x1="0" y1="7" x2="14" y2="7" stroke="#FF6B00" stroke-width="2"/></svg>
+          </div>
+        </button>
+        <div class="faq-answer"><p>Это нормально! На первом интервью мы вместе разберём вашу идею, выявим ключевые гипотезы и определим минимальный набор функций для тестирования. Наша задача — помочь вам проверить идею с минимальными вложениями.</p></div>
+      </div>
+      <!-- FAQ 2 -->
+      <div class="faq-item">
+        <div class="faq-divider"></div>
+        <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+          <h3>Почему именно 10&nbsp;дней? Не&nbsp;будет&nbsp;ли&nbsp;это&nbsp;в&nbsp;ущерб качеству?</h3>
+          <div class="faq-toggle">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><line x1="7" y1="0" x2="7" y2="14" stroke="#FF6B00" stroke-width="2"/><line x1="0" y1="7" x2="14" y2="7" stroke="#FF6B00" stroke-width="2"/></svg>
+          </div>
+        </button>
+        <div class="faq-answer"><p>10 дней — это оптимальный срок для тестирования гипотезы. Мы фокусируемся на ключевых элементах: конверсионный лендинг, узнаваемый бренд и настроенная реклама. Всё остальное можно доработать после получения первых результатов.</p></div>
+      </div>
+      <!-- FAQ 3 -->
+      <div class="faq-item">
+        <div class="faq-divider"></div>
+        <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+          <h3>Что&nbsp;входит в&nbsp;стоимость 300 000&nbsp;рублей?</h3>
+          <div class="faq-toggle">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><line x1="7" y1="0" x2="7" y2="14" stroke="#FF6B00" stroke-width="2"/><line x1="0" y1="7" x2="14" y2="7" stroke="#FF6B00" stroke-width="2"/></svg>
+          </div>
+        </button>
+        <div class="faq-answer"><p>Полный цикл запуска: айдентика (логотип, цвета, шрифты), адаптивный лендинг на современном стеке, настройка и запуск таргетированной рекламы. Рекламный бюджет оплачивается отдельно по факту.</p></div>
+      </div>
+      <!-- FAQ 4 -->
+      <div class="faq-item">
+        <div class="faq-divider"></div>
+        <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+          <h3>А&nbsp;что&nbsp;если&nbsp;идея не&nbsp;сработает?</h3>
+          <div class="faq-toggle">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><line x1="7" y1="0" x2="7" y2="14" stroke="#FF6B00" stroke-width="2"/><line x1="0" y1="7" x2="14" y2="7" stroke="#FF6B00" stroke-width="2"/></svg>
+          </div>
+        </button>
+        <div class="faq-answer"><p>В этом и ценность быстрого тестирования! Лучше за 300 000 узнать, что идея требует доработки, чем потратить 3 000 000 на полноценный запуск. Мы предоставим аналитику и рекомендации по дальнейшим шагам.</p></div>
+      </div>
+      <!-- FAQ 5 -->
+      <div class="faq-item">
+        <div class="faq-divider"></div>
+        <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+          <h3>Можно&nbsp;ли&nbsp;внести правки после&nbsp;запуска?</h3>
+          <div class="faq-toggle">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><line x1="7" y1="0" x2="7" y2="14" stroke="#FF6B00" stroke-width="2"/><line x1="0" y1="7" x2="14" y2="7" stroke="#FF6B00" stroke-width="2"/></svg>
+          </div>
+        </button>
+        <div class="faq-answer"><p>Да, мы предоставляем одну итерацию правок в рамках пакета. Если нужна постоянная поддержка и развитие проекта, обсудим условия сопровождения отдельно.</p></div>
+      </div>
+      <!-- FAQ 6 -->
+      <div class="faq-item">
+        <div class="faq-divider"></div>
+        <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+          <h3>Как&nbsp;проходит оплата?</h3>
+          <div class="faq-toggle">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><line x1="7" y1="0" x2="7" y2="14" stroke="#FF6B00" stroke-width="2"/><line x1="0" y1="7" x2="14" y2="7" stroke="#FF6B00" stroke-width="2"/></svg>
+          </div>
+        </button>
+        <div class="faq-answer"><p>Работаем по предоплате: 50% (150 000 рублей) перед началом работ, оставшиеся 50% после запуска лендинга. Рекламный бюджет оплачивается отдельно напрямую в рекламные системы.</p></div>
+      </div>
+
+      <!-- Placeholder: new FAQs suggested -->
+      <div class="faq-item--placeholder reveal" style="margin-top:24px">
+        <h3 style="font-family:var(--font-headline);font-size:16px;color:var(--color-text-muted);margin-bottom:4px;">+ Что входит в пакет СТАРТ за 15 000 ₽?</h3>
+        <p style="font-size:13px;color:var(--color-text-muted);">Рекомендация: добавить FAQ про младший тариф</p>
+      </div>
+      <div class="faq-item--placeholder reveal">
+        <h3 style="font-family:var(--font-headline);font-size:16px;color:var(--color-text-muted);margin-bottom:4px;">+ Чем отличается СПРИНТ от ПОЛНОГО ЗАПУСКА?</h3>
+        <p style="font-size:13px;color:var(--color-text-muted);">Рекомендация: разъяснить разницу тарифов</p>
+      </div>
+    </div>
+
+    <div class="faq-bottom reveal">
+      <p>Остались вопросы?</p>
+      <a href="https://t.me/its300plus_bot" target="_blank" rel="noopener noreferrer" class="btn-primary" style="gap:10px;">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M18.5 1.5L9 11M18.5 1.5L12.5 18.5L9 11M18.5 1.5L1.5 8L9 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Написать в&nbsp;Telegram
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     10. FOOTER
+     ═══════════════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-desc">
+        <p>Студия быстрого тестирования бизнес-идей. Помогаем проверить гипотезу за&nbsp;10&nbsp;дней через&nbsp;создание бренда, лендинга и&nbsp;запуск таргетированной рекламы.</p>
+        <button class="btn-dark" style="background:#fff;color:#2A2A2A;">
+          <span>Оставить заявку</span>
+          <div class="cta-circle" style="width:50px;height:50px;">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4 10L10 4M10 4H4M10 4V10" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </button>
+      </div>
+      <div class="footer-contacts">
+        <h4>Контакты</h4>
+        <a href="https://t.me/its300plus_bot" target="_blank" rel="noopener noreferrer">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M18.5 1.5L9 11M18.5 1.5L12.5 18.5L9 11M18.5 1.5L1.5 8L9 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          @its300plus_bot
+        </a>
+        <a href="mailto:hello@300.plus">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="4" width="16" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M2 6L10 11L18 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          hello@300.plus
+        </a>
+      </div>
+    </div>
+    <div class="footer-logo">
+      <img src="./icons/logo-footer.svg" alt="300.plus">
+    </div>
+    <div class="footer-bottom">
+      <p>2026 300.plus. Все&nbsp;права защищены.</p>
+      <a href="#">Политика конфиденциальности</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════
+     SCRIPTS
+     ═══════════════════════════════════════ -->
+<script>
+// Scroll-reveal animation
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Smooth scroll for nav links
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+// Header inversion on scroll
+const header = document.getElementById('site-header');
+const lightSections = ['how-it-works', 'approach', 'pricing', 'audit', 'faq', 'social-proof'];
+
+const headerObserver = new IntersectionObserver((entries) => {
+  // Find which light section is currently at the top
+  let isOverLight = false;
+  for (const id of lightSections) {
+    const el = document.getElementById(id);
+    if (el) {
+      const rect = el.getBoundingClientRect();
+      if (rect.top <= 80 && rect.bottom > 80) {
+        isOverLight = true;
+        break;
+      }
+    }
+  }
+  header.classList.toggle('header--light', isOverLight);
+  header.classList.toggle('header--dark', !isOverLight);
+}, { threshold: 0 });
+
+// Use scroll event for header (more reliable)
+window.addEventListener('scroll', () => {
+  let isOverLight = false;
+  for (const id of lightSections) {
+    const el = document.getElementById(id);
+    if (el) {
+      const rect = el.getBoundingClientRect();
+      if (rect.top <= 80 && rect.bottom > 80) {
+        isOverLight = true;
+        break;
+      }
+    }
+  }
+  header.classList.toggle('header--light', isOverLight);
+  header.classList.toggle('header--dark', !isOverLight);
+}, { passive: true });
+</script>
+</body>
+</html>
