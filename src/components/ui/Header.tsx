@@ -17,14 +17,14 @@ const menuVariants = {
     opacity: 0,
     transition: {
       duration: 0.3,
-      ease: "easeInOut",
+      ease: [0.4, 0, 0.2, 1] as const,
     },
   },
   open: {
     opacity: 1,
     transition: {
       duration: 0.3,
-      ease: "easeInOut",
+      ease: [0.4, 0, 0.2, 1] as const,
     },
   },
 };
@@ -40,7 +40,7 @@ const itemVariants = {
     transition: {
       delay: 0.1 + i * 0.08,
       duration: 0.4,
-      ease: "easeOut" as const,
+      ease: [0.25, 0.46, 0.45, 0.94] as const,
     },
   }),
 };
