@@ -47,7 +47,7 @@ export function Hero() {
             </div>
           </motion.div>
 
-          <h1 className="font-[family-name:var(--font-playfair)] text-[clamp(2.5rem,5vw,4.35rem)] text-white tracking-[-0.05em] leading-[0.9] mb-6 text-center">
+          <h1 className="font-headline text-[clamp(2.5rem,5vw,4.35rem)] text-white tracking-[-0.05em] leading-[0.9] mb-6 text-center">
             <AnimatedText text="Ваш спринт-отдел" />
             <br />
             <AnimatedText text="в любой кризис" />

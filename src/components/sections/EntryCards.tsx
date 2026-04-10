@@ -84,7 +84,7 @@ export function EntryCards() {
                   height={card.iconSize?.height || 39}
                   className={card.id === 'idea' ? 'w-[48px] h-[48px]' : 'w-[52px] h-[52px]'}
                 />
-                <h3 className="font-[family-name:var(--font-playfair)] text-white tracking-[-0.05em] leading-[0.9] whitespace-pre-line"
+                <h3 className="font-headline text-white tracking-[-0.05em] leading-[0.9] whitespace-pre-line"
                     style={{ fontSize: 'clamp(2rem, 4vw, 4.35rem)' }}>
                   <AnimatedText text={card.title.replace(/\n/g, ' ')} delay={index * 0.15} />
                 </h3>

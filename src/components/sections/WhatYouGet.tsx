@@ -57,7 +57,7 @@ export function WhatYouGet() {
               Что вы получаете
             </span>
           </motion.div>
-          <h2 className="font-[family-name:var(--font-playfair)] text-3xl md:text-[4.35rem] text-white tracking-[-0.05em] leading-[0.9] mb-6">
+          <h2 className="font-headline text-3xl md:text-[4.35rem] text-white tracking-[-0.05em] leading-[0.9] mb-6">
             <AnimatedText text="Всё для быстрого старта" />
           </h2>
           <motion.p
@@ -100,10 +100,10 @@ export function WhatYouGet() {
               </div>
               <div className="relative z-10 space-y-5">
                 <div className="flex items-baseline gap-3">
-                  <span className="font-[family-name:var(--font-playfair)] text-[64px] md:text-[80px] text-white leading-none tracking-[-0.03em]">
+                  <span className="font-headline text-[64px] md:text-[80px] text-white leading-none tracking-[-0.03em]">
                     300 000
                   </span>
-                  <span className="font-[family-name:var(--font-playfair)] text-[32px] md:text-[40px] text-white leading-none tracking-[-0.03em]">
+                  <span className="font-headline text-[32px] md:text-[40px] text-white leading-none tracking-[-0.03em]">
                     руб.
                   </span>
                 </div>
@@ -154,7 +154,7 @@ export function WhatYouGet() {
                 transition={{ delay: 0.2, duration: 0.5 }}
                 className="bg-[#FF6B00] rounded-2xl p-6 md:p-7 flex flex-col items-center justify-center text-center"
               >
-                <span className="font-[family-name:var(--font-playfair)] font-medium text-[56px] text-white leading-none">{statCards[0].value}</span>
+                <span className="font-headline font-medium text-[56px] text-white leading-none">{statCards[0].value}</span>
                 <p className="text-sm text-white/85 mt-2 whitespace-pre-line">{statCards[0].label}</p>
               </motion.div>
 
@@ -166,7 +166,7 @@ export function WhatYouGet() {
                 transition={{ delay: 0.3, duration: 0.5 }}
                 className="bg-[#FF6B00] rounded-2xl p-6 md:p-7 flex flex-col items-center justify-center text-center"
               >
-                <span className="font-[family-name:var(--font-playfair)] font-medium text-[56px] text-white leading-none">{statCards[1].value}</span>
+                <span className="font-headline font-medium text-[56px] text-white leading-none">{statCards[1].value}</span>
                 <p className="text-sm text-white/85 mt-2 whitespace-pre-line">{statCards[1].label}</p>
               </motion.div>
 

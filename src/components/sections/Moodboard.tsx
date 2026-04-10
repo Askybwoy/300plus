@@ -216,7 +216,7 @@ function DesignIllustration({ animateKey }: { animateKey: number }) {
         >
           {/* Typography showcase */}
           <motion.div variants={itemVariants} className="relative mb-4">
-            <div className="font-[family-name:var(--font-playfair)] text-[40px] font-medium text-white leading-none tracking-[-1px]">
+            <div className="font-headline text-[40px] font-medium text-white leading-none tracking-[-1px]">
               Aa<span className="text-[#FF6B00]">.</span>
             </div>
             <div className="text-[11px] text-white/35 mt-1.5 tracking-[2px] uppercase">Чистая типографика</div>
@@ -225,7 +225,7 @@ function DesignIllustration({ animateKey }: { animateKey: number }) {
           {/* Font specimens */}
           <motion.div variants={itemVariants} className="flex items-baseline gap-3 py-2.5 border-t border-white/[0.06]">
             <span className="text-[10px] text-white/25 uppercase tracking-[1px] w-14 flex-shrink-0">Serif</span>
-            <span className="font-[family-name:var(--font-playfair)] text-lg font-medium text-white">Playfair Display</span>
+            <span className="font-headline text-lg font-medium text-white">Playfair Display</span>
           </motion.div>
           <motion.div variants={itemVariants} className="flex items-baseline gap-3 py-2.5 border-t border-white/[0.06]">
             <span className="text-[10px] text-white/25 uppercase tracking-[1px] w-14 flex-shrink-0">Sans</span>
@@ -548,7 +548,7 @@ export function Moodboard() {
         {/* Header */}
         <div className="text-center mb-20">
           <SectionLabel className="mb-6">Наш подход</SectionLabel>
-          <h2 className="font-[family-name:var(--font-playfair)] text-3xl md:text-[4.35rem] text-[#2D2D2D] tracking-[-0.05em] leading-[0.9]">
+          <h2 className="font-headline text-3xl md:text-[4.35rem] text-[#2D2D2D] tracking-[-0.05em] leading-[0.9]">
             <AnimatedText text="Не просто красиво, а эффективно" />
           </h2>
         </div>
@@ -616,11 +616,11 @@ export function Moodboard() {
                   }}
                   className="w-full flex items-start gap-5 cursor-pointer"
                 >
-                  <span className="font-[family-name:var(--font-playfair)] font-medium text-[22px] text-[#FF6B00] tracking-[-0.02em] text-center w-[45px] flex-shrink-0">
+                  <span className="font-headline font-medium text-[22px] text-[#FF6B00] tracking-[-0.02em] text-center w-[45px] flex-shrink-0">
                     {item.number}
                   </span>
                   <div className="flex-1 text-left">
-                    <h3 className="font-[family-name:var(--font-playfair)] font-medium text-[32px] md:text-[32px] text-[#2D2D2D] leading-[1.15] tracking-[-0.02em] whitespace-pre-line">
+                    <h3 className="font-headline font-medium text-[32px] md:text-[32px] text-[#2D2D2D] leading-[1.15] tracking-[-0.02em] whitespace-pre-line">
                       {item.title}
                     </h3>
                   </div>

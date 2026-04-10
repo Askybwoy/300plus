@@ -90,7 +90,7 @@ export function PricingSection() {
                 Тарифы
               </span>
             </motion.div>
-            <h2 className="font-[family-name:var(--font-playfair)] text-3xl md:text-[4.35rem] text-[#0A0A0A] tracking-[-0.05em] leading-[0.9] mb-6">
+            <h2 className="font-headline text-3xl md:text-[4.35rem] text-[#0A0A0A] tracking-[-0.05em] leading-[0.9] mb-6">
               <AnimatedText text="Выберите подходящий пакет" />
             </h2>
             <motion.p
@@ -145,14 +145,14 @@ export function PricingSection() {
                 {/* Price */}
                 <div className="mb-4">
                   <span
-                    className={`font-[family-name:var(--font-playfair)] text-[48px] md:text-[56px] leading-none tracking-[-0.03em] ${
+                    className={`font-headline text-[48px] md:text-[56px] leading-none tracking-[-0.03em] ${
                       pkg.variant === "white" ? "text-[#0A0A0A]" : "text-white"
                     }`}
                   >
                     {pkg.price}
                   </span>
                   <span
-                    className={`font-[family-name:var(--font-playfair)] text-[24px] leading-none tracking-[-0.03em] ml-1 ${
+                    className={`font-headline text-[24px] leading-none tracking-[-0.03em] ml-1 ${
                       pkg.variant === "white" ? "text-[#0A0A0A]" : "text-white"
                     }`}
                   >

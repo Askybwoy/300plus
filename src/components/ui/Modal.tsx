@@ -93,7 +93,7 @@ export function Modal({ isOpen, onClose, title, subtitle }: ModalProps) {
                       className="w-16 h-16 text-[#FF6B00] mx-auto mb-4"
                     />
                   </motion.div>
-                  <h3 className="font-[family-name:var(--font-playfair)] italic text-2xl text-[#0A0A0A] mb-2">
+                  <h3 className="font-headline italic text-2xl text-[#0A0A0A] mb-2">
                     Заявка отправлена
                   </h3>
                   <p className="text-[#6B7280]">
@@ -107,7 +107,7 @@ export function Modal({ isOpen, onClose, title, subtitle }: ModalProps) {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                 >
-                  <h2 className="font-[family-name:var(--font-playfair)] italic text-3xl text-[#0A0A0A] mb-2">
+                  <h2 className="font-headline italic text-3xl text-[#0A0A0A] mb-2">
                     {title}
                   </h2>
                   {subtitle && (

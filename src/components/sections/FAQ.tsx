@@ -55,7 +55,7 @@ export function FAQ() {
               FAQ
             </span>
           </motion.div>
-          <h2 className="font-[family-name:var(--font-playfair)] text-3xl md:text-5xl text-[#2D2D2D] tracking-[-0.025em] leading-none">
+          <h2 className="font-headline text-3xl md:text-5xl text-[#2D2D2D] tracking-[-0.025em] leading-none">
             <AnimatedText text="Частые" />
             {" "}
             <AnimatedText text="вопросы" />
@@ -79,7 +79,7 @@ export function FAQ() {
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
                 className="w-full flex items-start justify-between gap-4 text-left cursor-pointer"
               >
-                <h3 className="font-[family-name:var(--font-playfair)] text-lg md:text-xl text-[#2D2D2D] pr-4 leading-snug">
+                <h3 className="font-headline text-lg md:text-xl text-[#2D2D2D] pr-4 leading-snug">
                   {faq.question}
                 </h3>
                 <motion.div

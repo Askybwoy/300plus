@@ -154,7 +154,7 @@ export function Audit() {
               </span>
             </motion.div>
 
-            <h2 className="font-[family-name:var(--font-playfair)] text-3xl md:text-[4.35rem] text-[#2D2D2D] tracking-[-0.05em] leading-[0.9] mb-4">
+            <h2 className="font-headline text-3xl md:text-[4.35rem] text-[#2D2D2D] tracking-[-0.05em] leading-[0.9] mb-4">
               Аудит сайта
             </h2>
 

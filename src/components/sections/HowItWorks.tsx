@@ -255,7 +255,7 @@ function ProjectCard() {
             transition={{ delay: 0.4 + i * 0.1, duration: 0.4 }}
             className={`${tile.bg} rounded-2xl px-5 py-4 flex items-center justify-between`}
           >
-            <span className={`text-xl font-[family-name:var(--font-playfair)] font-medium leading-tight ${tile.textColor} whitespace-pre-line`}>{tile.text}</span>
+            <span className={`text-xl font-headline font-medium leading-tight ${tile.textColor} whitespace-pre-line`}>{tile.text}</span>
             <div className={`w-9 h-9 rounded-[18px] ${tile.iconBg} flex items-center justify-center`}>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M5 11L11 5M11 5H5M11 5V11" stroke={tile.iconStroke} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </div>
@@ -391,7 +391,7 @@ function Metric({ label, value, hasArrow, inView }: { label: string; value: stri
       <div className="w-full h-px bg-gradient-to-r from-[#E5E5E5] to-transparent mb-6" />
       <p className="text-[14px] text-black/50 mb-3">{label}</p>
       <div className="flex items-center gap-3">
-        <span className="font-[family-name:var(--font-playfair)] text-[72px] md:text-[100px] leading-none tracking-[-0.04em] text-[#FF6B00]">
+        <span className="font-headline text-[72px] md:text-[100px] leading-none tracking-[-0.04em] text-[#FF6B00]">
           <CountUp value={value} inView={inView} />
         </span>
         {hasArrow && (
@@ -420,11 +420,11 @@ function StepRow({ step }: { step: typeof steps[number] }) {
       <div className="flex-1 min-w-[400px] flex gap-6 order-2 lg:order-none">
         <div className="flex flex-col justify-between py-6 flex-1 pl-[70px] pr-[70px]">
           <div>
-            <span className="font-[family-name:var(--font-playfair)] font-medium text-[22px] text-[#FF6B00] tracking-[-0.02em]">
+            <span className="font-headline font-medium text-[22px] text-[#FF6B00] tracking-[-0.02em]">
               {step.number}
             </span>
             <div className="mt-4 space-y-2">
-              <h3 className="font-[family-name:var(--font-playfair)] font-medium text-[26px] md:text-[30px] text-[#2D2D2D] leading-[1.15] tracking-[-0.02em] whitespace-pre-line">
+              <h3 className="font-headline font-medium text-[26px] md:text-[30px] text-[#2D2D2D] leading-[1.15] tracking-[-0.02em] whitespace-pre-line">
                 {step.title}
               </h3>
               <p className="text-[15px] text-black/60 leading-[1.6] max-w-[340px]">
@@ -453,7 +453,7 @@ export function HowItWorks() {
         {/* Header */}
         <div className="text-center mb-20">
           <SectionLabel className="mb-6">Как это работает</SectionLabel>
-          <h2 className="font-[family-name:var(--font-playfair)] text-3xl md:text-[4.35rem] text-[#2D2D2D] tracking-[-0.05em] leading-[0.9]">
+          <h2 className="font-headline text-3xl md:text-[4.35rem] text-[#2D2D2D] tracking-[-0.05em] leading-[0.9]">
             <AnimatedText text="От идеи до первых заявок" />
           </h2>
         </div>
