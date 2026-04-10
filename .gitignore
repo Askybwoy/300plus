@@ -46,8 +46,14 @@ next-env.d.ts
 # qoder
 .qoder
 
-# assets (source files)
-/assets
+# docs (project documentation)
+/docs
+
+# infrastructure (n8n workflows and configs)
+/infrastructure
+
+# assets (After Effects source files - large binaries)
+/assets/ae
 
 # n8n skills (separate project)
 /n8n-skills
@@ -58,5 +64,5 @@ next-env.d.ts
 # dev build files
 /dist
 
-# audit files (large videos)
-/audit
+# archive (large audit videos and files)
+/archive
