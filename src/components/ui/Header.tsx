@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import { Modal } from "./Modal";
 
 const navLinks = [
   { label: "Как это работает", href: "#how-it-works" },
@@ -59,10 +60,11 @@ export function Header() {
         { id: 'hero', light: false },
         { id: 'entry-cards', light: false },
         { id: 'how-it-works', light: true },
-        { id: 'what-you-get', light: false },
-        { id: 'pricing', light: true },
-        { id: 'audit', light: true },
         { id: 'approach', light: true },
+        { id: 'what-you-get', light: false },
+        { id: 'social-proof', light: true },
+        { id: 'audit', light: true },
+        { id: 'pricing', light: true },
         { id: 'faq', light: true },
       ];
       
@@ -134,33 +136,8 @@ export function Header() {
             ))}
           </div>
 
-          {/* Mobile: CTA + Burger */}
+          {/* Mobile: Burger only */}
           <div className="flex items-center gap-2 lg:hidden">
-            {/* Compact CTA */}
-            <button
-              onClick={() => setModalOpen(true)}
-              className="w-[44px] h-[44px] rounded-full bg-[#FF6B00] flex items-center justify-center cursor-pointer group overflow-hidden relative"
-            >
-              <svg 
-                width="20" 
-                height="20" 
-                viewBox="0 0 24 24" 
-                fill="none"
-                className="absolute transition-transform duration-300 ease-out group-hover:translate-x-4 group-hover:-translate-y-4 group-hover:opacity-0"
-              >
-                <path d="M7 17L17 7M17 7H7M17 7V17" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-              <svg 
-                width="20" 
-                height="20" 
-                viewBox="0 0 24 24" 
-                fill="none"
-                className="absolute translate-x-[-20px] translate-y-[20px] opacity-0 transition-all duration-300 ease-out group-hover:translate-x-0 group-hover:translate-y-0 group-hover:opacity-100"
-              >
-                <path d="M7 17L17 7M17 7H7M17 7V17" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-            
             {/* Burger Menu Button */}
             <button
               onClick={() => setMenuOpen(true)}
@@ -346,6 +323,14 @@ export function Header() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Contact Modal */}
+      <Modal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        title="Обсудить проект"
+        subtitle="Расскажите о вашей идее, и мы свяжемся с вами"
+      />
     </>
   );
 }

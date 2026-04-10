@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { motion, AnimatePresence, useInView } from "framer-motion";
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import { SectionLabel } from "../ui/SectionLabel";
 import { AnimatedText } from "../ui/AnimatedText";
 
@@ -10,19 +10,16 @@ const approaches = [
     number: "(01)",
     title: "Психология\nвнимания",
     description: "Используем принципы когнитивной психологии для создания интерфейсов, которые захватывают внимание и ведут к конверсии",
-    expandable: true,
   },
   {
     number: "(02)",
     title: "Трендовый\nдизайн",
     description: "Следим за трендами и применяем актуальные визуальные решения: чистую типографику, грамотные акценты и продуманную анимацию.",
-    expandable: true,
   },
   {
     number: "(03)",
     title: "Современные\nтехнологии",
     description: "Next.js, TypeScript, Tailwind CSS. Быстрая загрузка, SEO-оптимизация и адаптивность на всех устройствах.",
-    expandable: true,
   },
 ];
 
@@ -538,173 +535,70 @@ function TechIllustration({ animateKey }: { animateKey: number }) {
   );
 }
 
-/* ─────────── Mobile Step Row ─────────── */
-function ApproachStep({ item, index, isReversed }: { item: typeof approaches[number]; index: number; isReversed: boolean }) {
+
+
+/* ─────────── Single Approach Row ─────────── */
+function ApproachRow({ approach, index }: { approach: typeof approaches[number]; index: number }) {
   const illustrations = [
     <LandingMockup key="landing" animateKey={index} />,
     <DesignIllustration key="design" animateKey={index} />,
     <TechIllustration key="tech" animateKey={index} />,
   ];
+  const IllustrationComponent = illustrations[index];
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, amount: 0.2 });
+  const isCardLeft = index % 2 === 1;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ delay: index * 0.1, duration: 0.6 }}
-      className={`flex flex-col ${isReversed ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center gap-8 lg:gap-16`}
+    <div
+      ref={ref}
+      className={`flex flex-col ${isCardLeft ? "lg:flex-row-reverse" : "lg:flex-row"} items-center gap-12 lg:gap-16`}
     >
-      {/* Illustration */}
-      <div className="flex-1 flex justify-center order-1 w-full max-w-[400px] mx-auto">
-        <div className="bg-gradient-to-t from-[#F9F9F9] to-white rounded-[20px] p-4 sm:p-8 flex items-center justify-center w-full overflow-hidden">
-          {illustrations[index]}
-        </div>
-      </div>
+      {/* Text side - Second on mobile */}
+      <div className="flex-1 min-w-0 sm:min-w-[320px] flex gap-6 order-2 lg:order-none">
+        <div className="flex flex-col justify-between py-6 flex-1 px-4 sm:px-8 lg:pl-[70px] lg:pr-[70px]">
+          <div>
+            <span className="font-headline font-medium text-[22px] text-[#FF6B00] tracking-[-0.02em]">
+              {approach.number}
+            </span>
+            <div className="mt-4 space-y-2">
+              <h3 className="font-headline font-medium text-[26px] md:text-[30px] text-[#2D2D2D] leading-[1.15] tracking-[-0.02em] whitespace-pre-line">
+                {approach.title}
+              </h3>
+              <p className="text-[15px] text-black/60 leading-[1.6] max-w-[340px]">
+                {approach.description}
+              </p>
+            </div>
+          </div>
 
-      {/* Text Content */}
-      <div className="flex-1 min-w-0 order-2 w-full">
-        <div className="flex flex-col justify-center py-4 px-2 sm:px-4">
-          <span className="font-headline font-medium text-[22px] text-[#FF6B00] tracking-[-0.02em] mb-4">
-            {item.number}
-          </span>
-          <h3 className="font-headline font-medium text-[24px] sm:text-[32px] text-[#2D2D2D] leading-[1.15] tracking-[-0.02em] whitespace-pre-line mb-4">
-            {item.title}
-          </h3>
-          <p className="text-[15px] text-black/60 leading-[1.6]">
-            {item.description}
-          </p>
         </div>
       </div>
-    </motion.div>
+      {/* Card side - First on mobile */}
+      <div className="flex-1 flex justify-center order-1 lg:order-none w-full">
+        <div className="bg-gradient-to-t from-[#F9F9F9] to-white rounded-[20px] p-4 sm:p-8 md:p-10 w-full sm:w-auto flex items-center justify-center">
+          {IllustrationComponent}
+        </div>
+      </div>
+    </div>
   );
 }
 
 export function Moodboard() {
-  const [openIndex, setOpenIndex] = useState<number>(0);
-  const [animateKey, setAnimateKey] = useState<number>(0);
-
   return (
     <section id="approach" className="py-16 sm:py-24 md:py-32 px-4 sm:px-6 overflow-hidden bg-white">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-12 lg:mb-20">
+        <div className="text-center mb-20">
           <SectionLabel className="mb-6">Наш подход</SectionLabel>
           <h2 className="font-headline text-3xl md:text-[4.35rem] text-[#2D2D2D] tracking-[-0.05em] leading-[0.9]">
             <AnimatedText text="Не просто красиво, а эффективно" />
           </h2>
         </div>
 
-        {/* Desktop: Accordion + Single Illustration */}
-        <div className="hidden lg:flex flex-row items-start items-center gap-12 lg:gap-16">
-          {/* Left: Dynamic illustration based on selected accordion item */}
-          <div className="flex-1 flex justify-center w-full">
-            <div className="bg-gradient-to-t from-[#F9F9F9] to-white rounded-[20px] p-8 md:p-10 h-[580px] flex items-center justify-center w-full">
-              <AnimatePresence mode="wait">
-                {openIndex === 0 && (
-                  <motion.div
-                    key="landing"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <LandingMockup animateKey={animateKey} />
-                  </motion.div>
-                )}
-                {openIndex === 1 && (
-                  <motion.div
-                    key="design"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <DesignIllustration animateKey={animateKey} />
-                  </motion.div>
-                )}
-                {openIndex === 2 && (
-                  <motion.div
-                    key="tech"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <TechIllustration animateKey={animateKey} />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </div>
-
-          {/* Right: Accordion */}
-          <div className="flex-1 min-w-0 flex flex-col justify-center w-full">
-            {approaches.map((item, index) => (
-              <motion.div
-                key={item.number}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1, duration: 0.4 }}
-                className="border-t border-black/10 py-6 first:border-t-0 first:pt-0"
-              >
-                <button
-                  onClick={() => {
-                    if (openIndex !== index) {
-                      setOpenIndex(index);
-                      setAnimateKey(prev => prev + 1);
-                    }
-                  }}
-                  className="w-full flex items-start gap-5 cursor-pointer"
-                >
-                  <span className="font-headline font-medium text-[22px] text-[#FF6B00] tracking-[-0.02em] text-center w-[45px] flex-shrink-0">
-                    {item.number}
-                  </span>
-                  <div className="flex-1 text-left">
-                    <h3 className="font-headline font-medium text-[32px] text-[#2D2D2D] leading-[1.15] tracking-[-0.02em] whitespace-pre-line">
-                      {item.title}
-                    </h3>
-                  </div>
-                  <motion.div
-                    animate={{ rotate: openIndex === index ? 45 : 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
-                  >
-                    <svg width="27" height="27" viewBox="0 0 27 27" fill="none">
-                      <line x1="13.5" y1="0" x2="13.5" y2="27" stroke="#FF6B00" strokeWidth="2"/>
-                      <line x1="0" y1="13.5" x2="27" y2="13.5" stroke="#FF6B00" strokeWidth="2"/>
-                    </svg>
-                  </motion.div>
-                </button>
-                <AnimatePresence>
-                  {openIndex === index && item.description && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="overflow-hidden"
-                    >
-                      <p className="text-[15px] text-black/60 leading-[1.6] mt-4 ml-[65px] pr-12">
-                        {item.description}
-                      </p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        {/* Mobile: Steps in sequence like HowItWorks */}
-        <div className="lg:hidden space-y-16">
-          {approaches.map((item, index) => (
-            <ApproachStep
-              key={item.number}
-              item={item}
-              index={index}
-              isReversed={index % 2 === 1}
-            />
+        {/* Steps - Same layout as HowItWorks */}
+        <div className="space-y-24 md:space-y-32">
+          {approaches.map((approach, index) => (
+            <ApproachRow key={approach.number} approach={approach} index={index} />
           ))}
         </div>
       </div>

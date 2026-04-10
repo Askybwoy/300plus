@@ -1,9 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "framer-motion";
 import { AnimatedText } from "../ui/AnimatedText";
-import { Modal } from "../ui/Modal";
 import Image from "next/image";
 
 const serviceCards = [
@@ -39,8 +37,6 @@ const statCards = [
 ];
 
 export function WhatYouGet() {
-  const [modalOpen, setModalOpen] = useState(false);
-
   return (
     <>
       {/* Dark header area */}
@@ -72,155 +68,89 @@ export function WhatYouGet() {
         </div>
       </section>
 
-      {/* Pricing & Benefits Grid */}
+      {/* Benefits Grid - No price card */}
       <section className="bg-[#0A0A0A] pb-16 sm:pb-24 px-4 sm:px-6">
         <div className="max-w-[1200px] mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
-            {/* Left: Price Card */}
+          <div className="grid grid-cols-2 gap-2">
+            {/* Row 1: Branding + 10 days stat */}
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="relative bg-[#1A1A1A] rounded-[20px] overflow-hidden p-6 sm:p-8 flex flex-col justify-between min-h-[400px] sm:min-h-[480px]"
+              transition={{ delay: 0.1, duration: 0.5 }}
+              className="bg-white rounded-2xl p-4 sm:p-6 md:p-7 flex flex-col justify-between min-h-[180px]"
             >
-              {/* Gradient background */}
-              <div className="absolute inset-0 -z-0 overflow-hidden">
-                <Image
-                  src="/images/price-gradient-bg.png"
-                  alt=""
-                  fill
-                  className="object-cover opacity-90"
-                />
-              </div>
-              <div className="relative z-10">
-                <p className="text-[13px] text-white font-medium tracking-[0.07em] uppercase mb-6">
-                  Стоимость пакета
-                </p>
-              </div>
-              <div className="relative z-10 space-y-5">
-                <div className="flex items-baseline gap-2 sm:gap-3 flex-wrap">
-                  <span className="font-headline text-[48px] sm:text-[64px] md:text-[80px] text-white leading-none tracking-[-0.03em]">
-                    300 000
-                  </span>
-                  <span className="font-headline text-[24px] sm:text-[32px] md:text-[40px] text-white leading-none tracking-[-0.03em]">
-                    руб.
-                  </span>
-                </div>
-                <p className="text-[13px] text-white/55">
-                  Фиксированная цена. Без скрытых доплат.
-                </p>
-                <div className="flex flex-col gap-2 pt-2">
-                  <motion.button
-                    onClick={() => setModalOpen(true)}
-                    className="bg-[#FF6B00] text-white font-cta px-6 sm:px-8 py-3 sm:py-4 rounded-full flex-1 text-center cursor-pointer uppercase text-xs sm:text-sm tracking-wide hover:bg-[#E65C00] transition-all duration-200"
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    Обсудить проект
-                  </motion.button>
-                  <motion.button
-                    onClick={() => document.getElementById("audit")?.scrollIntoView({ behavior: "smooth" })}
-                    className="bg-transparent text-white font-cta px-6 sm:px-8 py-3 sm:py-4 rounded-full border border-white/30 flex-1 text-center cursor-pointer uppercase text-xs sm:text-sm tracking-wide hover:bg-white/10 hover:border-white/50 transition-all duration-200"
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    Бесплатный аудит
-                  </motion.button>
-                </div>
+              <Image src={serviceCards[0].icon} alt="" width={28} height={28} className="w-6 h-6 sm:w-7 sm:h-7 mb-3 sm:mb-4" />
+              <div>
+                <h4 className="font-semibold text-[#1A1A1A] text-sm sm:text-base mb-1">{serviceCards[0].title}</h4>
+                <p className="text-[11px] sm:text-[13px] text-black/45 leading-snug whitespace-pre-line">{serviceCards[0].description}</p>
               </div>
             </motion.div>
 
-            {/* Right: Top 2x2 Grid - matches left card height */}
-            <div className="grid grid-cols-2 grid-rows-2 gap-2 h-auto sm:h-[480px]">
-              {/* White card 1 - Branding */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1, duration: 0.5 }}
-                className="bg-white rounded-2xl p-4 sm:p-6 md:p-7 flex flex-col justify-between"
-              >
-                <Image src={serviceCards[0].icon} alt="" width={28} height={28} className="w-6 h-6 sm:w-7 sm:h-7 mb-3 sm:mb-4" />
-                <div>
-                  <h4 className="font-semibold text-[#1A1A1A] text-sm sm:text-base mb-1">{serviceCards[0].title}</h4>
-                  <p className="text-[11px] sm:text-[13px] text-black/45 leading-snug whitespace-pre-line">{serviceCards[0].description}</p>
-                </div>
-              </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="bg-[#FF6B00] rounded-2xl p-4 sm:p-6 md:p-7 flex flex-col items-center justify-center text-center min-h-[180px]"
+            >
+              <span className="font-headline font-medium text-[36px] sm:text-[56px] text-white leading-none">{statCards[0].value}</span>
+              <p className="text-xs sm:text-sm text-white/85 mt-2 whitespace-pre-line">{statCards[0].label}</p>
+            </motion.div>
 
-              {/* Orange stat card 1 - 10 days */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2, duration: 0.5 }}
-                className="bg-[#FF6B00] rounded-2xl p-4 sm:p-6 md:p-7 flex flex-col items-center justify-center text-center"
-              >
-                <span className="font-headline font-medium text-[36px] sm:text-[56px] text-white leading-none">{statCards[0].value}</span>
-                <p className="text-xs sm:text-sm text-white/85 mt-2 whitespace-pre-line">{statCards[0].label}</p>
-              </motion.div>
+            {/* Row 2: 40% stat + Landing */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+              className="bg-[#FF6B00] rounded-2xl p-4 sm:p-6 md:p-7 flex flex-col items-center justify-center text-center min-h-[180px]"
+            >
+              <span className="font-headline font-medium text-[36px] sm:text-[56px] text-white leading-none">{statCards[1].value}</span>
+              <p className="text-xs sm:text-sm text-white/85 mt-2 whitespace-pre-line">{statCards[1].label}</p>
+            </motion.div>
 
-              {/* Orange stat card 2 - 40% */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.3, duration: 0.5 }}
-                className="bg-[#FF6B00] rounded-2xl p-4 sm:p-6 md:p-7 flex flex-col items-center justify-center text-center"
-              >
-                <span className="font-headline font-medium text-[36px] sm:text-[56px] text-white leading-none">{statCards[1].value}</span>
-                <p className="text-xs sm:text-sm text-white/85 mt-2 whitespace-pre-line">{statCards[1].label}</p>
-              </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4, duration: 0.5 }}
+              className="bg-white rounded-2xl p-4 sm:p-6 md:p-7 flex flex-col justify-between min-h-[180px]"
+            >
+              <Image src={serviceCards[1].icon} alt="" width={28} height={28} className="w-6 h-6 sm:w-7 sm:h-7 mb-3 sm:mb-4" />
+              <div>
+                <h4 className="font-semibold text-[#1A1A1A] text-sm sm:text-base mb-1">{serviceCards[1].title}</h4>
+                <p className="text-[11px] sm:text-[13px] text-black/45 leading-snug whitespace-pre-line">{serviceCards[1].description}</p>
+              </div>
+            </motion.div>
 
-              {/* White card 2 - Landing */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.4, duration: 0.5 }}
-                className="bg-white rounded-2xl p-4 sm:p-6 md:p-7 flex flex-col justify-between"
-              >
-                <Image src={serviceCards[1].icon} alt="" width={28} height={28} className="w-6 h-6 sm:w-7 sm:h-7 mb-3 sm:mb-4" />
-                <div>
-                  <h4 className="font-semibold text-[#1A1A1A] text-sm sm:text-base mb-1">{serviceCards[1].title}</h4>
-                  <p className="text-[11px] sm:text-[13px] text-black/45 leading-snug whitespace-pre-line">{serviceCards[1].description}</p>
-                </div>
-              </motion.div>
-            </div>
+            {/* Row 3: Testing + Support - full width cards */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.5, duration: 0.5 }}
+              className="bg-white rounded-[20px] p-4 sm:p-6 md:p-7 min-h-[180px]"
+            >
+              <Image src={serviceCards[2].icon} alt="" width={28} height={28} className="w-6 h-6 sm:w-7 sm:h-7 mb-3 sm:mb-5" />
+              <h4 className="font-semibold text-[#1A1A1A] text-sm sm:text-base mb-1">{serviceCards[2].title}</h4>
+              <p className="text-[11px] sm:text-[13px] text-black/45 leading-snug">{serviceCards[2].description}</p>
+            </motion.div>
 
-            {/* Bottom row: 2 wide cards - spans full width */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 lg:col-span-2">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.5, duration: 0.5 }}
-                className="bg-white rounded-[20px] p-4 sm:p-6 md:p-7"
-              >
-                <Image src={serviceCards[2].icon} alt="" width={28} height={28} className="w-6 h-6 sm:w-7 sm:h-7 mb-3 sm:mb-5" />
-                <h4 className="font-semibold text-[#1A1A1A] text-sm sm:text-base mb-1">{serviceCards[2].title}</h4>
-                <p className="text-[11px] sm:text-[13px] text-black/45 leading-snug">{serviceCards[2].description}</p>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.6, duration: 0.5 }}
-                className="bg-[#1A1A1A] rounded-[20px] p-4 sm:p-6 md:p-7"
-              >
-                <Image src={serviceCards[3].icon} alt="" width={28} height={28} className="w-6 h-6 sm:w-7 sm:h-7 mb-3 sm:mb-5 brightness-0 invert" />
-                <h4 className="font-semibold text-white text-sm sm:text-base mb-1">{serviceCards[3].title}</h4>
-                <p className="text-[11px] sm:text-[13px] text-white/40 leading-snug">{serviceCards[3].description}</p>
-              </motion.div>
-            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.6, duration: 0.5 }}
+              className="bg-[#1A1A1A] rounded-[20px] p-4 sm:p-6 md:p-7 min-h-[180px]"
+            >
+              <Image src={serviceCards[3].icon} alt="" width={28} height={28} className="w-6 h-6 sm:w-7 sm:h-7 mb-3 sm:mb-5 brightness-0 invert" />
+              <h4 className="font-semibold text-white text-sm sm:text-base mb-1">{serviceCards[3].title}</h4>
+              <p className="text-[11px] sm:text-[13px] text-white/40 leading-snug">{serviceCards[3].description}</p>
+            </motion.div>
           </div>
         </div>
       </section>
-
-      <Modal
-        isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
-        title="Обсудить проект"
-        subtitle="Расскажите о вашей идее, и мы свяжемся с вами"
-      />
     </>
   );
 }

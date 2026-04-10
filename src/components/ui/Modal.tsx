@@ -107,12 +107,14 @@ export function Modal({ isOpen, onClose, title, subtitle }: ModalProps) {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                 >
-                  <h2 className="font-headline italic text-3xl text-[#0A0A0A] mb-2">
-                    {title}
-                  </h2>
-                  {subtitle && (
-                    <p className="text-[#6B7280] mb-6">{subtitle}</p>
-                  )}
+                  <div className="mb-6">
+                    <h2 className="font-headline text-3xl text-[#0A0A0A] mb-2 leading-tight">
+                      {title || "Обсудить проект"}
+                    </h2>
+                    {subtitle && (
+                      <p className="text-[#6B7280]">{subtitle}</p>
+                    )}
+                  </div>
 
                   <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
