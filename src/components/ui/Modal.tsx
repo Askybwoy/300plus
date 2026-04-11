@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, CircleNotch, CheckCircle } from "@phosphor-icons/react";
 import { Button } from "./Button";
 
-export interface ModalProps {
+interface ModalProps {
  isOpen: boolean;
  onClose: () => void;
  title: string;
@@ -28,46 +28,6 @@ export interface ModalProps {
 type FormState = "idle" | "loading" | "success";
 
 const WEBHOOK_URL = "https://askydesign.app.n8n.cloud/webhook/300plus-form";
-
-// Validation helpers
-const validateTelegram = (value: string): boolean => {
-  // Allow: @username or username (5-32 chars, a-z, 0-9, underscore)
-  const clean = value.replace("@", "");
-  return /^[a-zA-Z0-9_]{5,32}$/.test(clean);
-};
-
-const validatePhone = (value: string): boolean => {
-  // Russian phone format: +7 (XXX) XXX-XX-XX
-  const digits = value.replace(/\D/g, "");
-  return digits.length === 11 && digits.startsWith("7");
-};
-
-const formatPhone = (value: string): string => {
-  const digits = value.replace(/\D/g, "");
-  if (digits.length === 0) return "";
-  
-  let formatted = "+7";
-  if (digits.length > 1) {
-    const rest = digits.slice(1);
-    if (rest.length > 0) formatted += " (" + rest.slice(0, 3);
-    if (rest.length >= 3) formatted += ")";
-    if (rest.length > 3) formatted += " " + rest.slice(3, 6);
-    if (rest.length > 6) formatted += "-" + rest.slice(6, 8);
-    if (rest.length > 8) formatted += "-" + rest.slice(8, 10);
-  }
-  return formatted;
-};
-
-const formatTelegram = (value: string): string => {
-  // Remove spaces and special chars, keep only a-z, 0-9, underscore
-  let clean = value.replace(/[^a-zA-Z0-9_@]/g, "");
-  // Ensure @ is at the start if present
-  if (clean.includes("@") && !clean.startsWith("@")) {
-    clean = "@" + clean.replace(/@/g, "");
-  }
-  // Limit to 33 chars (@ + 32 username)
-  return clean.slice(0, 33);
-};
 
 const BOT_LINKS: Record<string, string> = {
  discuss_hero: "https://t.me/its300plus_bot?start=discuss",
@@ -302,10 +262,8 @@ export function Modal({
  required
  value={formData.contact}
  onChange={(e) =>
- setFormData({ ...formData, contact: formatTelegram(e.target.value) })
+ setFormData({ ...formData, contact: e.target.value })
  }
- pattern="@?[a-zA-Z0-9_]{5,32}"
- title="Введите username: @username или username (5-32 символа, только буквы, цифры и _)"
  className="w-full px-4 py-3 border border-[#E5E7EB] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FF6B00]/20 focus:border-[#FF6B00] transition-all"
  placeholder="@username"
  />
@@ -315,10 +273,8 @@ export function Modal({
  required
  value={formData.contact}
  onChange={(e) =>
- setFormData({ ...formData, contact: formatPhone(e.target.value) })
+ setFormData({ ...formData, contact: e.target.value })
  }
- pattern="\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}"
- title="Введите номер в формате: +7 (999) 000-00-00"
  className="w-full px-4 py-3 border border-[#E5E7EB] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FF6B00]/20 focus:border-[#FF6B00] transition-all"
  placeholder="+7 (999) 000-00-00"
  />
@@ -345,11 +301,6 @@ export function Modal({
  variant="primary"
  className="w-full"
  icon={formState !== "loading"}
- disabled={
- formState === "loading" ||
- (contactType === "telegram" && !validateTelegram(formData.contact)) ||
- (contactType === "phone" && !validatePhone(formData.contact))
- }
  >
  {formState === "loading" ? (
  <CircleNotch className="w-5 h-5 animate-spin" />
