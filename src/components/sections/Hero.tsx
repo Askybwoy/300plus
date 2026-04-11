@@ -89,6 +89,7 @@ export function Hero() {
         onClose={() => setModalOpen(false)}
         title="Обсудить проект"
         subtitle="Расскажите о вашей идее, и мы свяжемся с вами"
+        source="discuss_hero"
       />
     </section>
   );

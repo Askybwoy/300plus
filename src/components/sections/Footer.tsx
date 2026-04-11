@@ -97,6 +97,7 @@ export function Footer() {
         onClose={() => setModalOpen(false)}
         title="Оставить заявку"
         subtitle="Расскажите о вашем проекте, и мы свяжемся с вами"
+        source="footer_cta"
       />
     </footer>
   );

@@ -330,6 +330,7 @@ export function Header() {
         onClose={() => setModalOpen(false)}
         title="Обсудить проект"
         subtitle="Расскажите о вашей идее, и мы свяжемся с вами"
+        source="discuss_nav"
       />
     </>
   );

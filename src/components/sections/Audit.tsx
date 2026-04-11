@@ -226,6 +226,7 @@ export function Audit() {
         onClose={() => setModalOpen(false)}
         title="Бесплатный аудит"
         subtitle="Пришлите ссылку на сайт для разбора"
+        source="audit_section"
       />
     </section>
   );

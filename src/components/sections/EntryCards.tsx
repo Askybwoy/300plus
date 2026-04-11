@@ -15,10 +15,16 @@ const cards = [
     description: "Идеально для\u00A0старта. Превратим абстрактную мысль\nв\u00A0упакованный продукт.",
     bgImage: "/images/bulb-bg-53cf4f.png",
     imageSize: { width: 506, height: 720 },
-    layout: "text-left", // text on left, image on right
-    modalTitle: "Расскажите о вашей идее",
-    modalSubtitle: "Мы поможем превратить её в работающий бизнес",
+    layout: "text-left",
+    modalTitle: "Получить консультацию",
+    modalSubtitle: "Расскажите об идее — подберём подходящий формат",
     buttonText: "получить консультацию",
+    source: "consult_idea" as const,
+    intents: [
+      { label: "Хочу запустить как можно скорее", value: "now" },
+      { label: "Планирую через 1-3 месяца", value: "months" },
+      { label: "Пока изучаю варианты", value: "exploring" },
+    ],
   },
   {
     id: "launch",
@@ -28,10 +34,17 @@ const cards = [
     description: "Для\u00A0действующего бизнеса. Быстрый тест новой гипотезы или\u00A0продукта.",
     bgImage: "/images/cat-bg.png",
     imageSize: { width: 720, height: 720 },
-    layout: "text-right", // image on left, text on right
-    modalTitle: "Запустим ваш проект",
-    modalSubtitle: "Лендинг и реклама за 10 дней",
+    layout: "text-right",
+    modalTitle: "Запустить проект",
+    modalSubtitle: "Что именно нужно сделать?",
     buttonText: "запустить проект",
+    source: "launch_brand" as const,
+    intents: [
+      { label: "Новая главная страница", value: "homepage" },
+      { label: "Тест гипотезы", value: "hypothesis" },
+      { label: "Запуск рекламы", value: "ads" },
+      { label: "Всё сразу", value: "all" },
+    ],
   },
 ];
 
@@ -116,6 +129,8 @@ export function EntryCards() {
           onClose={() => setActiveModal(null)}
           title={card.modalTitle}
           subtitle={card.modalSubtitle}
+          source={card.source}
+          intents={card.intents}
         />
       ))}
     </section>

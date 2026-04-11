@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { AnimatedText } from "../ui/AnimatedText";
-import { Modal } from "../ui/Modal";
+import { Modal, type ModalProps } from "../ui/Modal";
 
 const packages = [
   {
@@ -21,6 +21,7 @@ const packages = [
     audience: "есть сайт, не понимаешь почему нет заявок",
     buttonText: "Заказать аудит",
     variant: "white" as const,
+    source: "order_start" as const,
   },
   {
     id: "sprint",
@@ -38,6 +39,12 @@ const packages = [
     audience: "хочешь результат быстро, без найма дизайнера",
     buttonText: "Запустить спринт",
     variant: "orange" as const,
+    source: "order_sprint" as const,
+    intents: [
+      { label: "Начать сразу", value: "now" },
+      { label: "На этой неделе", value: "week" },
+      { label: "В следующем месяце", value: "next_month" },
+    ],
   },
   {
     id: "full",
@@ -56,6 +63,7 @@ const packages = [
     audience: "запускаешь новый продукт или перезапускаешь бизнес",
     buttonText: "Обсудить проект",
     variant: "dark" as const,
+    source: "discuss_package3" as const,
   },
 ];
 
@@ -68,9 +76,13 @@ export function PricingSection() {
     setModalOpen(true);
   };
 
-  const getModalTitle = () => {
+  const getModalConfig = () => {
     const pkg = packages.find((p) => p.id === selectedPackage);
-    return pkg?.buttonText || "Оставить заявку";
+    return {
+      title: pkg?.buttonText || "Оставить заявку",
+      source: (pkg?.source || "discuss_hero") as ModalProps["source"],
+      intents: pkg?.intents,
+    };
   };
 
   return (
@@ -274,8 +286,10 @@ export function PricingSection() {
       <Modal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
-        title={getModalTitle()}
+        title={getModalConfig().title}
         subtitle="Расскажите о вашем проекте, и мы свяжемся с вами в течение дня"
+        source={getModalConfig().source}
+        intents={getModalConfig().intents}
       />
     </>
   );
