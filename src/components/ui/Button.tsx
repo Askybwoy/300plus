@@ -11,6 +11,7 @@ interface ButtonProps {
   onClick?: () => void;
   className?: string;
   type?: "button" | "submit";
+  disabled?: boolean;
 }
 
 export function Button({
@@ -21,17 +22,18 @@ export function Button({
   onClick,
   className = "",
   type = "button",
+  disabled = false,
 }: ButtonProps) {
   const baseStyles =
     "inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all duration-200 cursor-pointer";
 
   const variants = {
     primary:
-      "bg-[#FF6B00] text-white hover:bg-[#E65C00] active:scale-[0.98]",
+      "bg-[#FF6B00] text-white hover:bg-[#E65C00] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#FF6B00]",
     secondary:
-      "bg-[#1A1A1A] text-white hover:bg-[#2A2A2A] active:scale-[0.98]",
+      "bg-[#1A1A1A] text-white hover:bg-[#2A2A2A] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#1A1A1A]",
     outline:
-      "bg-transparent border border-[#E5E7EB] text-[#374151] hover:bg-[#FAFAFA] hover:border-[#D1D5DB] active:scale-[0.98]",
+      "bg-transparent border border-[#E5E7EB] text-[#374151] hover:bg-[#FAFAFA] hover:border-[#D1D5DB] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed",
   };
 
   const sizes = {
@@ -44,8 +46,9 @@ export function Button({
     <motion.button
       type={type}
       onClick={onClick}
+      disabled={disabled}
       className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
-      whileTap={{ scale: 0.98 }}
+      whileTap={disabled ? undefined : { scale: 0.98 }}
     >
       {children}
       {icon && <ArrowRight weight="bold" className="w-4 h-4" />}

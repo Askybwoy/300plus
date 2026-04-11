@@ -21,9 +21,9 @@ const cards = [
     buttonText: "получить консультацию",
     source: "consult_idea" as const,
     intents: [
-      { label: "Хочу запустить как можно скорее", value: "now" },
-      { label: "Планирую через 1-3 месяца", value: "months" },
-      { label: "Пока изучаю варианты", value: "exploring" },
+      { label: "⚡ Хочу запустить как можно скорее", value: "now" },
+      { label: "📅 Планирую через 1-3 месяца", value: "months" },
+      { label: "🔍 Пока изучаю варианты", value: "exploring" },
     ],
   },
   {
@@ -40,10 +40,10 @@ const cards = [
     buttonText: "запустить проект",
     source: "launch_brand" as const,
     intents: [
-      { label: "Новая главная страница", value: "homepage" },
-      { label: "Тест гипотезы", value: "hypothesis" },
-      { label: "Запуск рекламы", value: "ads" },
-      { label: "Всё сразу", value: "all" },
+      { label: "🏠 Новая главная страница", value: "homepage" },
+      { label: "🧪 Тест гипотезы", value: "hypothesis" },
+      { label: "📣 Запуск рекламы", value: "ads" },
+      { label: "🎯 Всё сразу", value: "all" },
     ],
   },
 ];

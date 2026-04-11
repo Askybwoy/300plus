@@ -41,9 +41,9 @@ const packages = [
     variant: "orange" as const,
     source: "order_sprint" as const,
     intents: [
-      { label: "Начать сразу", value: "now" },
-      { label: "На этой неделе", value: "week" },
-      { label: "В следующем месяце", value: "next_month" },
+      { label: "⚡ Начать сразу", value: "now" },
+      { label: "📅 На этой неделе", value: "week" },
+      { label: "🗓 В следующем месяце", value: "next_month" },
     ],
   },
   {
