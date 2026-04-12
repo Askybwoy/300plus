@@ -1,8 +1,6 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "framer-motion";
-import { Modal } from "../ui/Modal";
 
 const floatingTags = [
   { label: "Бесплатно", color: "#FFF0E6", iconColor: "#FF6B00", x: 141, y: 92, icon: "free" },
@@ -71,8 +69,6 @@ const groupWidth = 1236;
 const groupHeight = 638;
 
 export function Audit() {
-  const [modalOpen, setModalOpen] = useState(false);
-
   return (
     <section id="audit" className="py-16 sm:py-24 md:py-32 px-4 sm:px-6 bg-white relative overflow-hidden">
       <div className="max-w-[1200px] mx-auto">
@@ -163,11 +159,11 @@ export function Audit() {
             </p>
 
             <motion.button
-              onClick={() => setModalOpen(true)}
+              onClick={() => window.open('https://t.me/its300plus_bot?start=audit', '_blank')}
               className="group inline-flex items-center gap-4 bg-[#131313] text-white font-cta pl-7 pr-2 py-2 rounded-full cursor-pointer hover:bg-[#2A2A2A] transition-all duration-200"
               whileTap={{ scale: 0.98 }}
             >
-              <span>Оставить заявку</span>
+              <span>Бесплатный аудит</span>
               <div className="relative w-[50px] h-[50px] rounded-full bg-[#FF6B00] flex items-center justify-center overflow-hidden">
                 {/* Original icon - flies up-right on hover */}
                 <motion.svg 
@@ -191,6 +187,10 @@ export function Audit() {
                 </motion.svg>
               </div>
             </motion.button>
+
+            <p className="text-sm text-[#6B7280] mt-4">
+              Telegram бот @its300plus_bot
+            </p>
           </motion.div>
         </div>
 
@@ -220,14 +220,6 @@ export function Audit() {
           })}
         </div>
       </div>
-
-      <Modal
-        isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
-        title="Бесплатный аудит"
-        subtitle="Пришлите ссылку на сайт для разбора"
-        source="audit_section"
-      />
     </section>
   );
 }
