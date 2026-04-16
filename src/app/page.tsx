@@ -1,5 +1,6 @@
 import { Hero } from "@/components/sections/Hero";
 import { EntryCards } from "@/components/sections/EntryCards";
+import { ProcessSection } from "@/components/sections/ProcessSection";
 import { HowItWorks } from "@/components/sections/HowItWorks";
 import { Moodboard } from "@/components/sections/Moodboard";
 import { WhatYouGet } from "@/components/sections/WhatYouGet";
@@ -16,6 +17,7 @@ export default function Home() {
       <EntryCards />
       {/* White background zone */}
       <div className="bg-white">
+        <ProcessSection />
         <HowItWorks />
         <Moodboard />
         <WhatYouGet />

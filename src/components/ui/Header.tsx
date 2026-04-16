@@ -60,6 +60,7 @@ export function Header() {
       const sections = [
         { id: 'hero', light: false },
         { id: 'entry-cards', light: false },
+        { id: 'process', light: true },
         { id: 'how-it-works', light: true },
         { id: 'approach', light: true },
         { id: 'what-you-get', light: false },
