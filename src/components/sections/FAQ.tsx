@@ -132,7 +132,7 @@ export function FAQ() {
         >
           <p className="text-[#6B7280] mb-4">Остались вопросы?</p>
           <a
-            href="https://t.me/its300plus_bot"
+            href="https://t.me/askybwoy"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2.5 px-6 py-3.5 bg-[#FF6B00] text-white rounded-full font-medium transition-all hover:bg-[#e65c00] active:scale-[0.98]"

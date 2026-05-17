@@ -1,54 +1,26 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { Modal } from "../ui/Modal";
 import Image from "next/image";
 
 export function Footer() {
-  const [modalOpen, setModalOpen] = useState(false);
-
   return (
     <footer className="py-12 sm:py-16 px-4 sm:px-6 bg-[#0A0A0A]">
       <div className="max-w-[1152px] mx-auto">
         {/* Top area */}
         <div className="flex flex-col md:flex-row justify-between gap-8 sm:gap-12 mb-12 sm:mb-16">
-          {/* Left: Description + CTA */}
-          <div className="max-w-[443px] space-y-9">
+          {/* Left: Description */}
+          <div className="max-w-[443px]">
             <p className="text-[#9CA3AF] text-base leading-relaxed">
               Студия быстрого тестирования бизнес-идей. Помогаем
               проверить гипотезу за&nbsp;10&nbsp;дней через&nbsp;создание бренда,
               лендинга и&nbsp;запуск таргетированной рекламы.
             </p>
-            <motion.button
-              onClick={() => setModalOpen(true)}
-              className="inline-flex items-center gap-4 bg-white text-[#2A2A2A] font-cta pl-7 pr-2 py-2 rounded-full cursor-pointer hover:bg-[#F5F5F5] transition-all duration-200"
-              whileTap={{ scale: 0.98 }}
-            >
-              <span>Оставить заявку</span>
-              <div className="w-[50px] h-[50px] rounded-full bg-[#FF6B00] flex items-center justify-center">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                  <path d="M4 10L10 4M10 4H4M10 4V10" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
-            </motion.button>
           </div>
 
           {/* Right: Contacts */}
           <div>
             <h4 className="text-white font-medium text-base mb-4">Контакты</h4>
             <div className="space-y-3">
-              <a
-                href="https://t.me/its300plus_bot"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 text-[#9CA3AF] hover:text-white transition-colors"
-              >
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path d="M18.5 1.5L9 11M18.5 1.5L12.5 18.5L9 11M18.5 1.5L1.5 8L9 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                @its300plus_bot
-              </a>
               <a
                 href="mailto:hello@300.plus"
                 className="flex items-center gap-3 text-[#9CA3AF] hover:text-white transition-colors"
@@ -78,27 +50,54 @@ export function Footer() {
           />
         </div>
 
-        {/* Bottom */}
-        <div className="pt-8 border-t border-[#1A1A1A] flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-[#6B7280] text-sm">
-            2026 300.plus. Все&nbsp;права защищены.
-          </p>
-          <a
-            href="#"
-            className="text-[#6B7280] text-sm hover:text-white transition-colors"
-          >
-            Политика конфиденциальности
-          </a>
+        {/* Legal Info */}
+        <div className="pt-8 border-t border-[#1A1A1A]">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-6">
+            <p className="text-[#6B7280] text-sm">
+              2026 300.plus. Все права защищены.
+            </p>
+            <div className="flex items-center gap-5 md:gap-6">
+              <div className="flex flex-wrap gap-x-6 gap-y-2">
+                <a
+                  href="/privacy"
+                  className="text-[#6B7280] text-sm hover:text-white transition-colors"
+                >
+                  Политика конфиденциальности
+                </a>
+                <a
+                  href="/offer"
+                  className="text-[#6B7280] text-sm hover:text-white transition-colors"
+                >
+                  Договор оферты
+                </a>
+                <a
+                  href="/cookie"
+                  className="text-[#6B7280] text-sm hover:text-white transition-colors"
+                >
+                  Политика использования cookie
+                </a>
+                <a
+                  href="/offer"
+                  className="text-[#6B7280] text-sm hover:text-white transition-colors"
+                >
+                  Реквизиты
+                </a>
+              </div>
+              <button
+                type="button"
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                aria-label="Наверх"
+                className="w-10 h-10 rounded-full border border-white/15 flex items-center justify-center text-[#9CA3AF] hover:text-white hover:border-[#FF6B00] hover:bg-[#FF6B00] transition-all duration-200 active:scale-95 flex-shrink-0 cursor-pointer"
+              >
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path d="M7 11V3M7 3L3 7M7 3L11 7" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
-      <Modal
-        isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
-        title="Оставить заявку"
-        subtitle="Расскажите о вашем проекте, и мы свяжемся с вами"
-        source="footer_cta"
-      />
     </footer>
   );
 }

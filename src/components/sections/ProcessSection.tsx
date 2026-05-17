@@ -17,7 +17,7 @@ function DesignerCard() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.7, ease: "easeOut" }}
-      className="relative w-full min-w-[280px] max-w-[400px] h-full"
+      className="relative w-full min-w-0 max-w-[400px] h-full"
     >
       <div className="bg-white rounded-[20px] shadow-[0_2px_24px_rgba(0,0,0,0.07)] border border-black/6 overflow-hidden h-full flex flex-col">
         {/* Header with badge */}
@@ -151,7 +151,7 @@ function AICard() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.7, ease: "easeOut" }}
-      className="relative w-full min-w-[280px] max-w-[400px] h-full"
+      className="relative w-full min-w-0 max-w-[400px] h-full"
     >
       <div className="bg-[#1A1A1A] rounded-[20px] shadow-[0_24px_48px_rgba(0,0,0,0.15)] overflow-hidden h-full flex flex-col">
         {/* Header */}
@@ -223,7 +223,7 @@ function SpeedCard() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.7, ease: "easeOut" }}
-      className="relative w-full min-w-[280px] max-w-[400px] h-full"
+      className="relative w-full min-w-0 max-w-[400px] h-full"
     >
       <div className="bg-white rounded-[20px] shadow-[0_2px_24px_rgba(0,0,0,0.07)] border border-black/6 overflow-hidden h-full flex flex-col">
         {/* Header */}
@@ -369,10 +369,10 @@ function StepCard({ step, index }: { step: typeof steps[number]; index: number }
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ delay: index * 0.15, duration: 0.6 }}
-      className="flex flex-col items-center text-center h-full"
+      className="flex flex-col items-start text-left h-full"
     >
       {/* Card */}
-      <div className="mb-6 w-full flex-1 flex items-stretch">
+      <div className="mb-6 w-full flex-1 flex items-stretch justify-center">
         <StepCardComponent />
       </div>
 
@@ -380,7 +380,7 @@ function StepCard({ step, index }: { step: typeof steps[number]; index: number }
       <h3 className="font-headline font-medium text-[22px] md:text-[26px] text-[#2D2D2D] leading-[1.15] tracking-[-0.02em] whitespace-pre-line mb-3">
         {step.title}
       </h3>
-      <p className="text-[15px] text-black/60 leading-[1.6] max-w-[320px]">
+      <p className="text-[15px] text-black/60 leading-[1.6] max-w-[400px]">
         {step.description}
       </p>
     </motion.div>
@@ -404,7 +404,7 @@ export function ProcessSection() {
         </div>
 
         {/* Steps Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-8 items-stretch">
           {steps.map((step, index) => (
             <StepCard key={index} step={step} index={index} />
           ))}

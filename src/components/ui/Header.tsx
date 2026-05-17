@@ -1,17 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Modal } from "./Modal";
 
 const navLinks = [
-  { label: "Как это работает", href: "#how-it-works" },
-  { label: "Что вы получаете", href: "#what-you-get" },
-  { label: "Наш подход", href: "#approach" },
+  { label: "Что получите", href: "#what-you-get" },
   { label: "Тарифы", href: "#pricing" },
-  { label: "Аудит сайта", href: "#audit", badge: "Бесплатно" },
-  { label: "FAQ", href: "#faq" },
+  { label: "Кейсы", href: "#social-proof" },
+  { label: "Аудит", href: "#audit", badge: "Бесплатно" },
 ];
 
 const menuVariants = {
@@ -48,11 +47,19 @@ const itemVariants = {
 };
 
 export function Header() {
-  const [isInverted, setIsInverted] = useState(false);
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
+  const [isInverted, setIsInverted] = useState(!isHomePage);
   const [modalOpen, setModalOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
+    // On non-home pages, always use inverted (light) header
+    if (!isHomePage) {
+      setIsInverted(true);
+      return;
+    }
+
     const handleScroll = () => {
       const scrollY = window.scrollY + 80; // Header height offset
       
@@ -93,9 +100,13 @@ export function Header() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isHomePage]);
 
   const scrollTo = (href: string) => {
+    if (!isHomePage && href.startsWith("#")) {
+      window.location.href = "/" + href;
+      return;
+    }
     const el = document.querySelector(href);
     el?.scrollIntoView({ behavior: "smooth" });
     setMenuOpen(false);
@@ -107,7 +118,7 @@ export function Header() {
         <div className="max-w-[1572px] mx-auto flex items-center justify-between">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
+            <a href="/" onClick={(e) => { if (isHomePage) { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); } }}>
               <Image
                 src="/icons/logo-header.svg"
                 alt="300.plus"

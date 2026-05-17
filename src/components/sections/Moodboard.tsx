@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { SectionLabel } from "../ui/SectionLabel";
 import { AnimatedText } from "../ui/AnimatedText";
 
@@ -537,70 +537,272 @@ function TechIllustration({ animateKey }: { animateKey: number }) {
 
 
 
-/* ─────────── Single Approach Row ─────────── */
-function ApproachRow({ approach, index }: { approach: typeof approaches[number]; index: number }) {
-  const illustrations = [
-    <LandingMockup key="landing" animateKey={index} />,
-    <DesignIllustration key="design" animateKey={index} />,
-    <TechIllustration key="tech" animateKey={index} />,
-  ];
-  const IllustrationComponent = illustrations[index];
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, amount: 0.2 });
-  const isCardLeft = index % 2 === 1;
+/* ─────────── Plus / Minus Toggle Icon ─────────── */
+function ToggleIcon({ isOpen }: { isOpen: boolean }) {
+  return (
+    <span className="relative flex-shrink-0 w-6 h-6 flex items-center justify-center mt-2">
+      <span className="absolute h-[1.5px] w-5 bg-[#FF6B00] rounded-full" />
+      <motion.span
+        animate={{ scaleX: isOpen ? 0 : 1 }}
+        transition={{ duration: 0.25, ease: "easeOut" }}
+        className="absolute h-[1.5px] w-5 bg-[#FF6B00] rounded-full origin-center"
+        style={{ rotate: "90deg" }}
+      />
+    </span>
+  );
+}
+
+/* ─────────── Accordion Item (desktop) ─────────── */
+function AccordionItem({
+  approach,
+  isOpen,
+  onClick,
+}: {
+  approach: typeof approaches[number];
+  isOpen: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <div className="border-b border-[#FF6B00]/35">
+      <button
+        onClick={onClick}
+        className="w-full flex items-start gap-5 py-7 text-left group"
+        aria-expanded={isOpen}
+      >
+        <span className="font-headline italic text-[22px] text-[#FF6B00] tracking-[-0.02em] pt-2 flex-shrink-0">
+          {approach.number}
+        </span>
+        <div className="flex-1 min-w-0">
+          <h3 className="font-headline font-medium text-[28px] md:text-[34px] text-[#2D2D2D] leading-[1.1] tracking-[-0.02em] whitespace-pre-line">
+            {approach.title}
+          </h3>
+          <AnimatePresence initial={false}>
+            {isOpen && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+                className="overflow-hidden"
+              >
+                <p className="text-[15px] text-black/60 leading-[1.6] mt-4 max-w-[440px]">
+                  {approach.description}
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+        <ToggleIcon isOpen={isOpen} />
+      </button>
+    </div>
+  );
+}
+
+/* ─────────── Mobile Slider with swipe ─────────── */
+function MobileSlider({ illustrations }: { illustrations: React.ReactNode[] }) {
+  const trackRef = useRef<HTMLDivElement | null>(null);
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  // Pointer-drag swipe (works for mouse on desktop preview)
+  const dragState = useRef({ active: false, startX: 0, startScroll: 0, moved: false });
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const onScroll = () => {
+      const slideWidth = track.clientWidth;
+      if (slideWidth === 0) return;
+      const idx = Math.round(track.scrollLeft / slideWidth);
+      setActiveSlide(idx);
+    };
+    track.addEventListener("scroll", onScroll, { passive: true });
+    return () => track.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const goTo = (i: number) => {
+    const track = trackRef.current;
+    if (!track) return;
+    const target = Math.max(0, Math.min(approaches.length - 1, i));
+    track.scrollTo({ left: target * track.clientWidth, behavior: "smooth" });
+  };
+
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType === "touch") return; // let native scroll handle touch
+    const track = trackRef.current;
+    if (!track) return;
+    dragState.current = {
+      active: true,
+      startX: e.clientX,
+      startScroll: track.scrollLeft,
+      moved: false,
+    };
+    track.setPointerCapture(e.pointerId);
+  };
+
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!dragState.current.active) return;
+    const track = trackRef.current;
+    if (!track) return;
+    const dx = e.clientX - dragState.current.startX;
+    if (Math.abs(dx) > 4) dragState.current.moved = true;
+    track.scrollLeft = dragState.current.startScroll - dx;
+  };
+
+  const onPointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!dragState.current.active) return;
+    const track = trackRef.current;
+    if (!track) return;
+    dragState.current.active = false;
+    try { track.releasePointerCapture(e.pointerId); } catch {}
+    if (dragState.current.moved) {
+      const idx = Math.round(track.scrollLeft / track.clientWidth);
+      goTo(idx);
+    }
+  };
+
+  const isFirst = activeSlide === 0;
+  const isLast = activeSlide === approaches.length - 1;
 
   return (
-    <div
-      ref={ref}
-      className={`flex flex-col ${isCardLeft ? "lg:flex-row-reverse" : "lg:flex-row"} items-center gap-12 lg:gap-16`}
-    >
-      {/* Text side - Second on mobile */}
-      <div className="flex-1 min-w-0 sm:min-w-[320px] flex gap-6 order-2 lg:order-none">
-        <div className="flex flex-col justify-between py-6 flex-1 px-4 sm:px-8 lg:pl-[70px] lg:pr-[70px]">
-          <div>
-            <span className="font-headline font-medium text-[22px] text-[#FF6B00] tracking-[-0.02em]">
-              {approach.number}
-            </span>
-            <div className="mt-4 space-y-2">
-              <h3 className="font-headline font-medium text-[26px] md:text-[30px] text-[#2D2D2D] leading-[1.15] tracking-[-0.02em] whitespace-pre-line">
-                {approach.title}
-              </h3>
-              <p className="text-[15px] text-black/60 leading-[1.6] max-w-[340px]">
-                {approach.description}
-              </p>
+    <div className="lg:hidden">
+      <div
+        ref={trackRef}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+        className="flex overflow-x-auto snap-x snap-mandatory -mx-4 sm:-mx-6 px-4 sm:px-6 pb-2 gap-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden cursor-grab active:cursor-grabbing select-none"
+        style={{ scrollSnapType: "x mandatory", touchAction: "pan-x" }}
+      >
+        {approaches.map((approach, i) => (
+          <div
+            key={approach.number}
+            className="snap-center flex-shrink-0 w-full"
+          >
+            <div className="bg-gradient-to-t from-[#F9F9F9] to-white rounded-[20px] p-5 sm:p-8 flex flex-col items-center">
+              <div className="w-full flex justify-center pointer-events-none">{illustrations[i]}</div>
+              <div className="mt-6 w-full px-2">
+                <span className="font-headline italic text-[20px] text-[#FF6B00] tracking-[-0.02em]">
+                  {approach.number}
+                </span>
+                <h3 className="font-headline font-medium text-[26px] text-[#2D2D2D] leading-[1.15] tracking-[-0.02em] mt-2 whitespace-pre-line">
+                  {approach.title}
+                </h3>
+                <p className="text-[15px] text-black/60 leading-[1.6] mt-3">
+                  {approach.description}
+                </p>
+              </div>
             </div>
           </div>
-
-        </div>
+        ))}
       </div>
-      {/* Card side - First on mobile */}
-      <div className="flex-1 flex justify-center order-1 lg:order-none w-full">
-        <div className="bg-gradient-to-t from-[#F9F9F9] to-white rounded-[20px] p-4 sm:p-8 md:p-10 w-full sm:w-auto flex items-center justify-center">
-          {IllustrationComponent}
+      {/* Controls: arrows + dot indicators */}
+      <div className="flex items-center justify-center gap-4 mt-6">
+        <button
+          type="button"
+          onClick={() => goTo(activeSlide - 1)}
+          disabled={isFirst}
+          aria-label="Предыдущий слайд"
+          className="w-10 h-10 rounded-full border border-black/10 flex items-center justify-center transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed hover:border-[#FF6B00]/40 hover:bg-[#FF6B00]/5 active:scale-95"
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M10 3L5 8L10 13" stroke={isFirst ? "#9CA3AF" : "#FF6B00"} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+
+        <div className="flex items-center gap-2">
+          {approaches.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => goTo(i)}
+              aria-label={`Перейти к слайду ${i + 1}`}
+              className="h-1.5 rounded-full transition-all duration-300"
+              style={{
+                width: activeSlide === i ? 24 : 8,
+                backgroundColor: activeSlide === i ? "#FF6B00" : "rgba(0,0,0,0.15)",
+              }}
+            />
+          ))}
         </div>
+
+        <button
+          type="button"
+          onClick={() => goTo(activeSlide + 1)}
+          disabled={isLast}
+          aria-label="Следующий слайд"
+          className="w-10 h-10 rounded-full border border-black/10 flex items-center justify-center transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed hover:border-[#FF6B00]/40 hover:bg-[#FF6B00]/5 active:scale-95"
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M6 3L11 8L6 13" stroke={isLast ? "#9CA3AF" : "#FF6B00"} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
       </div>
     </div>
   );
 }
 
 export function Moodboard() {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const illustrationsForActive = [
+    <LandingMockup key={`landing-${activeIndex}`} animateKey={activeIndex} />,
+    <DesignIllustration key={`design-${activeIndex}`} animateKey={activeIndex} />,
+    <TechIllustration key={`tech-${activeIndex}`} animateKey={activeIndex} />,
+  ];
+
+  // Stable instances per slide for the mobile track (don't remount on activeIndex change)
+  const mobileIllustrations = [
+    <LandingMockup key="m-landing" animateKey={0} />,
+    <DesignIllustration key="m-design" animateKey={0} />,
+    <TechIllustration key="m-tech" animateKey={0} />,
+  ];
+
   return (
     <section id="approach" className="py-16 sm:py-24 md:py-32 px-4 sm:px-6 overflow-hidden bg-white">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-20">
+        <div className="text-center mb-16 md:mb-20">
           <SectionLabel className="mb-6">Наш подход</SectionLabel>
           <h2 className="font-headline text-3xl md:text-[4.35rem] text-[#2D2D2D] tracking-[-0.05em] leading-[0.9]">
             <AnimatedText text="Не просто красиво, а эффективно" />
           </h2>
         </div>
 
-        {/* Steps - Same layout as HowItWorks */}
-        <div className="space-y-24 md:space-y-32">
-          {approaches.map((approach, index) => (
-            <ApproachRow key={approach.number} approach={approach} index={index} />
-          ))}
+        {/* Desktop: synced visual + accordion */}
+        <div className="hidden lg:grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-10 xl:gap-16 items-center min-h-[640px]">
+          {/* Visual side */}
+          <div className="flex justify-center w-full">
+            <div className="bg-gradient-to-t from-[#F9F9F9] to-white rounded-[20px] p-8 md:p-10 w-full max-w-[460px] min-h-[560px] flex items-center justify-center">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeIndex}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -16 }}
+                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                  className="w-full flex justify-center"
+                >
+                  {illustrationsForActive[activeIndex]}
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </div>
+
+          {/* Accordion side */}
+          <div className="min-h-[540px]">
+            {approaches.map((approach, i) => (
+              <AccordionItem
+                key={approach.number}
+                approach={approach}
+                isOpen={i === activeIndex}
+                onClick={() => setActiveIndex(i)}
+              />
+            ))}
+          </div>
         </div>
+
+        {/* Mobile: swipe slider */}
+        <MobileSlider illustrations={mobileIllustrations} />
       </div>
     </section>
   );

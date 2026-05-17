@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, CircleNotch, CheckCircle } from "@phosphor-icons/react";
 import { Button } from "./Button";
+import { captureUtmParams, getUtmParams, getEffectiveSource } from "@/utils/utm";
+import { trackLead } from "@/utils/vk-pixel";
 
 export interface ModalProps {
   isOpen: boolean;
@@ -23,6 +25,8 @@ export interface ModalProps {
 }
 
 type FormState = "idle" | "loading" | "success";
+
+const CONSENT_TEXT = "Я согласен на обработку персональных данных в соответствии с Политикой конфиденциальности";
 
 const WEBHOOK_URL = "https://askydesign.app.n8n.cloud/webhook/300plus-form";
 const CALENDLY_URL = "https://calendly.com/askybwoy/30min";
@@ -55,9 +59,15 @@ export function Modal({
     contact: "",
     description: "",
   });
+  const [consentGiven, setConsentGiven] = useState(false);
 
   const botLink = BOT_LINKS[source] ?? BOT_LINKS["discuss_hero"];
   const showCalendly = CALENDLY_SOURCES.includes(source);
+
+  // Capture UTM params from URL on mount (idempotent — only stores if URL has UTM)
+  useEffect(() => {
+    captureUtmParams();
+  }, []);
 
   const handleClose = () => {
     onClose();
@@ -66,12 +76,16 @@ export function Modal({
       setIntent("");
       setContactType("telegram");
       setFormData({ name: "", contact: "", description: "" });
+      setConsentGiven(false);
     }, 300);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormState("loading");
+
+    const utm = getUtmParams();
+    const effectiveSource = getEffectiveSource(source);
 
     try {
       await fetch(WEBHOOK_URL, {
@@ -83,9 +97,13 @@ export function Modal({
           phone: contactType === "phone" ? formData.contact : "",
           contactType,
           message: formData.description,
-          source,
+          source: effectiveSource,
           intent,
-          utm_content: source,
+          utm_source: utm.utm_source || "",
+          utm_medium: utm.utm_medium || "",
+          utm_campaign: utm.utm_campaign || "",
+          utm_content: utm.utm_content || source,
+          utm_term: utm.utm_term || "",
           page: window.location.pathname,
           referrer: document.referrer,
           timestamp: new Date().toISOString(),
@@ -95,6 +113,7 @@ export function Modal({
       // Не блокируем UX если webhook недоступен
     }
 
+    trackLead();
     setFormState("success");
   };
 
@@ -301,11 +320,35 @@ export function Modal({
                       />
                     </div>
 
+                    {/* Consent Checkbox */}
+                    <div className="flex items-start gap-3">
+                      <input
+                        type="checkbox"
+                        id="consent"
+                        checked={consentGiven}
+                        onChange={(e) => setConsentGiven(e.target.checked)}
+                        className="mt-1 w-4 h-4 rounded border-[#E5E7EB] text-[#FF6B00] focus:ring-[#FF6B00]/20 cursor-pointer"
+                      />
+                      <label htmlFor="consent" className="text-xs text-[#6B7280] leading-relaxed cursor-pointer">
+                        {CONSENT_TEXT.split("Политикой конфиденциальности")[0]}
+                        <a
+                          href="/privacy"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[#FF6B00] hover:underline"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          Политикой конфиденциальности
+                        </a>
+                      </label>
+                    </div>
+
                     <Button
                       type="submit"
                       variant="primary"
                       className="w-full"
                       icon={formState !== "loading"}
+                      disabled={!consentGiven || formState === "loading"}
                     >
                       {formState === "loading" ? (
                         <CircleNotch className="w-5 h-5 animate-spin" />
