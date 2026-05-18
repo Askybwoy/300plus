@@ -6,8 +6,7 @@ import { Header } from "@/components/ui/Header";
 import { SectionNav } from "@/components/ui/SectionNav";
 import { CookieBanner } from "@/components/ui/CookieBanner";
 
-// TODO: Replace with your actual VK Pixel ID or set NEXT_PUBLIC_VK_PIXEL_ID env variable
-const VK_PIXEL_ID = process.env.NEXT_PUBLIC_VK_PIXEL_ID || 'VK-RTRG-XXXXXX-XXXXX';
+const TMR_COUNTER_ID = "3766946";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -39,40 +38,38 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru">
+    <html lang="ru" suppressHydrationWarning>
       <body className={`${inter.variable} ${ptSerif.variable} antialiased`}>
         <Header />
         {/* <SectionNav /> */}
         {children}
         <CookieBanner />
 
-        {/* VK Pixel (VK Ads Retargeting) — loads only in production */}
-        {process.env.NODE_ENV === 'production' && (
-          <>
-            <Script
-              id="vk-pixel"
-              strategy="afterInteractive"
-              dangerouslySetInnerHTML={{
-                __html: `
-                  !function(){var t=document.createElement("script");
-                  t.type="text/javascript",t.async=!0,
-                  t.src='https://vk.com/js/api/openapi.js?175',
-                  t.onload=function(){
-                    VK.Retargeting.Init("${VK_PIXEL_ID}"),
-                    VK.Retargeting.Hit()
-                  },document.head.appendChild(t)}();
-                `,
-              }}
+        {/* Top.Mail.Ru counter */}
+        <Script
+          id="tmr-code"
+          src="https://top-fwz1.mail.ru/js/code.js"
+          strategy="afterInteractive"
+        />
+        <Script
+          id="tmr-init"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              var _tmr = window._tmr || (window._tmr = []);
+              _tmr.push({id: "${TMR_COUNTER_ID}", type: "pageView", start: (new Date()).getTime()});
+            `,
+          }}
+        />
+        <noscript>
+          <div>
+            <img
+              src={`https://top-fwz1.mail.ru/counter?id=${TMR_COUNTER_ID};js=na`}
+              style={{ position: 'absolute', left: '-9999px' }}
+              alt="Top.Mail.Ru"
             />
-            <noscript>
-              <img
-                src={`https://vk.com/rtrg?p=${VK_PIXEL_ID}`}
-                style={{ position: 'fixed', left: '-999px' }}
-                alt=""
-              />
-            </noscript>
-          </>
-        )}
+          </div>
+        </noscript>
       </body>
     </html>
   );
