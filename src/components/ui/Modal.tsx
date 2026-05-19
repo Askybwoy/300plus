@@ -28,6 +28,38 @@ type FormState = "idle" | "loading" | "success";
 
 const CONSENT_TEXT = "Я согласен на обработку персональных данных в соответствии с Политикой конфиденциальности";
 
+function formatPhone(value: string): string {
+  const digits = value.replace(/\D/g, "");
+  let countryCode = "";
+  let area = "";
+  let prefix = "";
+  let line1 = "";
+  let line2 = "";
+
+  if (digits.length > 0) {
+    countryCode = digits[0] === "7" || digits[0] === "8" ? "+7" : `+${digits[0]}`;
+  }
+  if (digits.length > 1) {
+    area = digits.slice(1, 4);
+  }
+  if (digits.length > 4) {
+    prefix = digits.slice(4, 7);
+  }
+  if (digits.length > 7) {
+    line1 = digits.slice(7, 9);
+  }
+  if (digits.length > 9) {
+    line2 = digits.slice(9, 11);
+  }
+
+  if (line2) return `${countryCode} (${area}) ${prefix}-${line1}-${line2}`;
+  if (line1) return `${countryCode} (${area}) ${prefix}-${line1}`;
+  if (prefix) return `${countryCode} (${area}) ${prefix}`;
+  if (area) return `${countryCode} (${area})`;
+  if (countryCode) return countryCode;
+  return "";
+}
+
 const WEBHOOK_URL = "https://askydesign.app.n8n.cloud/webhook/300plus-form";
 const CALENDLY_URL = "https://calendly.com/askybwoy/30min";
 const CALENDLY_SOURCES = ["consult_idea", "order_sprint", "discuss_package3"];
@@ -270,7 +302,13 @@ export function Modal({
                         </button>
                         <button
                           type="button"
-                          onClick={() => setContactType("phone")}
+                          onClick={() => {
+                            setContactType("phone");
+                            setFormData((prev) => ({
+                              ...prev,
+                              contact: /^\+?\d/.test(prev.contact) ? prev.contact : "+7",
+                            }));
+                          }}
                           className={`flex-1 py-2 rounded-xl border text-sm font-medium transition-all ${
                             contactType === "phone"
                               ? "border-[#FF6B00] bg-[#FF6B00]/5 text-[#FF6B00]"
@@ -297,7 +335,7 @@ export function Modal({
                           required
                           value={formData.contact}
                           onChange={(e) =>
-                            setFormData({ ...formData, contact: e.target.value })
+                            setFormData({ ...formData, contact: formatPhone(e.target.value) })
                           }
                           className="w-full px-4 py-3 border border-[#E5E7EB] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FF6B00]/20 focus:border-[#FF6B00] transition-all"
                           placeholder="+7 (999) 000-00-00"

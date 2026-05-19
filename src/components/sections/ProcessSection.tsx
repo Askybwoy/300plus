@@ -239,7 +239,7 @@ function SpeedCard() {
             </div>
             <div>
               <p className="text-sm font-medium text-[#1A1A1A]">Скорость запуска</p>
-              <p className="text-xs text-black/40">10 дней vs 60</p>
+              <p className="text-xs text-black/40">14 дней vs 60</p>
             </div>
           </div>
           <motion.div
@@ -248,7 +248,7 @@ function SpeedCard() {
             transition={{ delay: 0.5, type: "spring", damping: 12 }}
             className="bg-[#FF6B00] rounded-full px-3 py-1.5"
           >
-            <span className="text-xs font-medium text-white">10 дней</span>
+            <span className="text-xs font-medium text-white">14 дней</span>
           </motion.div>
         </div>
 
@@ -284,7 +284,7 @@ function SpeedCard() {
           >
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-[#1A1A1A]">300.plus</span>
-              <span className="text-sm font-bold text-[#FF6B00]">10 дней</span>
+              <span className="text-sm font-bold text-[#FF6B00]">14 дней</span>
             </div>
             <div className="h-3 bg-black/5 rounded-full overflow-hidden">
               <motion.div
@@ -329,7 +329,7 @@ function SpeedCard() {
                 </svg>
               </motion.div>
             </motion.div>
-            <p className="text-xs text-black/40 mt-3 text-center">Запуск через 10 дней</p>
+            <p className="text-xs text-black/40 mt-3 text-center">Запуск через 14 дней</p>
           </motion.div>
         </div>
       </div>
@@ -350,7 +350,7 @@ const steps = [
     card: AICard,
   },
   {
-    title: "10 дней\nвместо 2 месяцев",
+    title: "14 дней\nвместо 2 месяцев",
     description: "Автоматизация + опыт = скорость без потери качества. Тестируйте идеи, пока конкуренты согласовывают бриф",
     card: SpeedCard,
   },
