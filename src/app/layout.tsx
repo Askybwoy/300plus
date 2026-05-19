@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Inter, PT_Serif } from "next/font/google";
-import Script from "next/script";
 import "./globals.css";
 import { Header } from "@/components/ui/Header";
 import { SectionNav } from "@/components/ui/SectionNav";
@@ -8,6 +7,30 @@ import { CookieBanner } from "@/components/ui/CookieBanner";
 
 const TMR_COUNTER_ID = "3766946";
 const YM_COUNTER_ID = 109303198;
+
+// Original unmodified Top.Mail.Ru pixel code (must remain verbatim for tracking validation)
+const tmrPixel = `
+var _tmr = window._tmr || (window._tmr = []);
+_tmr.push({id: "${TMR_COUNTER_ID}", type: "pageView", start: (new Date()).getTime()});
+(function (d, w, id) {
+  if (d.getElementById(id)) return;
+  var ts = d.createElement("script"); ts.type = "text/javascript"; ts.async = true; ts.id = id;
+  ts.src = "https://top-fwz1.mail.ru/js/code.js";
+  var f = function () {var s = d.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ts, s);};
+  if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); }
+})(document, window, "tmr-code");
+`;
+
+// Original unmodified Yandex.Metrika pixel code (must remain verbatim for tracking validation)
+const ymPixel = `
+(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+m[i].l=1*new Date();
+for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+(window, document,"script","https://mc.yandex.ru/metrika/tag.js?id=${YM_COUNTER_ID}", "ym");
+
+ym(${YM_COUNTER_ID}, "init", {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+`;
 
 const inter = Inter({
   variable: "--font-inter",
@@ -40,28 +63,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru" suppressHydrationWarning>
+      <head>
+        {/* Top.Mail.Ru counter */}
+        <script dangerouslySetInnerHTML={{ __html: tmrPixel }} />
+        {/* Yandex.Metrika counter */}
+        <script dangerouslySetInnerHTML={{ __html: ymPixel }} />
+      </head>
       <body className={`${inter.variable} ${ptSerif.variable} antialiased`}>
         <Header />
         {/* <SectionNav /> */}
         {children}
         <CookieBanner />
 
-        {/* Top.Mail.Ru counter */}
-        <Script
-          id="tmr-code"
-          src="https://top-fwz1.mail.ru/js/code.js"
-          strategy="afterInteractive"
-        />
-        <Script
-          id="tmr-init"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              var _tmr = window._tmr || (window._tmr = []);
-              _tmr.push({id: "${TMR_COUNTER_ID}", type: "pageView", start: (new Date()).getTime()});
-            `,
-          }}
-        />
         <noscript>
           <div>
             <img
@@ -71,23 +84,6 @@ export default function RootLayout({
             />
           </div>
         </noscript>
-
-        {/* Yandex.Metrika counter */}
-        <Script
-          id="ym-init"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-              m[i].l=1*new Date();
-              for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-              k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-              (window, document, "script", "https://mc.yandex.ru/metrika/tag.js?id=${YM_COUNTER_ID}", "ym");
-
-              ym(${YM_COUNTER_ID}, "init", {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
-            `,
-          }}
-        />
         <noscript>
           <div>
             <img
