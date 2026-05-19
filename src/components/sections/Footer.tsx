@@ -12,7 +12,7 @@ export function Footer() {
           <div className="max-w-[443px]">
             <p className="text-[#9CA3AF] text-base leading-relaxed">
               Студия быстрого тестирования бизнес-идей. Помогаем
-              проверить гипотезу за&nbsp;10&nbsp;дней через&nbsp;создание бренда,
+              проверить гипотезу за&nbsp;14&nbsp;дней через&nbsp;создание бренда,
               лендинга и&nbsp;запуск таргетированной рекламы.
             </p>
           </div>

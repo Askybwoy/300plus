@@ -59,7 +59,7 @@ export function Hero() {
             transition={{ delay: 0.6, duration: 0.6 }}
             className="text-base sm:text-lg md:text-xl text-white/70 max-w-[610px] mx-auto leading-relaxed px-2 sm:px-0"
           >
-            Проверим вашу идею за&nbsp;10&nbsp;дней. Создание бренда, лендинга
+            Проверим вашу идею за&nbsp;14&nbsp;дней. Создание бренда, лендинга
             и&nbsp;запуск рекламы без&nbsp;найма и&nbsp;лишних согласований
           </motion.p>
 

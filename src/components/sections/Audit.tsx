@@ -9,7 +9,7 @@ const floatingTags = [
   { label: "Детальный анализ", color: "#ECFDF5", iconColor: "#10B981", x: 1051, y: 256, icon: "analyze" },
   { label: "Улучшение конверсии", color: "#FFF0E6", iconColor: "#FF6B00", x: 143, y: 539, icon: "conversion" },
   { label: "PDF-разбор", color: "#FDF2F8", iconColor: "#EC4899", x: 970, y: 481, icon: "pdf" },
-  { label: "24 часа", color: "#FF6B00", iconColor: "#FFFFFF", x: 642, y: 602, icon: "time" },
+  { label: "60 секунд", color: "#FF6B00", iconColor: "#FFFFFF", x: 642, y: 602, icon: "time" },
 ];
 
 // Icon components matching Figma design exactly

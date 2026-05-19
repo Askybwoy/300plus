@@ -119,24 +119,6 @@ export function SocialProof() {
             </motion.button>
           ))}
         </div>
-
-        {/* Client Logos */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.4, duration: 0.5 }}
-          className="pt-8 border-t border-[#E5E7EB]"
-        >
-          <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-12">
-            {[1, 2, 3, 4, 5].map((_, index) => (
-              <div
-                key={index}
-                className="w-[100px] h-[36px] rounded-lg bg-[#F3F4F6]"
-              />
-            ))}
-          </div>
-        </motion.div>
       </div>
 
       <CaseModal
