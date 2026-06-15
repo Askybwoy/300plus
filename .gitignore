@@ -62,7 +62,7 @@ next-env.d.ts
 .claude
 
 # dev build files
-/out
+/dist
 
 # archive (large audit videos and files)
 /archive
