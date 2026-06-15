@@ -53,6 +53,8 @@ export function Header() {
   const [modalOpen, setModalOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
+  if (pathname.startsWith("/cakejourney")) return null;
+
   useEffect(() => {
     // On non-home pages, always use inverted (light) header
     if (!isHomePage) {

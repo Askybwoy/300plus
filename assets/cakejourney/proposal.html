@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CakeJourney — Коммерческое предложение</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--pink:#FF6B9D;--gold:#FFB845;--green:#4CAF50;--blue:#5C9DFF;--dark:#2D1B4E;--light:#FFF8F0;--card:#FFFFFF;--text:#3A2A1F;--muted:#8B7B6B}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;color:var(--text);background:var(--light);overflow-x:hidden;line-height:1.6}
+a{text-decoration:none;color:inherit}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;transition:all .3s}
+.nav.scrolled{background:rgba(255,248,240,.95);backdrop-filter:blur(12px);box-shadow:0 2px 20px rgba(0,0,0,.08)}
+.nav-logo{font-size:1.4rem;font-weight:800;background:linear-gradient(135deg,var(--pink),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-links{display:flex;gap:24px;font-size:.9rem;font-weight:500}
+.nav-links a{opacity:.7;transition:.2s}.nav-links a:hover{opacity:1}
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none}
+.burger span{width:24px;height:2px;background:var(--dark);border-radius:2px;transition:.3s}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px;background:linear-gradient(170deg,#FFF8F0 0%,#FFE8D6 30%,#FFD6E8 60%,#E8D6FF 100%);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(255,107,157,.15),transparent 70%);top:-200px;right:-200px}
+.hero::after{content:'';position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(255,184,69,.12),transparent 70%);bottom:-100px;left:-100px}
+.hero-badge{display:inline-block;padding:8px 20px;border-radius:50px;background:rgba(255,107,157,.12);color:var(--pink);font-size:.85rem;font-weight:600;margin-bottom:24px;letter-spacing:.5px}
+.hero h1{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:900;line-height:1.1;margin-bottom:20px}
+.hero h1 span{background:linear-gradient(135deg,var(--pink),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sub{font-size:clamp(1.1rem,2vw,1.4rem);color:var(--muted);max-width:600px;margin:0 auto 40px}
+.hero-cta{display:inline-flex;align-items:center;gap:10px;padding:16px 36px;border-radius:60px;background:linear-gradient(135deg,var(--pink),#FF8A65);color:#fff;font-size:1.1rem;font-weight:700;box-shadow:0 8px 30px rgba(255,107,157,.35);transition:transform .2s,box-shadow .2s;cursor:pointer;border:none}
+.hero-cta:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(255,107,157,.45)}
+.hero-stats{display:flex;gap:48px;justify-content:center;margin-top:60px;flex-wrap:wrap}
+.hero-stat{text-align:center}
+.hero-stat .num{font-size:2rem;font-weight:800;color:var(--dark)}
+.hero-stat .label{font-size:.85rem;color:var(--muted);margin-top:4px}
+
+/* SECTIONS */
+section{padding:100px 24px}
+.container{max-width:1200px;margin:0 auto}
+.section-badge{display:inline-block;padding:6px 16px;border-radius:30px;font-size:.8rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px}
+.section-title{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;margin-bottom:16px;line-height:1.2}
+.section-desc{font-size:1.1rem;color:var(--muted);max-width:640px;margin-bottom:48px}
+
+/* PROBLEM */
+.problem{background:linear-gradient(180deg,var(--light) 0%,#fff 100%)}
+.problem .section-badge{background:rgba(255,107,157,.1);color:var(--pink)}
+.problem-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}
+.problem-card{padding:32px;border-radius:20px;background:#fff;border:1px solid rgba(0,0,0,.06);transition:transform .3s,box-shadow .3s}
+.problem-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.08)}
+.problem-card .icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:16px}
+.problem-card h3{font-size:1.15rem;font-weight:700;margin-bottom:8px}
+.problem-card p{font-size:.95rem;color:var(--muted)}
+
+/* SOLUTION */
+.solution{background:linear-gradient(135deg,var(--dark) 0%,#1A0A3E 100%);color:#fff}
+.solution .section-badge{background:rgba(255,184,69,.2);color:var(--gold)}
+.solution .section-desc{color:rgba(255,255,255,.6)}
+.solution-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
+.solution-item{padding:28px;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(4px)}
+.solution-item .num{font-size:2rem;font-weight:900;background:linear-gradient(135deg,var(--pink),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:12px}
+.solution-item h3{font-size:1.05rem;font-weight:700;margin-bottom:6px}
+.solution-item p{font-size:.9rem;color:rgba(255,255,255,.55)}
+
+/* FEATURES */
+.features{background:#fff}
+.features .section-badge{background:rgba(76,175,80,.1);color:var(--green)}
+.feature-row{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;margin-bottom:80px}
+.feature-row:nth-child(even){direction:rtl}.feature-row:nth-child(even)>*{direction:ltr}
+.feature-img{border-radius:24px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.1)}
+.feature-img img{width:100%;display:block;object-fit:cover;max-height:500px;object-fit:contain;background:#f5f0eb}
+.feature-text h3{font-size:1.5rem;font-weight:800;margin-bottom:12px}
+.feature-text p{font-size:1rem;color:var(--muted);margin-bottom:20px}
+.feature-tags{display:flex;flex-wrap:wrap;gap:8px}
+.feature-tag{padding:6px 14px;border-radius:20px;font-size:.8rem;font-weight:600;background:rgba(76,175,80,.08);color:var(--green)}
+
+/* GALLERY */
+.gallery{background:linear-gradient(180deg,#fff,var(--light))}
+.gallery .section-badge{background:rgba(92,157,255,.1);color:var(--blue)}
+.gallery-scroll{display:flex;gap:20px;overflow-x:auto;padding:20px 0;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.gallery-scroll::-webkit-scrollbar{height:6px}.gallery-scroll::-webkit-scrollbar-thumb{background:var(--pink);border-radius:3px}
+.gallery-item{min-width:260px;max-width:260px;border-radius:20px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.1);scroll-snap-align:start;transition:transform .3s;flex-shrink:0}
+.gallery-item:hover{transform:scale(1.03)}
+.gallery-item img{width:100%;height:460px;object-fit:cover;display:block}
+.gallery-item .caption{padding:12px 16px;background:#fff;font-size:.85rem;font-weight:600;text-align:center}
+
+/* FINANCE */
+.finance{background:linear-gradient(135deg,#1A0A3E,var(--dark));color:#fff}
+.finance .section-badge{background:rgba(255,184,69,.2);color:var(--gold)}
+.finance .section-desc{color:rgba(255,255,255,.6)}
+.fin-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;margin-bottom:48px}
+.fin-card{padding:32px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}
+.fin-card h3{font-size:1rem;font-weight:700;color:var(--gold);margin-bottom:20px;text-transform:uppercase;letter-spacing:1px}
+.fin-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:.95rem}
+.fin-row:last-child{border:none}
+.fin-row .val{font-weight:700;color:#fff}
+.fin-highlight{padding:32px;border-radius:20px;background:linear-gradient(135deg,rgba(255,107,157,.15),rgba(255,184,69,.15));border:1px solid rgba(255,184,69,.2);text-align:center}
+.fin-highlight .big{font-size:clamp(2rem,5vw,3rem);font-weight:900;background:linear-gradient(135deg,var(--pink),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.fin-highlight .sub{color:rgba(255,255,255,.6);margin-top:8px}
+
+/* TABS */
+.tabs{display:flex;gap:8px;margin-bottom:32px;flex-wrap:wrap}
+.tab{padding:10px 24px;border-radius:30px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.7);cursor:pointer;font-size:.9rem;font-weight:600;transition:.2s}
+.tab.active{background:linear-gradient(135deg,var(--pink),var(--gold));color:#fff;border-color:transparent}
+.tab-content{display:none}.tab-content.active{display:block}
+
+/* PACKAGES */
+.packages{background:var(--light)}
+.packages .section-badge{background:rgba(255,107,157,.1);color:var(--pink)}
+.pkg-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px}
+.pkg-card{padding:36px;border-radius:24px;background:#fff;border:2px solid transparent;transition:transform .3s,box-shadow .3s;position:relative;overflow:hidden}
+.pkg-card:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,.1)}
+.pkg-card.featured{border-color:var(--pink)}
+.pkg-card.featured::before{content:'Популярный';position:absolute;top:20px;right:-30px;background:linear-gradient(135deg,var(--pink),var(--gold));color:#fff;padding:4px 40px;font-size:.75rem;font-weight:700;transform:rotate(45deg)}
+.pkg-card .tier{font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px}
+.pkg-card .price{font-size:2.5rem;font-weight:900;color:var(--dark);margin-bottom:4px}
+.pkg-card .price-sub{font-size:.85rem;color:var(--muted);margin-bottom:24px}
+.pkg-list{list-style:none;margin-bottom:28px}
+.pkg-list li{padding:8px 0;font-size:.95rem;display:flex;align-items:center;gap:10px}
+.pkg-list li::before{content:'✓';color:var(--green);font-weight:700}
+.pkg-btn{display:block;width:100%;padding:14px;border-radius:14px;border:none;font-size:1rem;font-weight:700;cursor:pointer;transition:.2s}
+.pkg-btn.primary{background:linear-gradient(135deg,var(--pink),#FF8A65);color:#fff;box-shadow:0 6px 20px rgba(255,107,157,.3)}
+.pkg-btn.outline{background:transparent;border:2px solid var(--dark);color:var(--dark)}
+.pkg-btn:hover{transform:translateY(-2px)}
+
+/* CTA */
+.cta-section{background:linear-gradient(135deg,var(--pink),#FF8A65,var(--gold));color:#fff;text-align:center;padding:100px 24px}
+.cta-section h2{font-size:clamp(2rem,4vw,3rem);font-weight:900;margin-bottom:16px}
+.cta-section p{font-size:1.1rem;opacity:.85;max-width:500px;margin:0 auto 36px}
+.cta-btn{display:inline-block;padding:18px 48px;border-radius:60px;background:#fff;color:var(--pink);font-size:1.1rem;font-weight:800;box-shadow:0 8px 30px rgba(0,0,0,.15);transition:.2s;cursor:pointer;border:none}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,.2)}
+
+/* FOOTER */
+footer{background:var(--dark);color:rgba(255,255,255,.5);text-align:center;padding:32px 24px;font-size:.85rem}
+
+/* ANIMATIONS */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .6s,transform .6s}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .nav-links{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(255,248,240,.98);flex-direction:column;align-items:center;justify-content:center;gap:32px;font-size:1.3rem}
+  .nav-links.open{display:flex}
+  .burger{display:flex}
+  .hero-stats{gap:24px}
+  .feature-row{grid-template-columns:1fr;gap:24px}
+  .feature-row:nth-child(even){direction:ltr}
+  .gallery-item{min-width:220px;max-width:220px}
+  .gallery-item img{height:390px}
+  .pkg-grid{grid-template-columns:1fr}
+  section{padding:60px 16px}
+  .fin-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-logo">🎂 CakeJourney</div>
+  <div class="nav-links" id="navLinks">
+    <a href="#problem" onclick="closeMenu()">Проблема</a>
+    <a href="#solution" onclick="closeMenu()">Решение</a>
+    <a href="#features" onclick="closeMenu()">Функции</a>
+    <a href="#gallery" onclick="closeMenu()">Экраны</a>
+    <a href="#finance" onclick="closeMenu()">Финансы</a>
+    <a href="#packages" onclick="closeMenu()">Пакеты</a>
+    <a href="#contact" onclick="closeMenu()">Контакт</a>
+  </div>
+  <button class="burger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="hero-badge">📋 Коммерческое предложение</div>
+    <h1><span>CakeJourney</span><br>От первого капкейка<br>до профессионала</h1>
+    <p class="hero-sub">EdTech-платформа с подписочной моделью, которая превращает разовых покупателей курсов в постоянных подписчиков</p>
+
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">30 млн ₽</div><div class="label">Потенциал MRR / год</div></div>
+      <div class="hero-stat"><div class="num">3.96x</div><div class="label">LTV / CAC</div></div>
+      <div class="hero-stat"><div class="num">14</div><div class="label">Готовых экранов</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem" id="problem">
+  <div class="container">
+    <div class="section-badge">Проблема рынка</div>
+    <h2 class="section-title reveal">80% учеников бросают<br>онлайн-курсы</h2>
+    <p class="section-desc reveal">Кондитерские школы теряют учеников после первой продажи. Текущие платформы не решают ключевые проблемы обучения.</p>
+    <div class="problem-grid">
+      <div class="problem-card reveal">
+        <div class="icon" style="background:rgba(255,107,157,.1)">😔</div>
+        <h3>Разовые продажи</h3>
+        <p>Ученик покупает курс один раз — школа теряет его навсегда. Нет повторных продаж и LTV.</p>
+      </div>
+      <div class="problem-card reveal">
+        <div class="icon" style="background:rgba(92,157,255,.1)">📉</div>
+        <h3>Низкая доходимость</h3>
+        <p>Курсы проходят один раз и забываются. Нет привычки практиковаться и системы удержания.</p>
+      </div>
+      <div class="problem-card reveal">
+        <div class="icon" style="background:rgba(255,184,69,.1)">🎯</div>
+        <h3>Нет персонализации</h3>
+        <p>Все ученики получают одинаковый контент. Платформа не адаптируется под уровень и цели.</p>
+      </div>
+      <div class="problem-card reveal">
+        <div class="icon" style="background:rgba(76,175,80,.1)">🔗</div>
+        <h3>Зависимость от площадок</h3>
+        <p>GetCourse и аналоги забирают комиссию и контроль. Нет собственной платформы.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUTION -->
+<section class="solution" id="solution">
+  <div class="container">
+    <div class="section-badge">Решение</div>
+    <h2 class="section-title reveal" style="color:#fff">Duolingo для кондитеров</h2>
+    <p class="section-desc reveal">Не очередная школа с набором курсов, а персональный кондитерский тренажёр, который ежедневно сопровождает пользователя через практику и игровые механики.</p>
+    <div class="solution-grid">
+      <div class="solution-item reveal">
+        <div class="num">01</div>
+        <h3>Персональный маршрут</h3>
+        <p>Онбординг определяет уровень и создаёт индивидуальный план обучения</p>
+      </div>
+      <div class="solution-item reveal">
+        <div class="num">02</div>
+        <h3>Геймификация</h3>
+        <p>XP, бейджи, уровни и челленджи — проверенная механика удержания</p>
+      </div>
+      <div class="solution-item reveal">
+        <div class="num">03</div>
+        <h3>Подписочная модель</h3>
+        <p>MRR вместо разовых продаж. LTV в 3–5 раз выше</p>
+      </div>
+      <div class="solution-item reveal">
+        <div class="num">04</div>
+        <h3>Собственная платформа</h3>
+        <p>iOS + Android + Web. Полный контроль бренда и данных</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="container">
+    <div class="section-badge">Возможности</div>
+    <h2 class="section-title reveal">14 экранов — полностью<br>спроектированный продукт</h2>
+    <p class="section-desc reveal">Каждый экран продуман для конверсии, удержания и монетизации.</p>
+
+    <div class="feature-row reveal">
+      <div class="feature-img"><img src="screenshots/01_Intro.png" alt="Intro"></div>
+      <div class="feature-text">
+        <h3>Яркий вход в приложение</h3>
+        <p>Приветственный экран с персонажами задаёт тон и создаёт эмоциональную связь с брендом с первой секунды.</p>
+        <div class="feature-tags"><span class="feature-tag">Брендинг</span><span class="feature-tag">Эмоция</span><span class="feature-tag">Конверсия</span></div>
+      </div>
+    </div>
+
+    <div class="feature-row reveal">
+      <div class="feature-img"><img src="screenshots/07_Learning_Path.png" alt="Learning Path"></div>
+      <div class="feature-text">
+        <h3>Карта обучения</h3>
+        <p>Визуальный путь прогресса в стиле match-3 игры. Уровни, звёзды, события и награды — пользователь видит свой рост.</p>
+        <div class="feature-tags"><span class="feature-tag">Геймификация</span><span class="feature-tag">Прогресс</span><span class="feature-tag">Удержание</span></div>
+      </div>
+    </div>
+
+    <div class="feature-row reveal">
+      <div class="feature-img"><img src="screenshots/08_Lesson.png" alt="Lesson"></div>
+      <div class="feature-text">
+        <h3>Интерактивные уроки</h3>
+        <p>Видеоуроки с пошаговыми заданиями. Ученик выполняет каждый шаг и получает XP за завершение.</p>
+        <div class="feature-tags"><span class="feature-tag">Видео</span><span class="feature-tag">Пошаговость</span><span class="feature-tag">XP</span></div>
+      </div>
+    </div>
+
+    <div class="feature-row reveal">
+      <div class="feature-img"><img src="screenshots/11_Ingredient_Calculator.png" alt="Calculator"></div>
+      <div class="feature-text">
+        <h3>Калькулятор ингредиентов</h3>
+        <p>Уникальный инструмент: выбираешь размер, порции, форму — получаешь автоматический расчёт. Незаменим для практикующих кондитеров.</p>
+        <div class="feature-tags"><span class="feature-tag">Утилитa</span><span class="feature-tag">Уникальность</span><span class="feature-tag">Premium</span></div>
+      </div>
+    </div>
+
+    <div class="feature-row reveal">
+      <div class="feature-img"><img src="screenshots/12_Profile_Dashboard.png" alt="Profile"></div>
+      <div class="feature-text">
+        <h3>Профиль и достижения</h3>
+        <p>Дашборд со статистикой, графиком активности за неделю, коллекцией бейджей — мотивация не останавливаться.</p>
+        <div class="feature-tags"><span class="feature-tag">Статистика</span><span class="feature-tag">Бейджи</span><span class="feature-tag">Мотивация</span></div>
+      </div>
+    </div>
+
+    <div class="feature-row reveal">
+      <div class="feature-img"><img src="screenshots/13_Subscription_Paywall.png" alt="Subscription"></div>
+      <div class="feature-text">
+        <h3>Пейволл с 3 тарифами</h3>
+        <p>Free / Premium / Pro — прозрачная монетизация. Пользователь видит ценность каждого уровня и выбирает подходящий.</p>
+        <div class="feature-tags"><span class="feature-tag">Монетизация</span><span class="feature-tag">Free→Paid</span><span class="feature-tag">Конверсия</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery" id="gallery">
+  <div class="container">
+    <div class="section-badge">Все экраны</div>
+    <h2 class="section-title reveal">14 спроектированных экранов</h2>
+    <p class="section-desc reveal">Полный пользовательский путь — от первого касания до подписки.</p>
+  </div>
+  <div class="gallery-scroll" style="padding-left:max(24px,calc((100vw - 1200px)/2))">
+    <div class="gallery-item"><img src="screenshots/01_Intro.png" alt=""><div class="caption">Вступительный экран</div></div>
+    <div class="gallery-item"><img src="screenshots/02_Auth.png" alt=""><div class="caption">Авторизация</div></div>
+    <div class="gallery-item"><img src="screenshots/03_Onboarding_Experience.png" alt=""><div class="caption">Опыт</div></div>
+    <div class="gallery-item"><img src="screenshots/04_Onboarding_Desserts.png" alt=""><div class="caption">Предпочтения</div></div>
+    <div class="gallery-item"><img src="screenshots/05_Onboarding_Goal.png" alt=""><div class="caption">Цель обучения</div></div>
+    <div class="gallery-item"><img src="screenshots/06_Level_Selection.png" alt=""><div class="caption">Выбор уровня</div></div>
+    <div class="gallery-item"><img src="screenshots/07_Learning_Path.png" alt=""><div class="caption">Карта обучения</div></div>
+    <div class="gallery-item"><img src="screenshots/08_Lesson.png" alt=""><div class="caption">Урок</div></div>
+    <div class="gallery-item"><img src="screenshots/09_Recipe_Detail.png" alt=""><div class="caption">Рецепт</div></div>
+    <div class="gallery-item"><img src="screenshots/10_Recipe_Library.png" alt=""><div class="caption">Библиотека рецептов</div></div>
+    <div class="gallery-item"><img src="screenshots/11_Ingredient_Calculator.png" alt=""><div class="caption">Калькулятор</div></div>
+    <div class="gallery-item"><img src="screenshots/12_Profile_Dashboard.png" alt=""><div class="caption">Профиль</div></div>
+    <div class="gallery-item"><img src="screenshots/13_Subscription_Paywall.png" alt=""><div class="caption">Подписка</div></div>
+    <div class="gallery-item"><img src="screenshots/14_Settings.png" alt=""><div class="caption">Настройки</div></div>
+  </div>
+</section>
+
+<!-- FINANCE -->
+<section class="finance" id="finance">
+  <div class="container">
+    <div class="section-badge">Финансовая модель</div>
+    <h2 class="section-title reveal" style="color:#fff">Прозрачная юнит-экономика</h2>
+    <p class="section-desc reveal">Подписочная модель с предсказуемым доходом и быстрым возвратом инвестиций.</p>
+
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab(0)">1 000 пользователей</div>
+      <div class="tab" onclick="switchTab(1)">5 000 пользователей</div>
+      <div class="tab" onclick="switchTab(2)">Юнит-экономика</div>
+    </div>
+
+    <div class="tab-content active" id="tab0">
+      <div class="fin-grid">
+        <div class="fin-card">
+          <h3>Тарифы</h3>
+          <div class="fin-row"><span>Free (600 чел.)</span><span class="val">0 ₽</span></div>
+          <div class="fin-row"><span>Premium (300 чел.)</span><span class="val">990 ₽/мес</span></div>
+          <div class="fin-row"><span>Pro (100 чел.)</span><span class="val">1 990 ₽/мес</span></div>
+        </div>
+        <div class="fin-card">
+          <h3>Доход</h3>
+          <div class="fin-row"><span>Premium</span><span class="val">297 000 ₽/мес</span></div>
+          <div class="fin-row"><span>Pro</span><span class="val">199 000 ₽/мес</span></div>
+          <div class="fin-row"><span>MRR (итого)</span><span class="val">496 000 ₽/мес</span></div>
+        </div>
+        <div class="fin-highlight" style="grid-column:1/-1">
+          <div class="big">~5,9 млн ₽/год</div>
+          <div class="sub">Годовой доход при 1 000 активных пользователей</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="tab1">
+      <div class="fin-grid">
+        <div class="fin-card">
+          <h3>Масштабирование</h3>
+          <div class="fin-row"><span>Free (3 000 чел.)</span><span class="val">0 ₽</span></div>
+          <div class="fin-row"><span>Premium (1 500 чел.)</span><span class="val">1 485 000 ₽/мес</span></div>
+          <div class="fin-row"><span>Pro (500 чел.)</span><span class="val">995 000 ₽/мес</span></div>
+        </div>
+        <div class="fin-card">
+          <h3>Рост</h3>
+          <div class="fin-row"><span>MRR</span><span class="val">2 480 000 ₽/мес</span></div>
+          <div class="fin-row"><span>ARR</span><span class="val">~29,8 млн ₽/год</span></div>
+          <div class="fin-row"><span>Маржа (70%)</span><span class="val">~20,8 млн ₽</span></div>
+        </div>
+        <div class="fin-highlight" style="grid-column:1/-1">
+          <div class="big">~30 млн ₽/год</div>
+          <div class="sub">Годовой доход при 5 000 активных пользователей</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="tab2">
+      <div class="fin-grid">
+        <div class="fin-card">
+          <h3>На 1 Premium-подписчика</h3>
+          <div class="fin-row"><span>CAC (привлечение)</span><span class="val">~1 500 ₽</span></div>
+          <div class="fin-row"><span>ARPU / мес</span><span class="val">990 ₽</span></div>
+          <div class="fin-row"><span>Средний lifetime</span><span class="val">6 месяцев</span></div>
+        </div>
+        <div class="fin-card">
+          <h3>Результат</h3>
+          <div class="fin-row"><span>LTV</span><span class="val">5 940 ₽</span></div>
+          <div class="fin-row"><span>LTV / CAC</span><span class="val">3.96x ✓</span></div>
+          <div class="fin-row"><span>Payback</span><span class="val">~2 месяца</span></div>
+        </div>
+        <div class="fin-highlight" style="grid-column:1/-1">
+          <div class="big">3.96x LTV/CAC</div>
+          <div class="sub">Здоровая модель — пороговое значение 3x превышено</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PACKAGES -->
+<section class="packages" id="packages">
+  <div class="container">
+    <div class="section-badge">Пакеты</div>
+    <h2 class="section-title reveal">Выберите формат сотрудничества</h2>
+    <p class="section-desc reveal">Три варианта — от быстрого старта до полноценной платформы под ключ.</p>
+    <div class="pkg-grid">
+      <div class="pkg-card reveal">
+        <div class="tier">MVP для инвестора</div>
+        <div class="price">от 1,35 млн ₽</div>
+        <div class="price-sub">Единоразово · 6–8 недель</div>
+        <ul class="pkg-list">
+          <li>Онбординг + авторизация</li>
+          <li>Карта обучения + уроки</li>
+          <li>Библиотека рецептов</li>
+          <li>Калькулятор ингредиентов</li>
+          <li>Подписочная модель</li>
+          <li>Аналитика (Mixpanel)</li>
+          <li>Pitch deck с юнит-экономикой</li>
+        </ul>
+      </div>
+      <div class="pkg-card featured reveal">
+        <div class="tier">Платформа под ключ</div>
+        <div class="price">от 2,3 млн ₽</div>
+        <div class="price-sub">Единоразово + 50 000 ₽/мес поддержка</div>
+        <ul class="pkg-list">
+          <li>Всё из MVP</li>
+          <li>iOS + Android + Web</li>
+          <li>Админ-панель</li>
+          <li>Брендирование под клиента</li>
+          <li>Интеграция платежей</li>
+          <li>Push-уведомления</li>
+          <li>3 месяца поддержки</li>
+          <li>Обучение команды</li>
+        </ul>
+
+      </div>
+      <div class="pkg-card reveal">
+        <div class="tier">White Label SaaS</div>
+        <div class="price">от 450 000 ₽</div>
+        <div class="price-sub">Setup + 30 000 ₽/мес</div>
+        <ul class="pkg-list">
+          <li>Готовая платформа</li>
+          <li>Запуск за 4 недели</li>
+          <li>Ваш бренд и контент</li>
+          <li>Обновления и поддержка</li>
+          <li>Хостинг включён</li>
+          <li>Масштабирование</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section style="background:#fff">
+  <div class="container">
+    <div class="section-badge" style="background:rgba(92,157,255,.1);color:var(--blue)">Дорожная карта</div>
+    <h2 class="section-title reveal">3 фазы развития продукта</h2>
+    <p class="section-desc reveal">От MVP до AI-кондитера — поэтапное масштабирование с минимальным риском.</p>
+    <div class="solution-grid" style="color:var(--text)">
+      <div class="reveal" style="padding:28px;border-radius:16px;background:var(--light);border:1px solid rgba(0,0,0,.06)">
+        <div style="font-size:2rem;font-weight:900;color:var(--green);margin-bottom:12px">v1.0</div>
+        <h3 style="font-size:1.05rem;font-weight:700;margin-bottom:6px">MVP</h3>
+        <p style="font-size:.9rem;color:var(--muted)">Авторизация, онбординг, маршрут, видеоуроки, рецепты, калькулятор, XP, подписка</p>
+      </div>
+      <div class="reveal" style="padding:28px;border-radius:16px;background:var(--light);border:1px solid rgba(0,0,0,.06)">
+        <div style="font-size:2rem;font-weight:900;color:var(--blue);margin-bottom:12px">v2.0</div>
+        <h3 style="font-size:1.05rem;font-weight:700;margin-bottom:6px">Сообщество</h3>
+        <p style="font-size:.9rem;color:var(--muted)">Комьюнити, челленджи, AI-рекомендации, наставник, рейтинг</p>
+      </div>
+      <div class="reveal" style="padding:28px;border-radius:16px;background:var(--light);border:1px solid rgba(0,0,0,.06)">
+        <div style="font-size:2rem;font-weight:900;color:var(--pink);margin-bottom:12px">v3.0</div>
+        <h3 style="font-size:1.05rem;font-weight:700;margin-bottom:6px">AI-кондитер</h3>
+        <p style="font-size:.9rem;color:var(--muted)">Анализ фото десерта: выравнивание, декор, ошибки, рекомендации</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <h2>Готовы запустить<br>CakeJourney?</h2>
+  <p>Обсудим ваш проект и подберём оптимальный формат сотрудничества</p>
+
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 CakeJourney · Коммерческое предложение · Конфиденциально</p>
+</footer>
+
+<script>
+// Nav scroll
+window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',window.scrollY>50)});
+
+// Mobile menu
+function toggleMenu(){document.getElementById('navLinks').classList.toggle('open')}
+function closeMenu(){document.getElementById('navLinks').classList.remove('open')}
+
+// Tabs
+function switchTab(i){
+  document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('active',j===i));
+  document.querySelectorAll('.tab-content').forEach((c,j)=>c.classList.toggle('active',j===i));
+}
+
+// Reveal on scroll
+const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})},{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
